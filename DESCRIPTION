@@ -12,7 +12,11 @@ Depends:
 Imports:
     dplyr,
     magrittr,
-    parallel
+    parallel,
+    ggplot2,
+    readr,
+    Metrics,
+    broom
 License: GNU GENERAL PUBLIC LICENSE v3.0
 LazyData: true
 RoxygenNote: 5.0.1.9000

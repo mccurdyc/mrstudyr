@@ -1,3 +1,18 @@
+#' FUNCTION: select_empirical_study_schemas
+#'
+#' This function will reduce the data to only analyse the schemas discussed
+#' and presented in the accompanying tool paper.
+#' (CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products)
+#'
+#' @export
+
+select_empirical_study_schemas <- function(data) {
+    schemas <- c("CoffeeOrders", "Employee", "Inventory", "Iso3166", "JWhoisServer", "MozillaPermissions",
+                 "NistWeather", "Person", "Products")
+    d <- dplyr::filter(data, schema %in% schemas)
+    return(d)
+}
+
 #' FUNCTION: select_percentage_across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00

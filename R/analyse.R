@@ -145,10 +145,23 @@ analyse_random_sampling <- function(data, f = "fast") {
             d <- rbind(d, a)
         }
     } else {
-            i <- parallel::mclapply(schemas[[1]], select_individual_schema_data, data = data, mc.cores = parallel::detectCores())
-            a <- parallel::mclapply(i, analyse_select_mutation_score, mc.cores = parallel::detectCores())
+            # Calculate the number of cores
+            no_cores <- detectCores() - 1
+
+            # Initiate cluster
+            cl <- makeCluster(no_cores)
+
+            # load packages into cluster
+            clusterEvalQ(cl, library(magrittr))
+
+            i <- parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
+            a <- parLapply(cl, i, analyse_select_mutation_score)
             d <- do.call(rbind, a)
+
+            # close the cluster so that resources such as memory are returned to the operating system
+            stopCluster(cl)
     }
+
      return(d)
 }
 

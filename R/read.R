@@ -6,8 +6,8 @@
 #'
 #' @export
 
-read_data <- function() {
-  f <- system.file("extdata", "sqlite-avmdefaults.dat", package="selectms")
+read_data <- function(dat) {
+  f <- system.file("extdata", dat, package="selectms")
   d <- readr::read_csv(f)
   return(dplyr::tbl_df(d))
 }

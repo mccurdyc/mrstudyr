@@ -4,7 +4,7 @@
 \alias{read_data}
 \title{FUNCTION: read_data}
 \usage{
-read_data()
+read_data(dat)
 }
 \description{
 Read in a data file containing all of the mutation analysis data. This is

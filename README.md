@@ -23,7 +23,7 @@ library(mrstudyr)
 ## Usage
 ### Reading in sample data:
 ```
-data <- read_data()
+data <- read_data("sqlite-avmdefaults")
 ```
 
 Since we are only interested in the **NORMAL** type mutants:

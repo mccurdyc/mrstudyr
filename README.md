@@ -126,6 +126,7 @@ head(os_data)
 | ------------- | ------------- |
 | Mutation Score  | analyse_mutation_score (data)  |
 | Kendall's &tau;<sub>b</sub> Correlation Coefficient  | analyse_correlation (data)  |
+| Creation Cost Reduction  | analyse_reduction (data)  |
 | Error (MAE and RMSE)  | analyse_percents_error (data)  |
 
 ### Visualising Performance of Reduction Techniques

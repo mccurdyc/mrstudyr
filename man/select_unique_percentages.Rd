@@ -9,6 +9,6 @@ select_unique_percentages(data)
 \description{
 This function will create a data frame of all of the unique percentages.
 It should return 1-100. I created this function because passing a sequence
-to a function was not working
+to a function was not working. THIS COULD PROBABLY BE DELETED NOW.
 }
 

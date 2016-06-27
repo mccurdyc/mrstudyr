@@ -23,12 +23,7 @@ library(mrstudyr)
 ## Usage
 ### Reading in sample data:
 ```
-data <- read_data("sqlite-avmdefaults")
-```
-
-Since we are only interested in the **NORMAL** type mutants:
-```
-data <- select_normal_data(data)
+data <- read_data("sqlite-avmdefaults.dat")
 ```
 
 In the accompanying paper, we empirically analyse nine schemas:
@@ -38,6 +33,11 @@ To filter the data to only include data about these schemas use the following co
 
 ```
 data <- select_empirical_study_schemas(data)
+```
+
+Since we are only interested in the **NORMAL** type mutants:
+```
+data <- select_normal_data(data)
 ```
 
 To test that the sample data was read in and filtered correctly:

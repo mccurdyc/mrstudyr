@@ -9,6 +9,15 @@ mutation testing phase in the mutation analysis process.
 ## Dependencies
 + R (> 3.1.2)
 
+## Imports
++ dplyr
++ magrittr
++ parallel
++ ggplot2
++ readr
++ Metrics
++ broom
+
 ## Installing
 The following commands need to be run in the R console (type `R` in terminal).
 
@@ -27,6 +36,7 @@ data <- read_data("sqlite-avmdefaults.dat")
 ```
 
 In the accompanying paper, we empirically analyse nine schemas:
+
 CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products.
 
 To filter the data to only include data about these schemas use the following command:
@@ -69,7 +79,7 @@ Source: local data frame [6 x 7]
 
 One mutant reduction technique supported by mrstudyr is uniform random sampling. In uniform
 random sampling, a maximum threshold percentage, _x_, is set for the percentage of the total
-mutants to be analysed. The mrstudyr tools evaluates _x_ from 1% to 90% in increments of 10%.
+mutants to be analysed. The mrstudyr tool evaluates _x_ from 1% to 90% in increments of 10%.
 
 To perform **uniform random sampling**:
 ```
@@ -144,3 +154,9 @@ or use on Windows unless using RStudio.
 
 ## License
 [GNU General Public License v3.0](./LICENSE)
+
+## FAQ
++ `Error in FUNCTION_NAME_HERE() : could not find function "%>%"`
+    + `library(magrittr)`
++ `Error in FUNCTION_NAME_HERE() : could not find function "detectCores"`
+    + `library(parallel)`

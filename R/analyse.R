@@ -1,176 +1,12 @@
-#' FUNCTION: analyse_random_sampling
+#' FUNCTION: random_sampling
 #'
-#' This function will be used to run selective mutation per schema and collect
-#' data in a single data frame
-#'
-#' @export
-
-analyse_random_sampling <- function(data, f = "fast") {
-    # initiallize empty data frame
-    d <- data.frame("schema" = character(),
-                    "trial" = integer(),
-                    "percentage" = integer(),
-                    "reduced_numerator" = integer(),
-                    "reduced_denominator" = integer(),
-                    "original_numerator" = integer(),
-                    "original_denominator" = integer(),
-                    "reduced_time" = integer(),
-                    "original_time" = integer(),
-                    "cost_reduction" = double(),
-                    "reduced_mutation_score" = double(),
-                    "original_mutation_score" = double())
-    names(d) <- c("schema",
-                  "trial",
-                  "percentage",
-                  "reduced_numerator",
-                  "reduced_denominator",
-                  "original_numerator",
-                  "original_denominator",
-                  "reduced_time",
-                  "original_time",
-                  "cost_reduction",
-                  "reduced_mutation_score",
-                  "original_mutation_score")
-    # find all unique schemas in data
-    schemas <- select_unique_schemas(data)
-
-    if(f != "fast") {
-        for(s in schemas[[1]]) {
-            # get parse out data per-schema individually
-            i <- select_individual_schema_data(data, s)
-            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
-            a <- analyse_select_mutation_score(i)
-
-            names(a) <- names(d)
-
-            # append per-schema data to end of 'd' which will contain all per-schema data in the end
-            d <- rbind(d, a)
-        }
-    } else {
-            # Calculate the number of cores
-            no_cores <- parallel::detectCores() - 1
-
-            # Initiate cluster
-            cl <- parallel::makeCluster(no_cores)
-
-            # load packages into cluster
-            parallel::clusterEvalQ(cl, library(magrittr))
-
-            i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
-            a <- parallel::parLapply(cl, i, analyse_select_mutation_score)
-            d <- do.call(rbind, a)
-
-            # close the cluster so that resources such as memory are returned to the operating system
-            parallel::stopCluster(cl)
-    }
-
-     return(d)
-}
-
-#' FUNCTION: analyse_across_operators
-#'
-#' This function will be used to generate a sequence of values between 0.01 and 1.00
-#' that will be used to test the mutation score of each fraction of reduced set of mutants
-#' on a per-operator basis. Additionally, we will use this data to calculate mutation scores
-#' and costs across all operators for each percentage.
+#' This is the function that will perform random sampling. There is a function
+#' called analyse_random_sampling which utilizes this function to perform
+#' random sampling in parallel.
 #'
 #' @export
 
-analyse_across_operators <- function(data) {
-    # create a sequence of all possible percentage values for k% selection
-    s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-    schemas <- select_unique_schemas(data)
-
-    # initiallize empty data frame
-    d <- data.frame("schema" = character(),
-                    "trial" = integer(),
-                    "percentage" = integer(),
-                    "reduced_numerator" = integer(),
-                    "reduced_denominator" = integer(),
-                    "original_numerator" = integer(),
-                    "original_denominator" = integer(),
-                    "reduced_time" = integer(),
-                    "original_time" = integer(),
-                    "reduced_mutation_score" = double(),
-                    "original_mutation_score" = double())
-    names(d) <- c("schema",
-                  "trial",
-                  "percentage",
-                  "reduced_numerator",
-                  "reduced_denominator",
-                  "original_numerator",
-                  "original_denominator",
-                  "reduced_time",
-                  "original_time",
-                  "reduced_mutation_score",
-                  "original_mutation_score")
-    # for each schema
-    for(sc in schemas[[1]]) {
-        # 100% operator data for schema --- same as entire data set for schema
-        original_data <- select_individual_schema_data(data, sc)
-        # for each percentage
-        for(i in s) {
-            # for 30 trials
-            for(j in 1:30) {
-                reduced_operator_data <- select_percentage_across_operators(data, sc, i)
-
-                # schema
-                schema <- sc
-                # trial number for given k%
-                trial <- j
-                # the k% we are currently observing
-                percentage <- (i * 100)
-                # number of killed mutants (numerator)
-                reduced_numerator <- dplyr::filter(reduced_operator_data, killed == "true") %>% dplyr::count()
-                # number of killed and alive mutants (denominator)
-                reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::count())
-                # number of killed mutants (numerator)
-                original_numerator <- dplyr::filter(original_data, killed == "true") %>% dplyr::count()
-                # number of killed and alive mutants (denominator)
-                original_denominator <- (original_numerator + dplyr::filter(original_data, killed == "false") %>% dplyr::count())
-                # cost of reduced set of mutants
-                reduced_time <- analyse_total_time(reduced_operator_data)
-                # cost of original set of mutants
-                original_time <- analyse_total_time(original_data)
-                # creation cost reduction (%)
-                cost_reduction <- analyse_reduction(original_time, reduced_time)
-                # calculate the reduced  mutation score for the given operator data
-                reduced_mutation_score <- analyse_mutation_score(reduced_operator_data)
-                # calculate the original mutation score for the given operator data
-                original_mutation_score <- analyse_mutation_score(original_data)
-
-                a <- data.frame(schema,
-                                trial,
-                                percentage,
-                                reduced_numerator,
-                                reduced_denominator,
-                                original_numerator,
-                                original_denominator,
-                                reduced_time,
-                                original_time,
-                                cost_reduction,
-                                reduced_mutation_score,
-                                original_mutation_score)
-                names(a) <- names(d)
-
-                # append observation (row) to end of data frame 'd'
-                d <- rbind(d, a)
-                }
-            }
-        }
-    return(d)
-}
-
-#' FUNCTION: analyse_select_mutation_score
-#'
-#' This function will be used to generate a sequence of values between 0.01 and 1.00
-#' that will be used to test the mutation score of each fraction of reduced set of mutants.
-#' It returns a vector which we will calculate the average of for each fraction and then
-#' append that avgeraged fraction to the entire mutant set.
-#'
-#' @export
-
-analyse_select_mutation_score <- function(data) {
+random_sampling <- function(data) {
     # initiallize empty data frame
     d <- data.frame("schema" = character(),
                     "trial" = integer(),
@@ -253,6 +89,174 @@ analyse_select_mutation_score <- function(data) {
     }
         return(d)
 }
+#' FUNCTION: analyse_random_sampling
+#'
+#' This function will be used to run selective mutation per schema and collect
+#' data in a single data frame
+#'
+#' @export
+
+analyse_random_sampling <- function(data, f = "fast") {
+    # initiallize empty data frame
+    d <- data.frame("schema" = character(),
+                    "trial" = integer(),
+                    "percentage" = integer(),
+                    "reduced_numerator" = integer(),
+                    "reduced_denominator" = integer(),
+                    "original_numerator" = integer(),
+                    "original_denominator" = integer(),
+                    "reduced_time" = integer(),
+                    "original_time" = integer(),
+                    "cost_reduction" = double(),
+                    "reduced_mutation_score" = double(),
+                    "original_mutation_score" = double())
+    names(d) <- c("schema",
+                  "trial",
+                  "percentage",
+                  "reduced_numerator",
+                  "reduced_denominator",
+                  "original_numerator",
+                  "original_denominator",
+                  "reduced_time",
+                  "original_time",
+                  "cost_reduction",
+                  "reduced_mutation_score",
+                  "original_mutation_score")
+    # find all unique schemas in data
+    schemas <- select_unique_schemas(data)
+
+    if(f != "fast") {
+        for(s in schemas[[1]]) {
+            # get parse out data per-schema individually
+            i <- select_individual_schema_data(data, s)
+            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
+            a <- random_sampling(i)
+
+            names(a) <- names(d)
+
+            # append per-schema data to end of 'd' which will contain all per-schema data in the end
+            d <- rbind(d, a)
+        }
+    } else {
+            # Calculate the number of cores
+            no_cores <- parallel::detectCores() - 1
+
+            # Initiate cluster
+            cl <- parallel::makeCluster(no_cores)
+
+            # load packages into cluster
+            parallel::clusterEvalQ(cl, library(magrittr))
+
+            i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
+            a <- parallel::parLapply(cl, i, random_sampling)
+            d <- do.call(rbind, a)
+
+            # close the cluster so that resources such as memory are returned to the operating system
+            parallel::stopCluster(cl)
+    }
+     return(d)
+}
+
+#' FUNCTION: analyse_across_operators
+#'
+#' This function will be used to generate a sequence of values between 0.01 and 1.00
+#' that will be used to test the mutation score of each fraction of reduced set of mutants
+#' on a per-operator basis. Additionally, we will use this data to calculate mutation scores
+#' and costs across all operators for each percentage.
+#'
+#' @export
+
+analyse_across_operators <- function(data) {
+    # create a sequence of all possible percentage values for k% selection
+    s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+    schemas <- select_unique_schemas(data)
+
+    # initiallize empty data frame
+    d <- data.frame("schema" = character(),
+                    "trial" = integer(),
+                    "percentage" = integer(),
+                    "reduced_numerator" = integer(),
+                    "reduced_denominator" = integer(),
+                    "original_numerator" = integer(),
+                    "original_denominator" = integer(),
+                    "reduced_time" = integer(),
+                    "original_time" = integer(),
+                    "cost_reduction" = double(),
+                    "reduced_mutation_score" = double(),
+                    "original_mutation_score" = double())
+    names(d) <- c("schema",
+                  "trial",
+                  "percentage",
+                  "reduced_numerator",
+                  "reduced_denominator",
+                  "original_numerator",
+                  "original_denominator",
+                  "reduced_time",
+                  "original_time",
+                  "cost_reduction",
+                  "reduced_mutation_score",
+                  "original_mutation_score")
+    # for each schema
+    for(sc in schemas[[1]]) {
+        # 100% operator data for schema --- same as entire data set for schema
+        original_data <- select_individual_schema_data(data, sc)
+        # for each percentage
+        for(i in s) {
+            # for 30 trials
+            for(j in 1:30) {
+                reduced_operator_data <- select_percentage_across_operators(data, sc, i)
+                # testing correctness
+                # print(reduced_operator_data)
+                # falses <- dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::select(operator) %>% dplyr::distinct()
+                # print(falses)
+
+                # schema
+                schema <- sc
+                # trial number for given k%
+                trial <- j
+                # the k% we are currently observing
+                percentage <- (i * 100)
+                # number of killed mutants (numerator)
+                reduced_numerator <- dplyr::filter(reduced_operator_data, killed == "true") %>% dplyr::count()
+                # number of killed and alive mutants (denominator)
+                reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::count())
+                # number of killed mutants (numerator)
+                original_numerator <- dplyr::filter(original_data, killed == "true") %>% dplyr::count()
+                # number of killed and alive mutants (denominator)
+                original_denominator <- (original_numerator + dplyr::filter(original_data, killed == "false") %>% dplyr::count())
+                # cost of reduced set of mutants
+                reduced_time <- analyse_total_time(reduced_operator_data)
+                # cost of original set of mutants
+                original_time <- analyse_total_time(original_data)
+                # creation cost reduction (%)
+                cost_reduction <- analyse_reduction(original_time, reduced_time)
+                # calculate the reduced  mutation score for the given operator data
+                reduced_mutation_score <- analyse_mutation_score(reduced_operator_data)
+                # calculate the original mutation score for the given operator data
+                original_mutation_score <- analyse_mutation_score(original_data)
+
+                a <- data.frame(schema,
+                                trial,
+                                percentage,
+                                reduced_numerator,
+                                reduced_denominator,
+                                original_numerator,
+                                original_denominator,
+                                reduced_time,
+                                original_time,
+                                cost_reduction,
+                                reduced_mutation_score,
+                                original_mutation_score)
+                names(a) <- names(d)
+
+                # append observation (row) to end of data frame 'd'
+                d <- rbind(d, a)
+                }
+            }
+        }
+    return(d)
+}
+
 
 #' FUNCTION: analyse_calculations
 #'

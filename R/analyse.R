@@ -254,80 +254,56 @@ analyse_select_mutation_score <- function(data) {
         return(d)
 }
 
-#' FUNCTION: analyse_percents_error
+#' FUNCTION: analyse_calculations
 #'
-#' This function will calculate both the mean absolute error
-#' and rooth mean squared error for all percentages
-#' for the random sampling data. This allows us to plot both against each
-#' other in a visualization.
+#' This function for each percent will be used to show the effectiveness
+#' and efficiency of each approach.
 #'
 #' @export
 
-analyse_percents_error <- function(data) {
+analyse_calculations <- function(data) {
     d <- data.frame("schema" = character(),
                     "percentage" = integer(),
+                    "avg_reduced_mutation_score"= double(),
+                    "correlation" = double(),
+                    "avg_cost_reduction" = double(),
                     "mean_absolute_error" = double(),
-                    "root_mean_squared_error" = double(),
-                    "reduced_time" = double())
+                    "root_mean_squared_error" = double())
     names(d) <- c("schema",
                   "percentage",
+                  "avg_reduced_mutation_score",
+                  "correlation",
+                  "avg_cost_reduction",
                   "mean_absolute_error",
-                  "root_mean_squared_error",
-                  "reduced_time")
+                  "root_mean_squared_error")
 
-    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
     schemas <- select_unique_schemas(data)
+    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
     for(s in schemas[[1]]) {
         for(p in per[[1]]) {
-            schema <- s
-            percentage <- p
-            subset_data <- dplyr::filter(data, schema == s, percentage == p)
-            mean_absolute_error <- Metrics::mae(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
-            root_mean_squared_error <- Metrics::rmse(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
-            reduced_time <- mean(subset_data$reduced_time)
+           schema <- s
+           percentage <- p
+           subset_data <- dplyr::filter(data, schema == s, percentage == p)
+           corr_subset_data <- dplyr::filter(data, percentage == p)
 
-            # add everything to vector 'a' to be passed to data frame 'd'
-            a <- data.frame(schema,
-                            percentage,
-                            mean_absolute_error,
-                            root_mean_squared_error,
-                            reduced_time)
-            names(a) <- names(d)
-            # append observation (row) to end of data frame 'd'
-            d <- rbind(d, a)
-        }
-    }
-    return(d)
-}
+           avg_reduced_mutation_score <- mean(subset_data$reduced_mutation_score)
+           correlation <- calculate_mutation_score_correlation(corr_subset_data)
+           avg_cost_reduction <- mean(subset_data$cost_reduction)
+           mean_absolute_error <- Metrics::mae(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
+           root_mean_squared_error <- Metrics::rmse(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
 
-#' FUNCTION: analyse_correlation
-#'
-#' This function for each percent will calculate kendall's tau_b correlation between the given percent's
-#' mutation score and the mutation score of 100 percent of the mutants for all schemas at that percentage.
-#'
-#' @export
-
-analyse_correlation <- function(data) {
-    d <- data.frame("schema" = character(),
-                    "percentage" = integer(),
-                    "correlation" = double())
-    names(d) <- c("schema", "percentage", "correlation")
-
-    schemas <- select_unique_schemas(data)
-    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
-    for(s in schemas[[1]]) {
-    for(p in per[[1]]) {
-       schema <- s
-       percentage <- p
-       subset_data <- dplyr::filter(data, percentage == p)
-       correlation <- calculate_mutation_score_correlation(subset_data)
-
-            # add everything to vector 'a' to be passed to data frame 'd'
-            a <- data.frame(schema, percentage, correlation[1])
-            names(a) <- c("schema", "percentage", "correlation")
-            # append observation (row) to end of data frame 'd'
-            d <- rbind(d, a)
-        }
+           # add everything to vector 'a' to be passed to data frame 'd'
+           a <- data.frame(schema,
+                           percentage,
+                           avg_reduced_mutation_score,
+                           correlation[1],
+                           avg_cost_reduction,
+                           mean_absolute_error,
+                           root_mean_squared_error)
+           names(a) <- names(d)
+           # append observation (row) to end of data frame 'd'
+           d <- rbind(d, a)
+       }
     }
     return(d)
 }
@@ -345,41 +321,6 @@ calculate_mutation_score_correlation <- function(data) {
   model <- cor.test(data$original_mutation_score, data$reduced_mutation_score, method = "kendall", use = "pairwise")
   tidy_model <- model %>% broom::tidy()
   return(tidy_model)
-}
-
-#' FUNCTION: analyse_percents_average_reduced_mutation_score
-#'
-#' This function will calculate the averages of all of the thirty trials and
-#' display them in an easy-to-view data frame.
-#'
-#' @export
-
-analyse_percents_average_reduced_mutation_score <- function(data) {
-    # initiallize empty data frame
-    d <- data.frame("schema" = character(),
-                    "percentage" = integer(),
-                    "reduced_mutation_score" = double(),
-                    "original_mutation_score" = double())
-    names(d) <- c("schema", "percentage", "reduced_mutation_score", "original_mutation_score")
-    per <- select_unique_percentages(data)
-    ss <- select_unique_schemas(data)
-    for(s in ss[[1]]) {
-        for(p in per[[1]]) {
-            schema <- s
-            percentage <- p
-            i <- select_individual_schema_data(data, s)
-            percent_data <- select_individual_percent_data(i, p)
-            reduced_mutation_score <- mean(percent_data$reduced_mutation_score)
-            original_mutation_score <- dplyr::distinct(dplyr::select(percent_data, original_mutation_score))
-
-            # add everything to vector 'a' to be passed to data frame 'd'
-            a <- data.frame(schema, percentage, reduced_mutation_score, original_mutation_score)
-            names(a) <- c("schema", "percentage", "reduced_mutation_score", "original_mutation_score")
-            # append observation (row) to end of data frame 'd'
-            d <- rbind(d, a)
-        }
-    }
-    return(d)
 }
 
 #' FUNCTION: analyse_total_time

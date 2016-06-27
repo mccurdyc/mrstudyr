@@ -13,6 +13,19 @@ select_empirical_study_schemas <- function(data) {
     return(d)
 }
 
+
+#' FUNCTION: select_normal_data
+#'
+#' This function pulls all data with type equal to NORMAL from the original
+#' data provided.
+#'
+#' @export
+
+select_normal_data <- function(data) {
+    d <- dplyr::filter(data, type == "NORMAL")
+    return(d)
+}
+
 #' FUNCTION: select_percentage_across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00
@@ -57,18 +70,6 @@ select_percentage_across_operators <- function(data, sc, i) {
     return(d)
 }
 
-#' FUNCTION: select_normal_data
-#'
-#' This function pulls all data with type equal to NORMAL from the original
-#' data provided.
-#'
-#' @export
-
-select_normal_data <- function(data) {
-    d <- dplyr::filter(data, type == "NORMAL")
-    return(d)
-}
-
 #' FUNCTION: select_unique_schemas
 #'
 #' This function will create a data frame of all of the unique schemas.
@@ -86,7 +87,7 @@ select_unique_schemas <- function(data) {
 #'
 #' This function will create a data frame of all of the unique percentages.
 #' It should return 1-100. I created this function because passing a sequence
-#' to a function was not working
+#' to a function was not working. THIS COULD PROBABLY BE DELETED NOW.
 #'
 #' @export
 

@@ -1,3 +1,79 @@
+#' FUNCTION: analyse_random_sampling
+#'
+#' This function will be used to run selective mutation per schema and collect
+#' data in a single data frame
+#'
+#' @export
+
+analyse_random_sampling <- function(data, f = "fast") {
+    # initiallize empty data frame
+    d <- data.frame("schema" = character(),
+                    "trial" = integer(),
+                    "percentage" = integer(),
+                    "reduced_numerator" = integer(),
+                    "reduced_denominator" = integer(),
+                    "original_numerator" = integer(),
+                    "original_denominator" = integer(),
+                    "reduced_time" = integer(),
+                    "original_time" = integer(),
+                    "reduced_mutation_score" = double(),
+                    "original_mutation_score" = double())
+    names(d) <- c("schema",
+                  "trial",
+                  "percentage",
+                  "reduced_numerator",
+                  "reduced_denominator",
+                  "original_numerator",
+                  "original_denominator",
+                  "reduced_time",
+                  "original_time",
+                  "reduced_mutation_score",
+                  "original_mutation_score")
+    # find all unique schemas in data
+    schemas <- select_unique_schemas(data)
+
+    if(f != "fast") {
+        for(s in schemas[[1]]) {
+            # get parse out data per-schema individually
+            i <- select_individual_schema_data(data, s)
+            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
+            a <- analyse_select_mutation_score(i)
+
+            names(a) <- c("schema",
+                          "trial",
+                          "percentage",
+                          "reduced_numerator",
+                          "reduced_denominator",
+                          "original_numerator",
+                          "original_denominator",
+                          "reduced_time",
+                          "original_time",
+                          "reduced_mutation_score",
+                          "original_mutation_score")
+            # append per-schema data to end of 'd' which will contain all per-schema data in the end
+            d <- rbind(d, a)
+        }
+    } else {
+            # Calculate the number of cores
+            no_cores <- parallel::detectCores() - 1
+
+            # Initiate cluster
+            cl <- parallel::makeCluster(no_cores)
+
+            # load packages into cluster
+            parallel::clusterEvalQ(cl, library(magrittr))
+
+            i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
+            a <- parallel::parLapply(cl, i, analyse_select_mutation_score)
+            d <- do.call(rbind, a)
+
+            # close the cluster so that resources such as memory are returned to the operating system
+            parallel::stopCluster(cl)
+    }
+
+     return(d)
+}
+
 #' FUNCTION: analyse_across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00
@@ -87,82 +163,6 @@ analyse_across_operators <- function(data) {
             }
         }
     return(d)
-}
-
-#' FUNCTION: analyse_random_sampling
-#'
-#' This function will be used to run selective mutation per schema and collect
-#' data in a single data frame
-#'
-#' @export
-
-analyse_random_sampling <- function(data, f = "fast") {
-    # initiallize empty data frame
-    d <- data.frame("schema" = character(),
-                    "trial" = integer(),
-                    "percentage" = integer(),
-                    "reduced_numerator" = integer(),
-                    "reduced_denominator" = integer(),
-                    "original_numerator" = integer(),
-                    "original_denominator" = integer(),
-                    "reduced_time" = integer(),
-                    "original_time" = integer(),
-                    "reduced_mutation_score" = double(),
-                    "original_mutation_score" = double())
-    names(d) <- c("schema",
-                  "trial",
-                  "percentage",
-                  "reduced_numerator",
-                  "reduced_denominator",
-                  "original_numerator",
-                  "original_denominator",
-                  "reduced_time",
-                  "original_time",
-                  "reduced_mutation_score",
-                  "original_mutation_score")
-    # find all unique schemas in data
-    schemas <- select_unique_schemas(data)
-
-    if(f != "fast") {
-        for(s in schemas[[1]]) {
-            # get parse out data per-schema individually
-            i <- select_individual_schema_data(data, s)
-            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
-            a <- analyse_select_mutation_score(i)
-
-            names(a) <- c("schema",
-                          "trial",
-                          "percentage",
-                          "reduced_numerator",
-                          "reduced_denominator",
-                          "original_numerator",
-                          "original_denominator",
-                          "reduced_time",
-                          "original_time",
-                          "reduced_mutation_score",
-                          "original_mutation_score")
-            # append per-schema data to end of 'd' which will contain all per-schema data in the end
-            d <- rbind(d, a)
-        }
-    } else {
-            # Calculate the number of cores
-            no_cores <- detectCores() - 1
-
-            # Initiate cluster
-            cl <- makeCluster(no_cores)
-
-            # load packages into cluster
-            clusterEvalQ(cl, library(magrittr))
-
-            i <- parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
-            a <- parLapply(cl, i, analyse_select_mutation_score)
-            d <- do.call(rbind, a)
-
-            # close the cluster so that resources such as memory are returned to the operating system
-            stopCluster(cl)
-    }
-
-     return(d)
 }
 
 #' FUNCTION: analyse_select_mutation_score
@@ -316,22 +316,27 @@ analyse_percents_error <- function(data) {
 #' @export
 
 analyse_correlation <- function(data) {
-    d <- data.frame("percentage" = integer(),
+    d <- data.frame("schema" = character(),
+                    "percentage" = integer(),
                     "correlation" = double())
-    names(d) <- c("percentage", "correlation")
+    names(d) <- c("schema", "percentage", "correlation")
 
+    schemas <- select_unique_schemas(data)
     per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
+    for(s in schemas[[1]]) {
     for(p in per[[1]]) {
+       schema <- s
        percentage <- p
        subset_data <- dplyr::filter(data, percentage == p)
        correlation <- calculate_mutation_score_correlation(subset_data)
 
             # add everything to vector 'a' to be passed to data frame 'd'
-            a <- data.frame(percentage, correlation[1])
-            names(a) <- c("percentage", "correlation")
+            a <- data.frame(schema, percentage, correlation[1])
+            names(a) <- c("schema", "percentage", "correlation")
             # append observation (row) to end of data frame 'd'
             d <- rbind(d, a)
         }
+    }
     return(d)
 }
 

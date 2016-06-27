@@ -133,7 +133,7 @@ analyse_across_operators <- function(data) {
                 # cost of original set of mutants
                 original_time <- analyse_total_time(original_data)
                 # creation cost reduction (%)
-                cost_reduction <- (original_time - reduced_time) / original_time
+                cost_reduction <- analyse_reduction(original_time, reduced_time)
                 # calculate the reduced  mutation score for the given operator data
                 reduced_mutation_score <- analyse_mutation_score(reduced_operator_data)
                 # calculate the original mutation score for the given operator data
@@ -226,7 +226,7 @@ analyse_select_mutation_score <- function(data) {
             # total time (in ms) for running original set of mutants (100 percent)
             original_time <- analyse_total_time(data)
             # creation cost reduction (%)
-            cost_reduction <- (original_time - reduced_time) / original_time
+            cost_reduction <- analyse_reduction(original_time, reduced_time)
             # mutation score of reduced set for this observation
             reduced_mutation_score <- analyse_mutation_score(reduced_data)
             # original mutation score for full set of mutants
@@ -411,4 +411,18 @@ analyse_mutation_score <- function(data) {
         dplyr::count()
     s <- ((k / (k + a)))
     return(s)
+}
+
+#' FUNCTION: analyse_reduction
+#'
+#' This function calculates the percentage in reduction of creation cost
+#' between the original and reduces sets. As input this function takes the
+# cost to create all mutants (original_cost) and the cost to create each
+# reduced set (reduced_cost).
+#'
+#' @export
+
+analyse_reduction <- function(o, r) {
+    p <- (o - r) / o
+    return(p)
 }

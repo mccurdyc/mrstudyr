@@ -16,6 +16,7 @@ analyse_random_sampling <- function(data, f = "fast") {
                     "original_denominator" = integer(),
                     "reduced_time" = integer(),
                     "original_time" = integer(),
+                    "cost_reduction" = double(),
                     "reduced_mutation_score" = double(),
                     "original_mutation_score" = double())
     names(d) <- c("schema",
@@ -27,6 +28,7 @@ analyse_random_sampling <- function(data, f = "fast") {
                   "original_denominator",
                   "reduced_time",
                   "original_time",
+                  "cost_reduction",
                   "reduced_mutation_score",
                   "original_mutation_score")
     # find all unique schemas in data
@@ -39,17 +41,8 @@ analyse_random_sampling <- function(data, f = "fast") {
             # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
             a <- analyse_select_mutation_score(i)
 
-            names(a) <- c("schema",
-                          "trial",
-                          "percentage",
-                          "reduced_numerator",
-                          "reduced_denominator",
-                          "original_numerator",
-                          "original_denominator",
-                          "reduced_time",
-                          "original_time",
-                          "reduced_mutation_score",
-                          "original_mutation_score")
+            names(a) <- names(d)
+
             # append per-schema data to end of 'd' which will contain all per-schema data in the end
             d <- rbind(d, a)
         }
@@ -139,6 +132,8 @@ analyse_across_operators <- function(data) {
                 reduced_time <- analyse_total_time(reduced_operator_data)
                 # cost of original set of mutants
                 original_time <- analyse_total_time(original_data)
+                # creation cost reduction (%)
+                cost_reduction <- (original_time - reduced_time) / original_time
                 # calculate the reduced  mutation score for the given operator data
                 reduced_mutation_score <- analyse_mutation_score(reduced_operator_data)
                 # calculate the original mutation score for the given operator data
@@ -153,6 +148,7 @@ analyse_across_operators <- function(data) {
                                 original_denominator,
                                 reduced_time,
                                 original_time,
+                                cost_reduction,
                                 reduced_mutation_score,
                                 original_mutation_score)
                 names(a) <- names(d)
@@ -185,6 +181,7 @@ analyse_select_mutation_score <- function(data) {
                     "original_denominator" = integer(),
                     "reduced_time" = integer(),
                     "original_time" = integer(),
+                    "cost_reduction" = double(),
                     "reduced_mutation_score" = double(),
                     "original_mutation_score" = double())
     names(d) <- c("schema",
@@ -196,6 +193,7 @@ analyse_select_mutation_score <- function(data) {
                   "original_denominator",
                   "reduced_time",
                   "original_time",
+                  "cost_reduction",
                   "reduced_mutation_score",
                   "original_mutation_score")
 
@@ -227,6 +225,8 @@ analyse_select_mutation_score <- function(data) {
             reduced_time <- analyse_total_time(reduced_data)
             # total time (in ms) for running original set of mutants (100 percent)
             original_time <- analyse_total_time(data)
+            # creation cost reduction (%)
+            cost_reduction <- (original_time - reduced_time) / original_time
             # mutation score of reduced set for this observation
             reduced_mutation_score <- analyse_mutation_score(reduced_data)
             # original mutation score for full set of mutants
@@ -242,19 +242,11 @@ analyse_select_mutation_score <- function(data) {
                             original_denominator,
                             reduced_time,
                             original_time,
+                            cost_reduction,
                             reduced_mutation_score,
                             original_mutation_score)
-            names(a) <- c("schema",
-                          "trial",
-                          "percentage",
-                          "reduced_numerator",
-                          "reduced_denominator",
-                          "original_numerator",
-                          "original_denominator",
-                          "reduced_time",
-                          "original_time",
-                          "reduced_mutation_score",
-                          "original_mutation_score")
+            names(a) <- names(d)
+
             # append observation (row) to end of data frame 'd'
             d <- rbind(d, a)
         }

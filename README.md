@@ -7,16 +7,27 @@ techniques on the data collected from a single execution of the
 mutation testing phase in the mutation analysis process.
 
 ## Dependencies
-+ R (> 3.1.2)
++ [R](https://www.r-project.org/) (> 3.1.2)
+
+To check which version of R you have installed at the command-line:
+```
+R --version
+```
+
+or in R (check the **version.string** value)
+
+```
+version
+```
 
 ## Imports
-+ dplyr
-+ magrittr
-+ parallel
-+ ggplot2
-+ readr
-+ Metrics
-+ broom
++ [dplyr](https://github.com/hadley/dplyr)
++ [magrittr](https://github.com/smbache/magrittr)
++ [parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
++ [ggplot2](https://github.com/hadley/ggplot2)
++ [readr](https://github.com/hadley/readr)
++ [Metrics](https://cran.r-project.org/web/packages/Metrics/Metrics.pdf)
++ [broom](https://github.com/dgrtwo/broom)
 
 ## Installing
 The following commands need to be run in the R console (type `R` in terminal).
@@ -36,10 +47,9 @@ data <- read_data("sqlite-avmdefaults.dat")
 ```
 
 In the accompanying paper, we empirically analyse nine schemas:
-
 CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products.
 
-To filter the data to only include data about these schemas use the following command:
+To filter the data to only these schemas use the following command:
 
 ```
 data <- select_empirical_study_schemas(data)
@@ -83,12 +93,12 @@ mutants to be analysed. The mrstudyr tool evaluates _x_ from 1% to 90% in increm
 
 To perform **uniform random sampling**:
 ```
-rs_data <- analyse_random_sampling(data)
+random_sampling <- analyse_random_sampling(data)
 ```
 
 Which should produce the following output:
 ```
-head(rs_data)
+head(random_sampling)
 
          schema         trial   percentage   reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time reduced_mutation_score original_mutation_score
          CoffeeOrders     1          1                17                  17               1590                 1680          690         63716              1.0000000               0.9464286
@@ -106,20 +116,22 @@ uniform random sampling, a maximum threshold percentage, _x_, is set
 for the percentage of the total mutants to be analysed.
 The mrstudyr tools evaluates _x_ from 1% to 90% in increments of 10%.
 But, instead of randomly selecting the _x%_ from all of the mutants, the _x%_ is
-selected from each operator. The following is the list of operators: FKCColumnPairR, FKCColumnPairE,
+selected from each operator.
+
+The following is the list of all operators: FKCColumnPairR, FKCColumnPairE,
 PKCColumnA, PKCColumnR, PKCColumnE, NNCA, NNCR, UCColumnA, CCNullifier, CCRelationalExpressionOperatorE,
 UCColumnE, CCInExpressionRHSListExpressionElementR.
 
 To perform **uniform random sampling across operators**:
 
 ```
-os_data <- analyse_across_operators(data)
+across_operators <- analyse_across_operators(data)
 ```
 
 Which should produce the following output:
 
 ```
-head(os_data)
+head(across_operators)
 
             schema    trial   percentage    reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time reduced_mutation_score original_mutation_score
        CoffeeOrders     1          1                15                  16               1590                 1680          603         63716                 0.9375               0.9464286
@@ -130,14 +142,20 @@ head(os_data)
        CoffeeOrders     6          1                15                  16               1590                 1680          580         63716                 0.9375               0.9464286
 ```
 
-### Calculating Effectiveness
+### Calculating Efficiency and Effectiveness
+
+There is one function that calculates all of the efficiency and effectiveness
+metrics. This function is `analyse_calculations` which takes as input the data
+from performing a reduction technique. Below is a list of functions and the
+calculation that they perform. All of these functions are encompassed in the
+`analyse_calculations` parent function.
 
 | Calculation  | Function Name (parameters) |
 | ------------- | ------------- |
-| Mutation Score  | analyse_mutation_score (data)  |
-| Kendall's &tau;<sub>b</sub> Correlation Coefficient  | analyse_correlation (data)  |
-| Creation Cost Reduction  | analyse_reduction (data)  |
-| Error (MAE and RMSE)  | analyse_percents_error (data)  |
+| Mutation Score  | `analyse_mutation_score (data)`  |
+| Kendall's &tau;<sub>b</sub> Correlation Coefficient  | `analyse_correlation (data)`  |
+| Creation Cost Reduction  | `analyse_reduction (data)`  |
+| Error (MAE and RMSE)  | `mae (red_ms, org_ms)` and `rmse (red_ms, org_ms)`|
 
 ### Visualising Performance of Reduction Techniques
 

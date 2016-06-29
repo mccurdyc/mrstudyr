@@ -1,3 +1,41 @@
+#' FUNCTION: visualise_mutation_score_across_schemas
+#'
+#' Produces a visualisation of the reduced mutation
+#' scores across all schemas at a specific percentage.
+#'
+#' @export
+
+visualise_mutation_score_across_schemas <- function(data) {
+    p <- ggplot2::ggplot(data, ggplot2::aes(x = schema, y = reduced_mutation_score)) +
+    ggplot2::geom_boxplot() +
+    ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
+    ggplot2::scale_y_continuous(limits = c(0, 1)) +
+    ggplot2::scale_shape(guide = ggplot2::guide_legend(title = ""), solid = FALSE) +
+    ggplot2::theme_grey(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::ylab("Mutation Score") +
+    ggplot2::xlab("Schema") +
+    ggplot2::theme(title = ggplot2::element_text(size=10), legend.position = "top")
+  return(p)
+}
+
+#' FUNCTION: facet_visualise_mutation_score_across_schemas
+#'
+#' Produces a facetted visualisations of the reduced mutation scores
+#' across all schemas at four distinct percentages.
+#'
+#' @export
+
+facet_visualise_mutation_score_across_schemas <- function(data, a, b, c, d) {
+    p1 <- visualise_mutation_score_across_schemas(data, a)
+    p2 <- visualise_mutation_score_across_schemas(data, b)
+    p3 <- visualise_mutation_score_across_schemas(data, c)
+    p4 <- visualise_mutation_score_across_schemas(data, d)
+
+    Rmisc::multiplot(p1, p2, p3, p4, cols = 2)
+}
+
 #' FUNCTION: visualise_k_percent_mutation_score
 #'
 #' Produces a visualisation comparing k_percent and mutation score.

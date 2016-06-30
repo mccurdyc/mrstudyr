@@ -5,7 +5,7 @@
 #'
 #' @export
 
-analyse <- function(data, f = "fast") {
+analyse <- function(data) {
     d <- data.frame("method" = character(),
                     "schema" = character(),
                     "trial" = integer(),
@@ -36,66 +36,23 @@ analyse <- function(data, f = "fast") {
 
     schemas <- select_unique_schemas(data)
 
-    if(f != "fast") {
-        for(s in schemas[[1]]) {
-            # get parse out data per-schema individually
-            # if this method is used, then filtering for schema will be done twice.
-            # once here, and once again in the reduction technique. This is due to
-            # the way that the reduction technique functions are set up to allow for
-            # parallelism. In the future, we may remove this 'slow' method.
-            i <- select_individual_schema_data(data, s)
-            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
-            a <- random_sampling(i)
-            b <- across_operators(i)
+    # get list of all schemas
+    schemas <- select_unique_schemas(data)
 
-            names(a) <- names(d)
-            names(b) <- names(d)
+    # for each schema
+    for(sc in schemas[[1]]) {
 
-            # append per-schema data to end of 'd' which will contain all per-schema data in the end
-            d <- rbind(d, a) %>% rbind(d, b)
-        }
-    } else {
-            # Calculate the number of cores
-            # no_cores <- parallel::detectCores() - 1
+        # 100% operator data for schema --- same as entire data set for schema
+        original_data <- select_individual_schema_data(data, sc)
 
-            # Initiate cluster
-            # cl <- parallel::makeCluster(no_cores)
+        a <- random_sampling(original_data)
+        d <- rbind(d, a)
 
-            # load packages into cluster
-            # parallel::clusterEvalQ(cl, library(magrittr))
+        b <- across_operators(original_data)
+        d <- rbind(d, b)
 
-            # i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data) # this wont work if we want to pass schema data on
-
-            # get list of all schemas
-            schemas <- select_unique_schemas(data)
-
-            # for each schema
-            for(sc in schemas[[1]]) {
-
-                # 100% operator data for schema --- same as entire data set for schema
-                original_data <- select_individual_schema_data(data, sc)
-                print(tail(original_data))
-
-                a <- random_sampling(original_data)
-                d <- rbind(d, a)
-
-                # b <- across_operators(original_data)
-                # d <- rbind(d, b)
-
-                # print(as.list(original_data))
-                # a <- parallel::mclapply(original_data, random_sampling, mc.preschedule = TRUE, mc.set.seed = TRUE, mc.cores = parallel::detectCores())
-                # print(head(a))
-                # a <- parallel::parLapply(cl, original_data, random_sampling)
-                # b <- parallel::parLapply(cl, original_data, across_operators)
-
-                # d <- do.call(rbind, a) %>% do.call(rbind, b)
-                # d <- do.call(rbind, a)
-            }
-
-            # close the cluster so that resources such as memory are returned to the operating system
-            # parallel::stopCluster(cl)
     }
-     return(d)
+    return(d)
 }
 
 #' FUNCTION: random_sampling
@@ -243,10 +200,6 @@ across_operators <- function(data) {
             # for 30 trials
             for(j in 1:30) {
                 reduced_operator_data <- select_percentage_across_operators(data, i)
-                # testing correctness
-                # print(reduced_operator_data)
-                # falses <- dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::select(operator) %>% dplyr::distinct()
-                # print(falses)
                 # reduction technique utilised
                 method <- "across_operators"
                 # schema
@@ -273,7 +226,7 @@ across_operators <- function(data) {
                 # calculate the reduced  mutation score for the given operator data
                 reduced_mutation_score <- analyse_mutation_score(reduced_operator_data)
                 # calculate the original mutation score for the given operator data
-                original_mutation_score <- analyse_mutation_score(original_data)
+                original_mutation_score <- analyse_mutation_score(data)
 
                 a <- data.frame(method,
                                 schema,

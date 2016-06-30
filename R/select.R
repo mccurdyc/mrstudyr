@@ -1,3 +1,14 @@
+#' FUNCTION: select_k_percent
+#'
+#' This function will be used to look at k% of all data.
+#' This is referred to as uniform random sampling.
+#'
+#' @export
+
+select_k_percent <- function(data, k) {
+    frac_data <- dplyr::sample_frac(data, k)
+    return(frac_data)
+}
 #' FUNCTION: select_percentage_across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00
@@ -16,7 +27,6 @@ select_percentage_across_operators <- function(data, i) {
                             "type" = character(),
                             "killed" = character(),
                             "time" = integer())
-            #                 "percentage" = integer())
             names(d) <- c("identifier",
                           "dbms",
                           "schema",
@@ -24,7 +34,6 @@ select_percentage_across_operators <- function(data, i) {
                           "type",
                           "killed",
                           "time")
-            #               "percentage")
 
         # get the schema under observation
         sc <- select_unique_schemas(data)
@@ -34,10 +43,9 @@ select_percentage_across_operators <- function(data, i) {
             # for each operator
             for(o in operators[[1]]) {
                 # get data with specific schema and operator
-                schema_operator_data <- dplyr::filter(data, schema == sc, operator == o)
+                operator_data <- dplyr::filter(data, operator == o)
                 # get a percentage of operator data
-                reduced_operator_data <- select_k_percent(schema_operator_data, i)
-                # reduced_operator_data <- dplyr::mutate(reduced_operator_data, percentage = (i * 100))
+                reduced_operator_data <- select_k_percent(operator_data, i)
 
                 # append observation (row) to end of data frame 'd'
                 d <- rbind(d, reduced_operator_data)
@@ -68,6 +76,17 @@ select_unique_schemas <- function(data) {
 
 select_unique_percentages <- function(data) {
     p <- dplyr::distinct(dplyr::select(data, percentage))
+    return(p)
+}
+
+#' FUNCTION: select_unique_methods
+#'
+#' This function returns all unique values in the "method" column
+#'
+#' @export
+
+select_unique_methods <- function(data) {
+    p <- dplyr::distinct(dplyr::select(data, method))
     return(p)
 }
 
@@ -149,17 +168,4 @@ select_individual_percent_data <- function(data, k) {
 select_individual_operator_data <- function(data, op) {
     d <- dplyr::filter(data, op == operator)
     return(d)
-}
-
-#' FUNCTION: select_k_percent
-#'
-#' This function will be used to look at k% of all data.
-#' This is referred to as uniform random sampling.
-#'
-#' @export
-
-select_k_percent <- function(data, k) {
-    n <- dplyr::filter(data, type == "NORMAL")
-    frac_data <- dplyr::sample_frac(n, k)
-    return(frac_data)
 }

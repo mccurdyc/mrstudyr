@@ -262,7 +262,6 @@ analyse_calculations <- function(data) {
                     "schema" = character(),
                     "percentage" = integer(),
                     "avg_reduced_mutation_score"= double(),
-                    "correlation" = double(),
                     "avg_cost_reduction" = double(),
                     "mean_absolute_error" = double(),
                     "root_mean_squared_error" = double())
@@ -271,7 +270,6 @@ analyse_calculations <- function(data) {
                   "schema",
                   "percentage",
                   "avg_reduced_mutation_score",
-                  "correlation",
                   "avg_cost_reduction",
                   "mean_absolute_error",
                   "root_mean_squared_error")
@@ -288,10 +286,8 @@ analyse_calculations <- function(data) {
                schema <- s
                percentage <- p
                subset_data <- dplyr::filter(data, schema == s, percentage == p)
-               corr_subset_data <- dplyr::filter(data, percentage == p)
 
                avg_reduced_mutation_score <- mean(subset_data$reduced_mutation_score)
-               correlation <- calculate_mutation_score_correlation(corr_subset_data)
                avg_cost_reduction <- mean(subset_data$cost_reduction)
                mean_absolute_error <- Metrics::mae(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
                root_mean_squared_error <- Metrics::rmse(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
@@ -301,7 +297,6 @@ analyse_calculations <- function(data) {
                                schema,
                                percentage,
                                avg_reduced_mutation_score,
-                               correlation[1],
                                avg_cost_reduction,
                                mean_absolute_error,
                                root_mean_squared_error)
@@ -310,6 +305,48 @@ analyse_calculations <- function(data) {
                # append observation (row) to end of data frame 'd'
                d <- rbind(d, a)
            }
+        }
+    }
+    return(d)
+}
+
+
+#' FUNCTION: analyse_correlation
+#'
+#' This function for each percent will calculate kendall's tau_b correlation between the given percent's
+#' mutation score and the mutation score of 100 percent of the mutants for all schemas at that percentage.
+#' The reason it is across all schemas is due to the fact that for one schema the original mutation score
+#' column contains fixed values and the correlation function expects two vectors with non-fixed values.
+#'
+#' @export
+
+analyse_correlation <- function(data) {
+    d <- data.frame("method" = character(),
+                    "percentage" = integer(),
+                    "correlation" = double())
+    names(d) <- c("method",
+                  "percentage",
+                  "correlation")
+
+    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
+    m <- select_unique_methods(data)
+
+    for(n in m[[1]]) {
+        for(p in per[[1]]) {
+
+            method <- n
+            percentage <- p
+            subset_data <- dplyr::filter(data, method == n, percentage == p)
+            correlation <- calculate_mutation_score_correlation(subset_data)
+
+            # add everything to vector 'a' to be passed to data frame 'd'
+            a <- data.frame(method,
+                            percentage,
+                            correlation[1])
+            names(a) <- names(d)
+
+            # append observation (row) to end of data frame 'd'
+            d <- rbind(d, a)
         }
     }
     return(d)

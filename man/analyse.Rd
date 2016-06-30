@@ -4,7 +4,7 @@
 \alias{analyse}
 \title{FUNCTION: analyse}
 \usage{
-analyse(data, f = "fast")
+analyse(data)
 }
 \description{
 This function will encompass all of the reduction techniques, returning

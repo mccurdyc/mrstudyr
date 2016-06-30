@@ -4,7 +4,7 @@
 \alias{select_percentage_across_operators}
 \title{FUNCTION: select_percentage_across_operators}
 \usage{
-select_percentage_across_operators(data, sc, i)
+select_percentage_across_operators(data, i)
 }
 \description{
 This function will be used to generate a sequence of values between 0.01 and 1.00

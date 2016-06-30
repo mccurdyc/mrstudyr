@@ -4,7 +4,7 @@
 \alias{visualise_mutation_score_across_schemas}
 \title{FUNCTION: visualise_mutation_score_across_schemas}
 \usage{
-visualise_mutation_score_across_schemas(data, a, b, c, d)
+visualise_mutation_score_across_schemas(data)
 }
 \description{
 Produces a visualisation of the reduced mutation

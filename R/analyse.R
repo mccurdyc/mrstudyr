@@ -258,14 +258,17 @@ across_operators <- function(data) {
 #' @export
 
 analyse_calculations <- function(data) {
-    d <- data.frame("schema" = character(),
+    d <- data.frame("method" = character(),
+                    "schema" = character(),
                     "percentage" = integer(),
                     "avg_reduced_mutation_score"= double(),
                     "correlation" = double(),
                     "avg_cost_reduction" = double(),
                     "mean_absolute_error" = double(),
                     "root_mean_squared_error" = double())
-    names(d) <- c("schema",
+
+    names(d) <- c("method",
+                  "schema",
                   "percentage",
                   "avg_reduced_mutation_score",
                   "correlation",
@@ -275,31 +278,39 @@ analyse_calculations <- function(data) {
 
     schemas <- select_unique_schemas(data)
     per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
-    for(s in schemas[[1]]) {
-        for(p in per[[1]]) {
-           schema <- s
-           percentage <- p
-           subset_data <- dplyr::filter(data, schema == s, percentage == p)
-           corr_subset_data <- dplyr::filter(data, percentage == p)
+    m <- select_unique_methods(data)
 
-           avg_reduced_mutation_score <- mean(subset_data$reduced_mutation_score)
-           correlation <- calculate_mutation_score_correlation(corr_subset_data)
-           avg_cost_reduction <- mean(subset_data$cost_reduction)
-           mean_absolute_error <- Metrics::mae(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
-           root_mean_squared_error <- Metrics::rmse(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
+        for(n in m[[1]]) {
+            for(s in schemas[[1]]) {
+                for(p in per[[1]]) {
 
-           # add everything to vector 'a' to be passed to data frame 'd'
-           a <- data.frame(schema,
-                           percentage,
-                           avg_reduced_mutation_score,
-                           correlation[1],
-                           avg_cost_reduction,
-                           mean_absolute_error,
-                           root_mean_squared_error)
-           names(a) <- names(d)
-           # append observation (row) to end of data frame 'd'
-           d <- rbind(d, a)
-       }
+               method <- n
+               schema <- s
+               percentage <- p
+               subset_data <- dplyr::filter(data, schema == s, percentage == p)
+               corr_subset_data <- dplyr::filter(data, percentage == p)
+
+               avg_reduced_mutation_score <- mean(subset_data$reduced_mutation_score)
+               correlation <- calculate_mutation_score_correlation(corr_subset_data)
+               avg_cost_reduction <- mean(subset_data$cost_reduction)
+               mean_absolute_error <- Metrics::mae(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
+               root_mean_squared_error <- Metrics::rmse(subset_data$reduced_mutation_score, subset_data$original_mutation_score)
+
+               # add everything to vector 'a' to be passed to data frame 'd'
+               a <- data.frame(method,
+                               schema,
+                               percentage,
+                               avg_reduced_mutation_score,
+                               correlation[1],
+                               avg_cost_reduction,
+                               mean_absolute_error,
+                               root_mean_squared_error)
+
+               names(a) <- names(d)
+               # append observation (row) to end of data frame 'd'
+               d <- rbind(d, a)
+           }
+        }
     }
     return(d)
 }

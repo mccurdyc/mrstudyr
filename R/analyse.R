@@ -1,3 +1,103 @@
+#' FUNCTION: analyse
+#'
+#' This function will encompass all of the reduction techniques, returning
+#' a single dataframe with the data from performing all techniques.
+#'
+#' @export
+
+analyse <- function(data, f = "fast") {
+    d <- data.frame("method" = character(),
+                    "schema" = character(),
+                    "trial" = integer(),
+                    "percentage" = integer(),
+                    "reduced_numerator" = integer(),
+                    "reduced_denominator" = integer(),
+                    "original_numerator" = integer(),
+                    "original_denominator" = integer(),
+                    "reduced_time" = integer(),
+                    "original_time" = integer(),
+                    "cost_reduction" = double(),
+                    "reduced_mutation_score" = double(),
+                    "original_mutation_score" = double())
+
+    names(d) <- c("method",
+                  "schema",
+                  "trial",
+                  "percentage",
+                  "reduced_numerator",
+                  "reduced_denominator",
+                  "original_numerator",
+                  "original_denominator",
+                  "reduced_time",
+                  "original_time",
+                  "cost_reduction",
+                  "reduced_mutation_score",
+                  "original_mutation_score")
+
+    schemas <- select_unique_schemas(data)
+
+    if(f != "fast") {
+        for(s in schemas[[1]]) {
+            # get parse out data per-schema individually
+            # if this method is used, then filtering for schema will be done twice.
+            # once here, and once again in the reduction technique. This is due to
+            # the way that the reduction technique functions are set up to allow for
+            # parallelism. In the future, we may remove this 'slow' method.
+            i <- select_individual_schema_data(data, s)
+            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
+            a <- random_sampling(i)
+            b <- across_operators(i)
+
+            names(a) <- names(d)
+            names(b) <- names(d)
+
+            # append per-schema data to end of 'd' which will contain all per-schema data in the end
+            d <- rbind(d, a) %>% rbind(d, b)
+        }
+    } else {
+            # Calculate the number of cores
+            # no_cores <- parallel::detectCores() - 1
+
+            # Initiate cluster
+            # cl <- parallel::makeCluster(no_cores)
+
+            # load packages into cluster
+            # parallel::clusterEvalQ(cl, library(magrittr))
+
+            # i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data) # this wont work if we want to pass schema data on
+
+            # get list of all schemas
+            schemas <- select_unique_schemas(data)
+
+            # for each schema
+            for(sc in schemas[[1]]) {
+
+                # 100% operator data for schema --- same as entire data set for schema
+                original_data <- select_individual_schema_data(data, sc)
+                print(tail(original_data))
+
+                a <- random_sampling(original_data)
+                d <- rbind(d, a)
+
+                # b <- across_operators(original_data)
+                # d <- rbind(d, b)
+
+                # print(as.list(original_data))
+                # a <- parallel::mclapply(original_data, random_sampling, mc.preschedule = TRUE, mc.set.seed = TRUE, mc.cores = parallel::detectCores())
+                # print(head(a))
+                # a <- parallel::parLapply(cl, original_data, random_sampling)
+                # b <- parallel::parLapply(cl, original_data, across_operators)
+
+                # d <- do.call(rbind, a) %>% do.call(rbind, b)
+                # d <- do.call(rbind, a)
+            }
+
+            # close the cluster so that resources such as memory are returned to the operating system
+            # parallel::stopCluster(cl)
+    }
+     return(d)
+}
+
 #' FUNCTION: random_sampling
 #'
 #' This is the function that will perform random sampling. There is a function
@@ -8,7 +108,8 @@
 
 random_sampling <- function(data) {
     # initiallize empty data frame
-    d <- data.frame("schema" = character(),
+    d <- data.frame("method" = character(),
+                    "schema" = character(),
                     "trial" = integer(),
                     "percentage" = integer(),
                     "reduced_numerator" = integer(),
@@ -20,7 +121,9 @@ random_sampling <- function(data) {
                     "cost_reduction" = double(),
                     "reduced_mutation_score" = double(),
                     "original_mutation_score" = double())
-    names(d) <- c("schema",
+
+    names(d) <- c("method",
+                  "schema",
                   "trial",
                   "percentage",
                   "reduced_numerator",
@@ -33,131 +136,66 @@ random_sampling <- function(data) {
                   "reduced_mutation_score",
                   "original_mutation_score")
 
-    # create a sequence of all possible percentage values for k% selection
-    # s <- seq(0.01, 1, by = 0.01)
-    s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+        # create a sequence of all possible percentage values for k% selection
+        s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
 
-    # for each k%
-    for(i in s) {
-        # run 30 trials
-        for(j in 1:30) {
-            # create a reduced data set
-            reduced_data <- select_k_percent(data, i)
-            # get the schema of observation
-            schema <- dplyr::distinct(dplyr::select(data, schema))
-            # trial number for given k%
-            trial <- j
-            # the k% we are currently observing
-            percentage <- (i * 100)
-            # number of killed mutants (numerator)
-            reduced_numerator <- dplyr::filter(reduced_data, killed == "true") %>% dplyr::count()
-            # number of killed and alive mutants (denominator)
-            reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_data, killed == "false") %>% dplyr::count())
-            # number of killed mutants (numerator)
-            original_numerator <- dplyr::filter(data, killed == "true") %>% dplyr::count()
-            # number of killed and alive mutants (denominator)
-            original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") %>% dplyr::count())
-            # total time (in ms) for running reduced set of mutants
-            reduced_time <- analyse_total_time(reduced_data)
-            # total time (in ms) for running original set of mutants (100 percent)
-            original_time <- analyse_total_time(data)
-            # creation cost reduction (%)
-            cost_reduction <- analyse_reduction(original_time, reduced_time)
-            # mutation score of reduced set for this observation
-            reduced_mutation_score <- analyse_mutation_score(reduced_data)
-            # original mutation score for full set of mutants
-            original_mutation_score <- analyse_mutation_score(data)
+            # for each k%
+            for(i in s) {
+                # run 30 trials
+                for(j in 1:30) {
+                    # reduction technique utilised
+                    method <- "random_sampling"
+                    # create a reduced data set
+                    reduced_data <- select_k_percent(data, i)
+                    # get the schema of observation
+                    schema <- select_unique_schemas(data)
+                    # trial number for given k%
+                    trial <- j
+                    # the k% we are currently observing
+                    percentage <- (i * 100)
+                    # number of killed mutants (numerator)
+                    reduced_numerator <- dplyr::filter(reduced_data, killed == "true") %>% dplyr::count()
+                    # number of killed and alive mutants (denominator)
+                    reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_data, killed == "false") %>% dplyr::count())
+                    # number of killed mutants (numerator)
+                    original_numerator <- dplyr::filter(data, killed == "true") %>% dplyr::count()
+                    # number of killed and alive mutants (denominator)
+                    original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") %>% dplyr::count())
+                    # total time (in ms) for running reduced set of mutants
+                    reduced_time <- analyse_total_time(reduced_data)
+                    # total time (in ms) for running original set of mutants (100 percent)
+                    original_time <- analyse_total_time(data)
+                    # creation cost reduction (%)
+                    cost_reduction <- analyse_reduction(original_time, reduced_time)
+                    # mutation score of reduced set for this observation
+                    reduced_mutation_score <- analyse_mutation_score(reduced_data)
+                    # original mutation score for full set of mutants
+                    original_mutation_score <- analyse_mutation_score(data)
 
-            # add everything to vector 'a' to be passed to data frame 'd'
-            a <- data.frame(schema,
-                            trial,
-                            percentage,
-                            reduced_numerator,
-                            reduced_denominator,
-                            original_numerator,
-                            original_denominator,
-                            reduced_time,
-                            original_time,
-                            cost_reduction,
-                            reduced_mutation_score,
-                            original_mutation_score)
-            names(a) <- names(d)
+                    # add everything to vector 'a' to be passed to data frame 'd'
+                    a <- data.frame(method,
+                                    schema,
+                                    trial,
+                                    percentage,
+                                    reduced_numerator,
+                                    reduced_denominator,
+                                    original_numerator,
+                                    original_denominator,
+                                    reduced_time,
+                                    original_time,
+                                    cost_reduction,
+                                    reduced_mutation_score,
+                                    original_mutation_score)
+                    names(a) <- names(d)
 
-            # append observation (row) to end of data frame 'd'
-            d <- rbind(d, a)
-        }
-    }
-        return(d)
-}
-#' FUNCTION: analyse_random_sampling
-#'
-#' This function will be used to run selective mutation per schema and collect
-#' data in a single data frame
-#'
-#' @export
-
-analyse_random_sampling <- function(data, f = "fast") {
-    # initiallize empty data frame
-    d <- data.frame("schema" = character(),
-                    "trial" = integer(),
-                    "percentage" = integer(),
-                    "reduced_numerator" = integer(),
-                    "reduced_denominator" = integer(),
-                    "original_numerator" = integer(),
-                    "original_denominator" = integer(),
-                    "reduced_time" = integer(),
-                    "original_time" = integer(),
-                    "cost_reduction" = double(),
-                    "reduced_mutation_score" = double(),
-                    "original_mutation_score" = double())
-    names(d) <- c("schema",
-                  "trial",
-                  "percentage",
-                  "reduced_numerator",
-                  "reduced_denominator",
-                  "original_numerator",
-                  "original_denominator",
-                  "reduced_time",
-                  "original_time",
-                  "cost_reduction",
-                  "reduced_mutation_score",
-                  "original_mutation_score")
-    # find all unique schemas in data
-    schemas <- select_unique_schemas(data)
-
-    if(f != "fast") {
-        for(s in schemas[[1]]) {
-            # get parse out data per-schema individually
-            i <- select_individual_schema_data(data, s)
-            # collect data about each individual schema and store in 'a' to be bound to 'd' containing all schema data
-            a <- random_sampling(i)
-
-            names(a) <- names(d)
-
-            # append per-schema data to end of 'd' which will contain all per-schema data in the end
-            d <- rbind(d, a)
-        }
-    } else {
-            # Calculate the number of cores
-            no_cores <- parallel::detectCores() - 1
-
-            # Initiate cluster
-            cl <- parallel::makeCluster(no_cores)
-
-            # load packages into cluster
-            parallel::clusterEvalQ(cl, library(magrittr))
-
-            i <- parallel::parLapply(cl, schemas[[1]], data = data, select_individual_schema_data)
-            a <- parallel::parLapply(cl, i, random_sampling)
-            d <- do.call(rbind, a)
-
-            # close the cluster so that resources such as memory are returned to the operating system
-            parallel::stopCluster(cl)
-    }
-     return(d)
+                    # append observation (row) to end of data frame 'd'
+                    d <- rbind(d, a)
+                }
+            }
+    return(d)
 }
 
-#' FUNCTION: analyse_across_operators
+#' FUNCTION: across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00
 #' that will be used to test the mutation score of each fraction of reduced set of mutants
@@ -166,13 +204,11 @@ analyse_random_sampling <- function(data, f = "fast") {
 #'
 #' @export
 
-analyse_across_operators <- function(data) {
-    # create a sequence of all possible percentage values for k% selection
-    s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-    schemas <- select_unique_schemas(data)
+across_operators <- function(data) {
 
     # initiallize empty data frame
-    d <- data.frame("schema" = character(),
+    d <- data.frame("method" = character(),
+                    "schema" = character(),
                     "trial" = integer(),
                     "percentage" = integer(),
                     "reduced_numerator" = integer(),
@@ -184,7 +220,9 @@ analyse_across_operators <- function(data) {
                     "cost_reduction" = double(),
                     "reduced_mutation_score" = double(),
                     "original_mutation_score" = double())
-    names(d) <- c("schema",
+
+    names(d) <- c("method",
+                  "schema",
                   "trial",
                   "percentage",
                   "reduced_numerator",
@@ -196,22 +234,24 @@ analyse_across_operators <- function(data) {
                   "cost_reduction",
                   "reduced_mutation_score",
                   "original_mutation_score")
-    # for each schema
-    for(sc in schemas[[1]]) {
-        # 100% operator data for schema --- same as entire data set for schema
-        original_data <- select_individual_schema_data(data, sc)
+
+    # create a sequence of all possible percentage values for k% selection
+    s <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+
         # for each percentage
         for(i in s) {
             # for 30 trials
             for(j in 1:30) {
-                reduced_operator_data <- select_percentage_across_operators(data, sc, i)
+                reduced_operator_data <- select_percentage_across_operators(data, i)
                 # testing correctness
                 # print(reduced_operator_data)
                 # falses <- dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::select(operator) %>% dplyr::distinct()
                 # print(falses)
-
+                # reduction technique utilised
+                method <- "across_operators"
                 # schema
-                schema <- sc
+                # schema <- sc
+                schema <- select_unique_schemas(data)
                 # trial number for given k%
                 trial <- j
                 # the k% we are currently observing
@@ -221,13 +261,13 @@ analyse_across_operators <- function(data) {
                 # number of killed and alive mutants (denominator)
                 reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::count())
                 # number of killed mutants (numerator)
-                original_numerator <- dplyr::filter(original_data, killed == "true") %>% dplyr::count()
+                original_numerator <- dplyr::filter(data, killed == "true") %>% dplyr::count()
                 # number of killed and alive mutants (denominator)
-                original_denominator <- (original_numerator + dplyr::filter(original_data, killed == "false") %>% dplyr::count())
+                original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") %>% dplyr::count())
                 # cost of reduced set of mutants
                 reduced_time <- analyse_total_time(reduced_operator_data)
                 # cost of original set of mutants
-                original_time <- analyse_total_time(original_data)
+                original_time <- analyse_total_time(data)
                 # creation cost reduction (%)
                 cost_reduction <- analyse_reduction(original_time, reduced_time)
                 # calculate the reduced  mutation score for the given operator data
@@ -235,7 +275,8 @@ analyse_across_operators <- function(data) {
                 # calculate the original mutation score for the given operator data
                 original_mutation_score <- analyse_mutation_score(original_data)
 
-                a <- data.frame(schema,
+                a <- data.frame(method,
+                                schema,
                                 trial,
                                 percentage,
                                 reduced_numerator,
@@ -253,10 +294,8 @@ analyse_across_operators <- function(data) {
                 d <- rbind(d, a)
                 }
             }
-        }
     return(d)
 }
-
 
 #' FUNCTION: analyse_calculations
 #'

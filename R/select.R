@@ -1,31 +1,3 @@
-#' FUNCTION: select_empirical_study_schemas
-#'
-#' This function will reduce the data to only analyse the schemas discussed
-#' and presented in the accompanying tool paper.
-#' (CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products)
-#'
-#' @export
-
-select_empirical_study_schemas <- function(data) {
-    schemas <- c("CoffeeOrders", "Employee", "Inventory", "Iso3166", "JWhoisServer", "MozillaPermissions",
-                 "NistWeather", "Person", "Products")
-    d <- dplyr::filter(data, schema %in% schemas)
-    return(d)
-}
-
-
-#' FUNCTION: select_normal_data
-#'
-#' This function pulls all data with type equal to NORMAL from the original
-#' data provided.
-#'
-#' @export
-
-select_normal_data <- function(data) {
-    d <- dplyr::filter(data, type == "NORMAL")
-    return(d)
-}
-
 #' FUNCTION: select_percentage_across_operators
 #'
 #' This function will be used to generate a sequence of values between 0.01 and 1.00
@@ -35,7 +7,7 @@ select_normal_data <- function(data) {
 #'
 #' @export
 
-select_percentage_across_operators <- function(data, sc, i) {
+select_percentage_across_operators <- function(data, i) {
             # initiallize empty data frame
             d <- data.frame("identifier" = character(),
                             "dbms" = character(),
@@ -54,8 +26,11 @@ select_percentage_across_operators <- function(data, sc, i) {
                           "time")
             #               "percentage")
 
+        # get the schema under observation
+        sc <- select_unique_schemas(data)
+
         # for each operator
-        operators <- select_unique_operators(dplyr::filter(data, schema == sc))
+        operators <- select_individual_schema_data(data, sc) %>% select_unique_operators()
             # for each operator
             for(o in operators[[1]]) {
                 # get data with specific schema and operator
@@ -79,7 +54,7 @@ select_percentage_across_operators <- function(data, sc, i) {
 #' @export
 
 select_unique_schemas <- function(data) {
-    schemas <- dplyr::distinct(dplyr::select(data, schema))
+        schemas <- dplyr::distinct(dplyr::select(data, schema))
     return(schemas)
 }
 
@@ -105,6 +80,33 @@ select_unique_percentages <- function(data) {
 select_unique_operators <- function(data) {
     p <- dplyr::distinct(dplyr::select(data, operator))
     return(p)
+}
+
+#' FUNCTION: select_empirical_study_schemas
+#'
+#' This function will reduce the data to only analyse the schemas discussed
+#' and presented in the accompanying tool paper.
+#' (CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products)
+#'
+#' @export
+
+select_empirical_study_schemas <- function(data) {
+    schemas <- c("CoffeeOrders", "Employee", "Inventory", "Iso3166", "JWhoisServer", "MozillaPermissions",
+                 "NistWeather", "Person", "Products")
+    d <- dplyr::filter(data, schema %in% schemas)
+    return(d)
+}
+
+#' FUNCTION: select_normal_data
+#'
+#' This function pulls all data with type equal to NORMAL from the original
+#' data provided.
+#'
+#' @export
+
+select_normal_data <- function(data) {
+    d <- dplyr::filter(data, type == "NORMAL")
+    return(d)
 }
 
 #' FUNCTION: select_individual_schema_data
@@ -148,18 +150,6 @@ select_individual_operator_data <- function(data, op) {
     d <- dplyr::filter(data, op == operator)
     return(d)
 }
-#' FUNCTION: group_mutation_data
-#'
-#' We want to group the mutation data by schema, operator and mutant.
-#' This will allow us to compare timings of similar mutants and then
-#' provide sums of all timings per group.
-#'
-#' @export
-
-group_mutation_data <- function(data) {
-    grouped_data <- dplyr::group_by(data,operator,type)
-    return(grouped_data)
-}
 
 #' FUNCTION: select_k_percent
 #'
@@ -171,19 +161,5 @@ group_mutation_data <- function(data) {
 select_k_percent <- function(data, k) {
     n <- dplyr::filter(data, type == "NORMAL")
     frac_data <- dplyr::sample_frac(n, k)
-    return(frac_data)
-}
-
-#' FUNCTION: select_k_percent_per_operator
-#'
-#' This function will be used to look at k% of each operator.
-#' This is referred to as stratified random sampling over mutation operators.
-#'
-#' @export
-
-select_k_percent_per_operator <- function(data, k, op) {
-    n <- dplyr::filter(data, type == "NORMAL")
-    operator_data  <- dplyr::filter(n, operator == op)
-    frac_data <- dplyr::sample_frac(operator_data, k)
     return(frac_data)
 }

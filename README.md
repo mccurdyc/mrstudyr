@@ -23,7 +23,6 @@ version
 ## Imports
 + [dplyr](https://github.com/hadley/dplyr)
 + [magrittr](https://github.com/smbache/magrittr)
-+ [parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
 + [ggplot2](https://github.com/hadley/ggplot2)
 + [readr](https://github.com/hadley/readr)
 + [Metrics](https://cran.r-project.org/web/packages/Metrics/Metrics.pdf)
@@ -49,7 +48,7 @@ data <- read_data("sqlite-avmdefaults.dat")
 In the accompanying paper, we empirically analyse nine schemas:
 CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products.
 
-To filter the data to only these schemas use the following command:
+To filter the data to only include these schemas, use the following command:
 
 ```
 data <- select_empirical_study_schemas(data)
@@ -71,97 +70,91 @@ Which should produce the following output:
 Source: local data frame [6 x 7]
 
             identifier   dbms       schema       operator   type killed  time
-                             <chr>  <chr>        <chr>          <chr>  <chr>  <chr> <int>
-                             1 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    59
-                             2 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    59
-                             3 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    88
-                             4 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    54
-                             5 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairE NORMAL   true    56
-                             6 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairE NORMAL   true    49
+                 <chr>  <chr>        <chr>          <chr>  <chr>  <chr> <int>
+1 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    59
+2 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    59
+3 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    88
+4 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairR NORMAL   true    54
+5 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairE NORMAL   true    56
+6 fpbpyn2cnbiinwfyy2mi SQLite CoffeeOrders FKCColumnPairE NORMAL   true    49
 ```
 
 ### Analysing Reduction Techniques
 
-| Reduction Technique  | Function Name (parameters) |
-| ------------- | ------------- |
-| Uniform Random Sampling  | analyse_random_sampling (data)  |
-| Uniform Random Sampling Over Operators  | analyse_across_operators (data)  |
+| Function Name  | Parameters |
+| :-------------: | :-------------: |
+| `analyse`  | data from mutation testing on all mutants  |
 
-One mutant reduction technique supported by mrstudyr is uniform random sampling. In uniform
-random sampling, a maximum threshold percentage, _x_, is set for the percentage of the total
-mutants to be analysed. The mrstudyr tool evaluates _x_ from 1% to 90% in increments of 10%.
+The `analyse` function performs all of the mutant reduction techniques supported
+by mrstudyr. This allows the tool to be extended to include additional reduction
+techniques while still only requiring a single command to perform them. Additionally,
+the `analyse` function returns a single [tidy](http://vita.had.co.nz/papers/tidy-data.pdf)
+data frame consisting of the data collected from performing every reduction technique.
 
-To perform **uniform random sampling**:
-```
-random_sampling <- analyse_random_sampling(data)
-```
-
-Which should produce the following output:
-```
-head(random_sampling)
-
-         schema         trial   percentage   reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time reduced_mutation_score original_mutation_score
-         CoffeeOrders     1          1                17                  17               1590                 1680          690         63716              1.0000000               0.9464286
-         CoffeeOrders     2          1                17                  17               1590                 1680          630         63716              1.0000000               0.9464286
-         CoffeeOrders     3          1                17                  17               1590                 1680          718         63716              1.0000000               0.9464286
-         CoffeeOrders     4          1                17                  17               1590                 1680          619         63716              1.0000000               0.9464286
-         CoffeeOrders     5          1                16                  17               1590                 1680          720         63716              0.9411765               0.9464286
-         CoffeeOrders     6          1                15                  17               1590                 1680          573         63716              0.8823529               0.9464286
+To perform all supported reduction techniques:
 
 ```
-
-The second mutant reduction technique supported by the mrstudyr tool
-is uniform random sampling across operators. Similar to plain old
-uniform random sampling, a maximum threshold percentage, _x_, is set
-for the percentage of the total mutants to be analysed.
-The mrstudyr tools evaluates _x_ from 1% to 90% in increments of 10%.
-But, instead of randomly selecting the _x%_ from all of the mutants, the _x%_ is
-selected from each operator.
-
-The following is the list of all operators: FKCColumnPairR, FKCColumnPairE,
-PKCColumnA, PKCColumnR, PKCColumnE, NNCA, NNCR, UCColumnA, CCNullifier, CCRelationalExpressionOperatorE,
-UCColumnE, CCInExpressionRHSListExpressionElementR.
-
-To perform **uniform random sampling across operators**:
-
-```
-across_operators <- analyse_across_operators(data)
+t <- analyse(data)
 ```
 
 Which should produce the following output:
-
 ```
-head(across_operators)
+head(t)
 
-            schema    trial   percentage    reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time reduced_mutation_score original_mutation_score
-       CoffeeOrders     1          1                15                  16               1590                 1680          603         63716                 0.9375               0.9464286
-       CoffeeOrders     2          1                15                  16               1590                 1680          590         63716                 0.9375               0.9464286
-       CoffeeOrders     3          1                15                  16               1590                 1680          573         63716                 0.9375               0.9464286
-       CoffeeOrders     4          1                15                  16               1590                 1680          600         63716                 0.9375               0.9464286
-       CoffeeOrders     5          1                15                  16               1590                 1680          686         63716                 0.9375               0.9464286
-       CoffeeOrders     6          1                15                  16               1590                 1680          580         63716                 0.9375               0.9464286
+           method       schema trial percentage reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time cost_reduction reduced_mutation_score original_mutation_score
+1 random_sampling CoffeeOrders     1          1                16                  17               1590                 1680          644         63716      0.9898926              0.9411765               0.9464286
+2 random_sampling CoffeeOrders     2          1                15                  17               1590                 1680          613         63716      0.9903792              0.8823529               0.9464286
+3 random_sampling CoffeeOrders     3          1                16                  17               1590                 1680          663         63716      0.9895945              0.9411765               0.9464286
+4 random_sampling CoffeeOrders     4          1                17                  17               1590                 1680          609         63716      0.9904420              1.0000000               0.9464286
+5 random_sampling CoffeeOrders     5          1                17                  17               1590                 1680          580         63716      0.9908971              1.0000000               0.9464286
+6 random_sampling CoffeeOrders     6          1                16                  17               1590                 1680          672         63716      0.9894532              0.9411765               0.9464286
+
+...
+
+               method   schema trial percentage reduced_numerator reduced_denominator original_numerator original_denominator reduced_time original_time cost_reduction reduced_mutation_score original_mutation_score
+5935 across_operators Products    25        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+5936 across_operators Products    26        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+5937 across_operators Products    27        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+5938 across_operators Products    28        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+5939 across_operators Products    29        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+5940 across_operators Products    30        100              1280                1470               1280                 1470        25857         25857              0              0.8707483               0.8707483
+
 ```
 
 ### Calculating Efficiency and Effectiveness
 
-There is one function that calculates all of the efficiency and effectiveness
-metrics. This function is `analyse_calculations` which takes as input the data
-from performing a reduction technique. Below is a list of functions and the
-calculation that they perform. All of these functions are encompassed in the
-`analyse_calculations` parent function.
+There are two functions for calculating the supported efficiency and effectiveness
+metrics. These functions are `analyse_calculations` and `analyse_correlation` which
+both take as input the data returned from the `analyse` function and return a new tidy
+dataframe with the included calculations. Below is the list of calculation functions and the
+calculated metric(s) of each one.
 
-| Calculation  | Function Name (parameters) |
-| ------------- | ------------- |
-| Mutation Score  | `analyse_mutation_score (data)`  |
-| Kendall's &tau;<sub>b</sub> Correlation Coefficient  | `analyse_correlation (data)`  |
-| Creation Cost Reduction  | `analyse_reduction (data)`  |
-| Error (MAE and RMSE)  | `mae (red_ms, org_ms)` and `rmse (red_ms, org_ms)`|
+| Function Name  | Parameter  | Calculation(s)  |
+| :-------------: | :-------------: | :------------- |
+| `analyse_calculations` | reduction experiments data | <ul><li>Mutation Score</li><li>Cost Reduction</li><li>MAE</li><li>RMSE</li</ul> |
+| `analyse_correlation` | reduction experiments data | Kendall's &tau;<sub>b</sub> Correlation Coefficient  |
 
 ### Visualising Performance of Reduction Techniques
 
-| Visualisation  | Function Name (parameters) |
-| ------------- | ------------- |
-|   |   |
+| Function Name  | Parameter(s) | Description of Visualisation |
+| :-------------: | :-------------: | :------------- |
+| `visualise_mutation_score_across_schemas` | reduction experiments data filter to contain only data from four percentages | This is the visualisation present in the accompanying tool paper. A visualisation facetted by percentage with scheams on the horizontal-axis and mutation score on the vertical-axis. (Creation of this visualisation is displayed below) |
+
+#### Creating the `visualise_mutation_score_across_schemas` Visualisation
+
+In the `R` console type the following:
+
+```
+d <- read_data("sqlite-avmdefaults.dat")
+...
+t <- analyse(d)
+pers <- c(1, 10, 20, 40)
+t_filt <- dplyr::filter(t, method == "random_sampling", percentage %in% pers)
+visualise_mutation_score_across_schemas(t_filt)
+```
+
+Which produces the following visualisation:
+![Sample Visualisation](https://github.com/mccurdyc/mrstudyr/blob/master/imgs/schema_vs_ms.pdf)
 
 ## Building and Execution Environment
 All of the previous instructions for building, installing, and using mrstudyr have been tested on Mac OS X 10.11 "El Capitan".
@@ -176,5 +169,3 @@ or use on Windows unless using RStudio.
 ## FAQ
 + `Error in FUNCTION_NAME_HERE() : could not find function "%>%"`
     + `library(magrittr)`
-+ `Error in FUNCTION_NAME_HERE() : could not find function "detectCores"`
-    + `library(parallel)`

@@ -155,7 +155,7 @@ visualise_mutation_score_across_schemas(t_filt)
 
 Which produces the following visualisation:
 
-<img src ="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/imgs/schema_v_ms.png" align="middle">
+<div><img src ="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/imgs/schema_v_ms.png" align="middle"></div>
 
 ## Building and Execution Environment
 All of the previous instructions for building, installing, and using mrstudyr have been tested on Mac OS X 10.11 "El Capitan".

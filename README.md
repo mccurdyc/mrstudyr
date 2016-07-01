@@ -40,6 +40,9 @@ library(mrstudyr)
 ```
 
 ## Usage
+
+[![asciicast](https://asciinema.org/a/2xnxuapeku9nljfnrx522d8x1.png)](https://asciinema.org/a/2xnxuapeku9nljfnrx522d8x1)
+
 ### Reading in sample data:
 ```
 data <- read_data("sqlite-avmdefaults.dat")

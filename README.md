@@ -30,15 +30,7 @@ version
 
 ## Installing
 
-First, the mrstudyr repository must be cloned to your local machine.
-
-To clone mrstudyr use the following command:
-
-```
-git clone https://github.com/mccurdyc/mrstudyr.git
-```
-
-The following commands need to be run in an R console in the `mrstudyr/` directory (type `R` in terminal).
+The following commands need to be run in an R console in the `mrstudyr/` directory (type `sudo R` in terminal).
 
 To install mrstudyr:
 ```

@@ -39,7 +39,7 @@ select_percentage_across_operators <- function(data, i) {
         sc <- select_unique_schemas(data)
 
         # for each operator
-        operators <- select_individual_schema_data(data, sc) %>% select_unique_operators()
+        operators <- select_individual_schema_data(data, sc) magrittr::%>% select_unique_operators()
             # for each operator
             for(o in operators[[1]]) {
                 # get data with specific schema and operator

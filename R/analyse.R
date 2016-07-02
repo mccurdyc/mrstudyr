@@ -111,13 +111,13 @@ random_sampling <- function(data) {
                     # the k% we are currently observing
                     percentage <- (i * 100)
                     # number of killed mutants (numerator)
-                    reduced_numerator <- dplyr::filter(reduced_data, killed == "true") magrittr::%>% dplyr::count()
+                    reduced_numerator <- dplyr::filter(reduced_data, killed == "true") %>% dplyr::count()
                     # number of killed and alive mutants (denominator)
-                    reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_data, killed == "false") magrittr::%>% dplyr::count())
+                    reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_data, killed == "false") %>% dplyr::count())
                     # number of killed mutants (numerator)
-                    original_numerator <- dplyr::filter(data, killed == "true") magrittr::%>% dplyr::count()
+                    original_numerator <- dplyr::filter(data, killed == "true") %>% dplyr::count()
                     # number of killed and alive mutants (denominator)
-                    original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") magrittr::%>% dplyr::count())
+                    original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") %>% dplyr::count())
                     # total time (in ms) for running reduced set of mutants
                     reduced_time <- analyse_total_time(reduced_data)
                     # total time (in ms) for running original set of mutants (100 percent)
@@ -210,13 +210,13 @@ across_operators <- function(data) {
                 # the k% we are currently observing
                 percentage <- (i * 100)
                 # number of killed mutants (numerator)
-                reduced_numerator <- dplyr::filter(reduced_operator_data, killed == "true") magrittr::%>% dplyr::count()
+                reduced_numerator <- dplyr::filter(reduced_operator_data, killed == "true") %>% dplyr::count()
                 # number of killed and alive mutants (denominator)
-                reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_operator_data, killed == "false") magrittr::%>% dplyr::count())
+                reduced_denominator <- (reduced_numerator + dplyr::filter(reduced_operator_data, killed == "false") %>% dplyr::count())
                 # number of killed mutants (numerator)
-                original_numerator <- dplyr::filter(data, killed == "true") magrittr::%>% dplyr::count()
+                original_numerator <- dplyr::filter(data, killed == "true") %>% dplyr::count()
                 # number of killed and alive mutants (denominator)
-                original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") magrittr::%>% dplyr::count())
+                original_denominator <- (original_numerator + dplyr::filter(data, killed == "false") %>% dplyr::count())
                 # cost of reduced set of mutants
                 reduced_time <- analyse_total_time(reduced_operator_data)
                 # cost of original set of mutants
@@ -275,7 +275,7 @@ analyse_calculations <- function(data) {
                   "root_mean_squared_error")
 
     schemas <- select_unique_schemas(data)
-    per <- select_unique_percentages(data) magrittr::%>% dplyr::filter(percentage < 100)
+    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
     m <- select_unique_methods(data)
 
         for(n in m[[1]]) {
@@ -328,7 +328,7 @@ analyse_correlation <- function(data) {
                   "percentage",
                   "correlation")
 
-    per <- select_unique_percentages(data) magrittr::%>% dplyr::filter(percentage < 100)
+    per <- select_unique_percentages(data) %>% dplyr::filter(percentage < 100)
     m <- select_unique_methods(data)
 
     for(n in m[[1]]) {
@@ -363,7 +363,7 @@ analyse_correlation <- function(data) {
 
 calculate_mutation_score_correlation <- function(data) {
   model <- cor.test(data$original_mutation_score, data$reduced_mutation_score, method = "kendall", use = "pairwise")
-  tidy_model <- model magrittr::%>% broom::tidy()
+  tidy_model <- model %>% broom::tidy()
   return(tidy_model)
 }
 
@@ -390,9 +390,9 @@ analyse_total_time <- function(data) {
 #' @export
 
 analyse_mutation_score <- function(data) {
-    k <- dplyr::filter(data, killed == "true") magrittr::%>%
+    k <- dplyr::filter(data, killed == "true") %>%
         dplyr::count()
-    a <- dplyr::filter(data, killed == "false") magrittr::%>%
+    a <- dplyr::filter(data, killed == "false") %>%
         dplyr::count()
     s <- ((k / (k + a)))
     return(s)

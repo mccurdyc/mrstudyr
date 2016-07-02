@@ -7,7 +7,7 @@
 #' @export
 
 read_data <- function(dat) {
-  f <- system.file("extdata", dat, package="selectms")
+  f <- system.file("extdata", dat, package="mrstudyr")
   d <- readr::read_csv(f)
   return(dplyr::tbl_df(d))
 }

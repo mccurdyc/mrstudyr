@@ -30,7 +30,7 @@ version
 
 ## Installing
 
-The following commands need to be run in an R console in the `mrstudyr/` directory (type `sudo R` in terminal).
+The following commands need to be run in an R console in the `mrstudyr/` directory (type `[sudo] R` in terminal).
 
 To install mrstudyr:
 ```

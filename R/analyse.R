@@ -5,7 +5,7 @@
 
 analyse_random_sampling <- function(d) {
 
-  percentages <- c(0.01, 0.1, 0.2, 0.3, 0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+  percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame("dbms" = character(),
                    "schema" = character(),
                    "reduced_numerator" = integer(),
@@ -21,8 +21,9 @@ analyse_random_sampling <- function(d) {
                    "trial" = integer())
 
   for(i in percentages) {
+    print(paste("Currently analysing x =", (i*100), "percent ..."))
     for(j in 1:30) {
-      dt <- random_sampling(d, i, j)
+      dt <- random_sampling(d, i, j) %>% as.data.frame()
       df <- rbind(df, dt)
     }
   }

@@ -6,19 +6,20 @@
 analyse_random_sampling <- function(d) {
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-  df <- data.frame("dbms" = character(),
-                   "schema" = character(),
-                   "reduced_numerator" = integer(),
-                   "reduced_denominator" = integer(),
-                   "original_numerator" = integer(),
-                   "original_denominator" = integer(),
-                   "reduced_time" = integer(),
-                   "original_time" = integer(),
-                   "cost_reduction" = double(),
-                   "reduced_mutation_score" = double(),
-                   "original_mutation_score" = double(),
-                   "percentage" = integer(),
-                   "trial" = integer())
+  df <- data.frame()
+  # df <- data.frame("dbms" = character(),
+  #                  "schema" = character(),
+  #                  "reduced_numerator" = integer(),
+  #                  "reduced_denominator" = integer(),
+  #                  "original_numerator" = integer(),
+  #                  "original_denominator" = integer(),
+  #                  "reduced_time" = integer(),
+  #                  "original_time" = integer(),
+  #                  "cost_reduction" = double(),
+  #                  "reduced_mutation_score" = double(),
+  #                  "original_mutation_score" = double(),
+  #                  "percentage" = integer(),
+  #                  "trial" = integer())
 
   for(i in percentages) {
     print(paste("Currently analysing x =", (i*100), "percent ..."))

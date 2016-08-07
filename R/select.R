@@ -1,16 +1,3 @@
-#' FUNCTION: select_empirical_study_schemas
-#'
-#' This function will reduce the data to only analyse the schemas discussed
-#' and presented in the accompanying tool paper.
-#' (CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products)
-#' @export
-
-select_empirical_study_schemas <- function(d) {
-  schemas <- c("CoffeeOrders", "Employee", "Inventory", "Iso3166", "JWhoisServer", "MozillaPermissions", "NistWeather", "Person", "Products")
-  dt <- d %>% dplyr::filter(schema %in% schemas)
-  return(dt)
-}
-
 #' FUNCTION: select_x_percent
 #'
 #' This function will be used to look at a select percentage of the data provided.
@@ -18,16 +5,16 @@ select_empirical_study_schemas <- function(d) {
 #' @export
 
 select_x_percent <- function(d, x) {
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::sample_frac(x)
+  dt <- d %>% collect_schema_data() %>% dplyr::sample_frac(x)
   return(dt)
 }
 
-#' FUNCTION: select_distinct_dbms_schema
+#' FUNCTION: select_x_percent_across_operators
 #'
-#' Select only unique combinations of dbms and schema from sample data
+#' Select a uniform percentage of data for each operator.
 #' @export
 
-select_distinct_dbms_schema <- function(d) {
-  dt <- d %>% dplyr::select(dbms, schema) %>% dplyr::distinct()
+select_x_percent_across_operators <- function(d, x) {
+  dt <- d %>% collect_operator_data() %>% select_x_percent(x)
   return(dt)
 }

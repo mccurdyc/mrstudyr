@@ -10,10 +10,10 @@ create_mutation_score_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_study_schemas()
 
   # 1a. Perform RANDOM SAMPLING
-  # random_sampling_data <- d %>% analyse_random_sampling()
-  # print(head(random_sampling_data))
+  random_sampling_data <- d %>% analyse_random_sampling()
+  dplyr::glimpse(random_sampling_data)
 
   # 1b. Perform OPERATOR SAMPLING
   operator_sampling_data <- d %>% analyse_across_operators()
-  print(head(operator_sampling_data))
+  dplyr::glimpse(operator_sampling_data)
 }

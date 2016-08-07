@@ -4,11 +4,18 @@
 \alias{random_sampling}
 \title{FUNCTION: random_sampling}
 \usage{
+<<<<<<< HEAD
 random_sampling(data)
 }
 \description{
 This is the function that will perform random sampling. There is a function
 called analyse_random_sampling which utilizes this function to perform
 random sampling in parallel.
+=======
+random_sampling(d, i, j)
+}
+\description{
+Perform random sampling
+>>>>>>> mrstudyr2/master
 }
 

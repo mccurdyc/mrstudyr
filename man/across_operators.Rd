@@ -2,6 +2,7 @@
 % Please edit documentation in R/analyse.R
 \name{across_operators}
 \alias{across_operators}
+<<<<<<< HEAD
 \title{FUNCTION: across_operators}
 \usage{
 across_operators(data)
@@ -11,5 +12,13 @@ This function will be used to generate a sequence of values between 0.01 and 1.0
 that will be used to test the mutation score of each fraction of reduced set of mutants
 on a per-operator basis. Additionally, we will use this data to calculate mutation scores
 and costs across all operators for each percentage.
+=======
+\title{FUNCTION: across operators}
+\usage{
+across_operators(d, i, j)
+}
+\description{
+Perform random sampling across operators
+>>>>>>> mrstudyr2/master
 }
 

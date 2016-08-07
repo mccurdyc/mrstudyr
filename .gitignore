@@ -1,7 +1,10 @@
 .Rproj.user
 .Rhistory
 .RData
+<<<<<<< HEAD
 *.swp
 
 # ...even if they are in subdirectories
 !*/
+=======
+>>>>>>> mrstudyr2/master

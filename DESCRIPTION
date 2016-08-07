@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Package: mrstudyr
 Title: A tool for retrospectively studying mutant reduction techniques for mutation testing
 Version: 0.0.0.9000
@@ -23,5 +24,27 @@ Imports:
     Metrics,
     broom
 License: GNU GENERAL PUBLIC LICENSE v3.0
+=======
+Package: mrstudyr2
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends:
+    R (>= 3.3.1),
+    readr,
+    dplyr,
+    magrittr,
+    ggplot2,
+    broom
+Imports:
+    readr,
+    dplyr,
+    magrittr,
+    ggplot2,
+    broom
+License: What license is it under?
+Encoding: UTF-8
+>>>>>>> mrstudyr2/master
 LazyData: true
 RoxygenNote: 5.0.1.9000

@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyse.R
 \name{across_operators}
 \alias{across_operators}
-\title{FUNCTION: across operators}
+\title{FUNCTION: across_operators}
 \usage{
 across_operators(d, i, j)
 }

@@ -15,8 +15,7 @@ transform_add_percentage_trial <- function(d, p, t) {
 #' @export
 
 transform_reduced_killed_count <- function(d) {
-  # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(reduced_numerator = summarise_reduced_killed_count(r))
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(reduced_numerator = n)
   return(dt)
 }
@@ -27,8 +26,7 @@ transform_reduced_killed_count <- function(d) {
 #' @export
 
 transform_reduced_total_count <- function(d) {
-  # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(reduced_denominator = dplyr::filter(d, killed %in% c("true", "false")) %>% dplyr::count())
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(reduced_denominator = n)
   return(dt)
 }
@@ -40,7 +38,7 @@ transform_reduced_total_count <- function(d) {
 
 transform_original_killed_count <- function(d) {
   # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(original_numerator = dplyr::filter(o, killed %in% c("true")) %>% dplyr::count())
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(original_numerator = n)
   return(dt)
 }
@@ -52,7 +50,7 @@ transform_original_killed_count <- function(d) {
 
 transform_original_total_count <- function(d) {
   # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(original_denominator = dplyr::filter(o, killed %in% c("true", "false")) %>% dplyr::count())
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(original_denominator = n)
   return(dt)
 }
@@ -72,7 +70,7 @@ transform_cost_reduction <- function(d) {
 #' @export
 
 transform_reduced_mutation_score <- function(d) {
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(reduced_mutation_score = (reduced_numerator / reduced_denominator))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(reduced_mutation_score = (reduced_numerator / reduced_denominator))
   return(dt)
 }
 
@@ -82,6 +80,29 @@ transform_reduced_mutation_score <- function(d) {
 #' @export
 
 transform_original_mutation_score <- function(d) {
-  dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(original_mutation_score = (original_numerator / original_denominator))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(original_mutation_score = (original_numerator / original_denominator))
+  return(dt)
+}
+
+#' FUNCTION: transform_mae
+#'
+#' Calculate Mean Absolute Error (mae)
+#' @export
+
+transform_mae <- function(d, e) {
+  # e <- d %>% dplyr::select(error)
+  e <- e %>% unlist() %>% as.numeric()
+  dt <- d %>% dplyr::mutate(mae = mean(abs(e)))
+  return(dt)
+}
+
+#' FUNCTION: transform_rmse
+#'
+#' Calculate Root Mean Squared Error (rmse)
+#' @export
+
+transform_rmse <- function(d, e) {
+  # e <- d %>% dplyr::select(error)
+  dt <- d %>% dplyr::mutate(rmse = sqrt(mean((e)^2)))
   return(dt)
 }

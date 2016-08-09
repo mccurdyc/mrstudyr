@@ -30,3 +30,13 @@ collect_operator_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, schema, operator)
   return(dt)
 }
+
+#' FUNCTION: collect_percent_data
+#'
+#' Group data by dbms, schema and percentage
+#' @export
+
+collect_percent_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, schema, percentage)
+  return(dt)
+}

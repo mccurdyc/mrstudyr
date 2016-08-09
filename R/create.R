@@ -11,9 +11,11 @@ create_mutation_score_graphs <- function() {
 
   # 1a. Perform RANDOM SAMPLING
   random_sampling_data <- d %>% analyse_random_sampling()
-  dplyr::glimpse(random_sampling_data)
+  rs_calculations <- random_sampling_data %>% analyse_calculations()
+  dplyr::glimpse(rs_calculations)
 
   # 1b. Perform OPERATOR SAMPLING
-  operator_sampling_data <- d %>% analyse_across_operators()
-  dplyr::glimpse(operator_sampling_data)
+  # operator_sampling_data <- d %>% analyse_across_operators()
+  # os_calculations <- operator_sampling_data %>% analyse_calculations()
+  # dplyr::glimpse(operator_sampling_data)
 }

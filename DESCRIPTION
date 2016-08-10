@@ -1,8 +1,12 @@
 Package: mrstudyr
-Title: What the Package Does (one line, title case)
+Title: A tool for retrospectively studying mutant reduction techniques for mutation testing
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Colton", "McCurdy", email = "mccurdyc@allegheny.edu", role = c("aut", "cre"))
+Description: In an attempt to decrease runtime of the mutation analysis process we will
+    attempt to generate a subset of data that can effectively and accurately (a
+    mutation score in close proxmity to the mutation score of the original dataset)
+    provide mutation scores. The selective approach will select a set of mutants
+    that will accurately represent the entire dataset.
 Depends:
     R (>= 3.3.1),
     readr,
@@ -18,7 +22,7 @@ Imports:
     ggplot2,
     broom,
     Cairo
-License: What license is it under?
+License: GNU GENERAL PUBLIC LICENSE v3.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1.9000

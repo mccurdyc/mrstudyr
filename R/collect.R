@@ -11,6 +11,16 @@ collect_study_schemas <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_normal_data
+#'
+#' This function pulls all data with type equal to NORMAL from the original data.
+#' @export
+
+collect_normal_data <- function(d) {
+  dt <- d %>% dplyr::filter(type == "NORMAL")
+  return(dt)
+}
+
 #' FUNCTION: collect_schema_data
 #'
 #' Group data by dbms and schema

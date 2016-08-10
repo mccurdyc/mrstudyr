@@ -7,7 +7,7 @@ create_random_sampling_graphs <- function() {
 
   # read the sqlite-avmdefaults data and specifically filter for the schemas described in the paper
   # if you want to analyse different data, call a different read function
-  d <- read_sqlite_avmdefaults() %>% collect_study_schemas()
+  d <- read_sqlite_avmdefaults() %>% collect_study_schemas() %>% collect_normal_data()
 
   random_sampling_data <- d %>% analyse_random_sampling()
   filtered_percents_data <- random_sampling_data %>% collect_chosen_percent_data(c(1, 10, 20, 40))
@@ -27,7 +27,7 @@ create_operator_sampling_graphs <- function() {
 
   # read the sqlite-avmdefaults data and specifically filter for the schemas described in the paper
   # if you want to analyse different data, call a different read function
-  d <- read_sqlite_avmdefaults() %>% collect_study_schemas()
+  d <- read_sqlite_avmdefaults() %>% collect_study_schemas() %>% collect_normal_data()
 
   operator_sampling_data <- d %>% analyse_across_operators()
   filtered_percents_data <- random_sampling_data %>% collect_chosen_percent_data(c(1, 10, 20, 40))

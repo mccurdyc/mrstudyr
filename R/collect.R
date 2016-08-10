@@ -17,7 +17,7 @@ collect_study_schemas <- function(d) {
 #' @export
 
 collect_normal_data <- function(d) {
-  dt <- d %>% dplyr::filter(type == "NORMAL")
+  dt <- d %>% dplyr::filter(type %in% "NORMAL")
   return(dt)
 }
 

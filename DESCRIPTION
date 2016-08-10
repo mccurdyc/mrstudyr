@@ -9,13 +9,15 @@ Depends:
     dplyr,
     magrittr,
     ggplot2,
-    broom
+    broom,
+    Cairo
 Imports:
     readr,
     dplyr,
     magrittr,
     ggplot2,
-    broom
+    broom,
+    Cairo
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

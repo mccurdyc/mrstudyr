@@ -70,7 +70,7 @@ transform_cost_reduction <- function(d) {
 #' @export
 
 transform_reduced_mutation_score <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::mutate(reduced_mutation_score = (reduced_numerator / reduced_denominator))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(reduced_mutation_score = ((reduced_numerator / reduced_denominator) * 100))
   return(dt)
 }
 
@@ -80,7 +80,7 @@ transform_reduced_mutation_score <- function(d) {
 #' @export
 
 transform_original_mutation_score <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::mutate(original_mutation_score = (original_numerator / original_denominator))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(original_mutation_score = ((original_numerator / original_denominator) * 100))
   return(dt)
 }
 

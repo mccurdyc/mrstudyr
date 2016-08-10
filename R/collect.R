@@ -40,3 +40,13 @@ collect_percent_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, schema, percentage)
   return(dt)
 }
+
+#' FUNCTION: collect_chosen_percent_data
+#'
+#' Collect the data for a user-specified percentage
+#' @export
+
+collect_chosen_percent_data <- function(d, i) {
+  dt <- d %>% dplyr::filter(percentage %in% i)
+  return(dt)
+}

@@ -5,8 +5,8 @@
 
 visualise_random_sampling_mutation_scores <- function(d) {
   p <- visualise_plot_mutation_score(d)
-  name <- "../graphics/from-data/mutation_score_random_plot.pdf"
-  visualise_save_graphic(name, p, 5, 7)
+  # name <- "../graphics/from-data/mutation_score_random_plot.pdf"
+  # visualise_save_graphic(name, p, 5, 7)
   return(p)
 }
 
@@ -17,8 +17,8 @@ visualise_random_sampling_mutation_scores <- function(d) {
 
 visualise_operator_sampling_mutation_scores <- function(d) {
   p <- visualise_plot_mutation_score(d)
-  name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
-  visualise_save_graphic(name, p, 5, 7)
+  # name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
+  # visualise_save_graphic(name, p, 5, 7)
   return(p)
 }
 
@@ -34,7 +34,7 @@ visualise_plot_mutation_score <- function(d) {
   ggplot2::geom_boxplot() +
   ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
   ggplot2::scale_y_continuous(limits = c(0, 100)) +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 23, size = 1, show.legend = FALSE) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +

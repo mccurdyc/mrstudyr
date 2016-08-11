@@ -6,8 +6,7 @@
 visualise_random_sampling_mutation_scores <- function(d) {
   p <- visualise_plot_mutation_score(d)
   name <- "../graphics/from-data/mutation_score_random_plot.pdf"
-  embed_name <- "../graphics/from-data/mutation_score_random_plot_embed.pdf"
-  visualise_save_graphic(name, p, 5, 8)
+  visualise_save_graphic(name, p, 5, 7)
   return(p)
 }
 
@@ -19,8 +18,7 @@ visualise_random_sampling_mutation_scores <- function(d) {
 visualise_operator_sampling_mutation_scores <- function(d) {
   p <- visualise_plot_mutation_score(d)
   name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
-  embed_name <- "../graphics/from-data/mutation_score_operator_plot_embed.pdf"
-  visualise_save_graphic(name, p, 5, 8)
+  visualise_save_graphic(name, p, 5, 7)
   return(p)
 }
 
@@ -38,8 +36,6 @@ visualise_plot_mutation_score <- function(d) {
   ggplot2::scale_y_continuous(limits = c(0, 100)) +
   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 23, size = 1, show.legend = FALSE) +
   ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.title.x = ggplot2::element_text("Schema")) +
-  # ggplot2::theme(axis.title.y = "Mutation Score (%)") +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Schema") +
@@ -53,5 +49,6 @@ visualise_plot_mutation_score <- function(d) {
 #' @export
 
 visualise_save_graphic <- function(save_name, save_plot, h, w) {
-  ggplot2::ggsave(save_name, save_plot, height = h, width = w, device = cairo_pdf)
+  ggplot2::ggsave(save_name, save_plot, height = h, width = w)
+  # ggplot2::ggsave(save_name, save_plot, height = h, width = w, device = cairo_pdf)
 }

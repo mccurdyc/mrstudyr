@@ -1,6 +1,6 @@
 #' FUNCTION: transform_add_percentage_trial
 #'
-#' Add the analysed percentage and current trial to data frame
+#' Add the analyzed percentage and current trial to data frame
 #' @export
 
 transform_add_percentage_trial <- function(d, p, t) {

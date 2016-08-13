@@ -1,9 +1,9 @@
-#' FUNCTION: analyse_random_sampling
+#' FUNCTION: analyze_random_sampling
 #'
 #' This function will perform random sampling.
 #' @export
 
-analyse_random_sampling <- function(d) {
+analyze_random_sampling <- function(d) {
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
@@ -30,8 +30,8 @@ random_sampling <- function(d, i, j) {
   reduced_denominator <- random_sample_data %>% transform_reduced_total_count()
   original_numerator <-  original_data %>% transform_original_killed_count()
   original_denominator <- original_data %>% transform_original_total_count()
-  reduced_time <- random_sample_data %>% summarise_reduced_time()
-  original_time <- original_data %>% summarise_original_time()
+  reduced_time <- random_sample_data %>% summarize_reduced_time()
+  original_time <- original_data %>% summarize_original_time()
   dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
@@ -40,13 +40,13 @@ random_sampling <- function(d, i, j) {
   return(dt)
 }
 
-#' FUNCTION: analyse_across_operators
+#' FUNCTION: analyze_across_operators
 #'
 #' This function will perform sampling across all operators --- this is not operators selection as alll
 #' operators will be present.
 #' @export
 
-analyse_across_operators <- function(d) {
+analyze_across_operators <- function(d) {
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
@@ -73,8 +73,8 @@ across_operators <- function(d, i, j) {
   reduced_denominator <- across_operator_data %>% transform_reduced_total_count()
   original_numerator <-  original_data %>% transform_original_killed_count()
   original_denominator <- original_data %>% transform_original_total_count()
-  reduced_time <- across_operator_data %>% summarise_reduced_time()
-  original_time <- original_data %>% summarise_original_time()
+  reduced_time <- across_operator_data %>% summarize_reduced_time()
+  original_time <- original_data %>% summarize_original_time()
   dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
@@ -83,22 +83,22 @@ across_operators <- function(d, i, j) {
   return(dt)
 }
 
-#' FUNCTION: analyse_calculations
+#' FUNCTION: analyze_calculations
 #'
 #' Calculate the effectiveness of a reduction technique.
 #' The metrics to determine effectiveness will be Kendall's tau_b correlation coefficient,
 #' mae and rmse.
 #' @export
 
-analyse_calculations <- function(d) {
+analyze_calculations <- function(d) {
   # percentages <- c(0.01)
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
   for(i in percentages) {
     percent_data <- d %>% dplyr::filter(percentage == (i*100))
     percent <- (i*100)
-    corr <- percent_data %>% analyse_correlation()
-    error <- percent_data %>% analyse_error()
+    corr <- percent_data %>% analyze_correlation()
+    error <- percent_data %>% analyze_error()
     # dplyr::glimpse(error)
     dt <- data.frame(percent, corr[1])
     dt <- dt %>% transform_mae(error) %>% transform_rmse(error)
@@ -119,12 +119,12 @@ calculate_correlation <- function(x, y) {
   return(tidy_model)
 }
 
-#' FUNCTION: analyse_correlation
+#' FUNCTION: analyze_correlation
 #'
 #' Calculate Kendall's tau_b correlation coefficient between the reduced and original mutation score
 #' @export
 
-analyse_correlation <- function(d) {
+analyze_correlation <- function(d) {
   # print(head(d, n = 9))
   x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
   y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
@@ -132,12 +132,12 @@ analyse_correlation <- function(d) {
   return(dt)
 }
 
-#' FUNCTION: analyse_error
+#' FUNCTION: analyze_error
 #'
 #' Calculate the error between two sets of mutation scores
 #' @export
 
-analyse_error <- function(d) {
+analyze_error <- function(d) {
   x <- d %>% dplyr::select(reduced_mutation_score)
   y <- d %>% dplyr::select(original_mutation_score)
   dt <- (y - x)

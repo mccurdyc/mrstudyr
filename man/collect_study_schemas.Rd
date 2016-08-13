@@ -7,7 +7,7 @@
 collect_study_schemas(d)
 }
 \description{
-This function will reduce the data to only analyse the schemas discussed
+This function will reduce the data to only analyze the schemas discussed
 and presented in the accompanying tool paper.
 (CoffeeOrders, Employee, Inventory, Iso3166, JWhoisServer, MozillaPermissions, NistWeather, Person, Products)
 }

@@ -7,6 +7,6 @@
 transform_add_percentage_trial(d, p, t)
 }
 \description{
-Add the analysed percentage and current trial to data frame
+Add the analyzed percentage and current trial to data frame
 }
 

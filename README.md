@@ -63,7 +63,7 @@ for the operator sampling technique is just as easy, `create_operator_sampling_g
 Which produces the following visualization from the paper:
 
 <p align="center">
-<img src ="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/imgs/schema_v_ms.png">
+<img src ="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/graphics/from-data/mutation_score_random_plot.png">
 </p>
 
 ## Building and Execution Environment

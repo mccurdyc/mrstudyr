@@ -91,7 +91,6 @@ across_operators <- function(d, i, j) {
 #' @export
 
 analyze_calculations <- function(d) {
-  # percentages <- c(0.01)
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
   for(i in percentages) {
@@ -99,7 +98,6 @@ analyze_calculations <- function(d) {
     percent <- (i*100)
     corr <- percent_data %>% analyze_correlation()
     error <- percent_data %>% analyze_error()
-    # dplyr::glimpse(error)
     dt <- data.frame(percent, corr[1])
     dt <- dt %>% transform_mae(error) %>% transform_rmse(error)
     df <- rbind(df, dt)
@@ -125,10 +123,9 @@ calculate_correlation <- function(x, y) {
 #' @export
 
 analyze_correlation <- function(d) {
-  # print(head(d, n = 9))
   x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
   y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
-  dt <- calculate_correlation(x, y)
+  dt <- calculate_correlation(x, y) %>% transform_replace_correlation()
   return(dt)
 }
 

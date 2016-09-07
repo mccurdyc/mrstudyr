@@ -1,3 +1,13 @@
+#' FUNCTION: transform_replace_correlation
+#'
+#' DESCRIPTION: Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
+#' from 'estimate' to 'correlation'
+#' @export
+
+transform_replace_correlation <- function(d) {
+  dt <- d %>% dplyr::rename(correlation = estimate)
+}
+
 #' FUNCTION: transform_add_percentage_trial
 #'
 #' Add the analyzed percentage and current trial to data frame

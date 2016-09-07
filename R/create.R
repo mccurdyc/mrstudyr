@@ -30,7 +30,7 @@ create_operator_sampling_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_study_schemas() %>% collect_normal_data()
 
   operator_sampling_data <- d %>% analyze_across_operators()
-  filtered_percents_data <- random_sampling_data %>% collect_chosen_percent_data(c(1, 10, 20, 40))
+  filtered_percents_data <- operator_sampling_data %>% collect_chosen_percent_data(c(1, 10, 20, 40))
   visualize_operator_sampling_mutation_scores(filtered_percents_data)
 
   # calculate Kendall's Tau_B correlation coefficient, MAE, RMSE

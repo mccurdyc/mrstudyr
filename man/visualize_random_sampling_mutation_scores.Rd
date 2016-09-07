@@ -7,6 +7,6 @@
 visualize_random_sampling_mutation_scores(d)
 }
 \description{
-Visualise mutation scores for the random sampling reduction technique
+Visualize mutation scores for the random sampling reduction technique
 }
 

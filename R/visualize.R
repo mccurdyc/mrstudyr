@@ -1,6 +1,6 @@
 #' FUNCTION: visualize_random_sampling_mutation_scores
 #'
-#' Visualise mutation scores for the random sampling reduction technique
+#' Visualize mutation scores for the random sampling reduction technique
 #' @export
 
 visualize_random_sampling_mutation_scores <- function(d) {
@@ -12,7 +12,7 @@ visualize_random_sampling_mutation_scores <- function(d) {
 
 #' FUNCTION: visualize_operator_sampling_mutation_scores
 #'
-#' Visualise mutation scores for the operator sampling reduction technique
+#' Visualize mutation scores for the operator sampling reduction technique
 #' @export
 
 visualize_operator_sampling_mutation_scores <- function(d) {
@@ -24,7 +24,7 @@ visualize_operator_sampling_mutation_scores <- function(d) {
 
 #' FUNCTION: visualize_plot_mutation_score
 #'
-#' Produces a visualisation of the reduced mutation
+#' Produces a visualization of the reduced mutation
 #' scores across all schemas at a specific percentage.
 #'
 #' @export

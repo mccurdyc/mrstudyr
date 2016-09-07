@@ -7,6 +7,6 @@
 visualize_operator_sampling_mutation_scores(d)
 }
 \description{
-Visualise mutation scores for the operator sampling reduction technique
+Visualize mutation scores for the operator sampling reduction technique
 }
 

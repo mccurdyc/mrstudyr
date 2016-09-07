@@ -1,6 +1,6 @@
 #' FUNCTION: create_random_sampling_graphs
 #'
-#' Create all of the visualisations associated with the random sampling reduction technique
+#' Create all of the visualizations associated with the random sampling reduction technique
 #' @export
 
 create_random_sampling_graphs <- function() {
@@ -20,7 +20,7 @@ create_random_sampling_graphs <- function() {
 
 #' FUNCTION: create_operator_sampling_graphs
 #'
-#' Create all of the visualisations associated with the operator sampling reduction technique
+#' Create all of the visualizations associated with the operator sampling reduction technique
 #' @export
 
 create_operator_sampling_graphs <- function() {

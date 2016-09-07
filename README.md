@@ -51,16 +51,16 @@ library(mrstudyr)
 | `create_random_sampling_graphs`  | Creates all graphs for the random sampling reduction technique |
 | `create_operator_sampling_graphs`  | Creates all graphs for the operator sampling reduction technique |
 
-Both of these functions create a single visualisation in the current state of the project but, can easily be extended
-to create additional informative visualisations.
+Both of these functions create a single visualization in the current state of the project but, can easily be extended
+to create additional informative visualizations.
 
-#### Creating the Visualisation in the Accompanying Paper
+#### Creating the Visualization in the Accompanying Paper
 
-To create the visualisation in the accompanying paper, a single function call is necessary: `create_random_sampling_graphs`.
-In the paper, the visualisation is focused on the random sampling mutant reduction technique but, creating the same visualisation
+To create the visualization in the accompanying paper, a single function call is necessary: `create_random_sampling_graphs`.
+In the paper, the visualization is focused on the random sampling mutant reduction technique but, creating the same visualization
 for the operator sampling technique is just as easy, `create_operator_sampling_graphs`.
 
-Which produces the following visualisation from the paper:
+Which produces the following visualization from the paper:
 
 <p align="center">
 <img src ="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/imgs/schema_v_ms.png">

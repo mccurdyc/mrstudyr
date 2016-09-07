@@ -7,6 +7,6 @@
 create_operator_sampling_graphs()
 }
 \description{
-Create all of the visualisations associated with the operator sampling reduction technique
+Create all of the visualizations associated with the operator sampling reduction technique
 }
 

@@ -7,7 +7,7 @@
 visualize_plot_mutation_score(d)
 }
 \description{
-Produces a visualisation of the reduced mutation
+Produces a visualization of the reduced mutation
 scores across all schemas at a specific percentage.
 }
 

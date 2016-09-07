@@ -7,6 +7,6 @@
 create_random_sampling_graphs()
 }
 \description{
-Create all of the visualisations associated with the random sampling reduction technique
+Create all of the visualizations associated with the random sampling reduction technique
 }
 

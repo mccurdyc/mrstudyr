@@ -30,7 +30,6 @@ version
 + [magrittr](https://github.com/smbache/magrittr)
 + [ggplot2](https://github.com/hadley/ggplot2)
 + [broom](https://github.com/dgrtwo/broom)
-+ [Cairo](https://cran.r-project.org/web/packages/Cairo/index.html)
 
 ## Installing
 

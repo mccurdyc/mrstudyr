@@ -11,7 +11,7 @@ create_random_sampling_graphs <- function() {
 
   random_sampling_data <- d %>% analyze_random_sampling()
   filtered_percents_data <- random_sampling_data %>% collect_chosen_percent_data(c(1, 10, 20, 40))
-  visualize_random_sampling_mutation_scores(filtered_percents_data)
+  visualize_random_sampling_mutation_scores(filtered_percents_data, trans = TRUE)
 
   # calculate Kendall's Tau_B correlation coefficient, MAE, RMSE
   random_sampling_calculations <- random_sampling_data %>% analyze_calculations()

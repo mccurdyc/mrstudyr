@@ -1,4 +1,8 @@
 # mrstudyr
+---
+
+
+<img src="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/graphics/logo/mrstudyr-logo.png" height="250" alt="mrstudyr - retrospective mutant analysis.">
 
 mrstudyr is a tool for retrospectively analysing the effectiveness of
 mutation testing reduction techniques. Instead of integrating each

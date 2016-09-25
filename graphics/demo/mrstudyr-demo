@@ -1,1103 +1,1055 @@
 {
-  "version": 1,
-  "height": 68,
-  "width": 250,
   "env": {
     "TERM": "xterm",
     "SHELL": "/bin/zsh"
   },
-  "duration": 106.276646,
   "stdout": [
     [
-      0.059515,
-      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/R\u0007\u001b]1;..16/mrstudyr/R\u0007"
-    ],
-    [
-      0.006559,
-      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
+      0.059669,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr\u0007"
     ],
     [
       3.6e-05,
-      "\u001b[?1h\u001b=\u001b[?2004h"
+      "\u001b]1;..2016/mrstudyr\u0007"
     ],
     [
-      2.452446,
-      "\u001b[H\u001b[2J\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
+      0.006461,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mmrstudyr\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
     ],
     [
-      0.580377,
-      "R"
+      2.3e-05,
+      "\u001b[?1h\u001b="
     ],
     [
-      0.856507,
+      7.8e-05,
+      "\u001b[?2004h"
+    ],
+    [
+      1.028173,
+      "\u001b[H\u001b[2J\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mmrstudyr\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
+    ],
+    [
+      0.742723,
+      "l"
+    ],
+    [
+      0.115913,
+      "\bls"
+    ],
+    [
+      0.687577,
       "\u001b[?1l\u001b>"
     ],
     [
-      0.000104,
+      0.000127,
       "\u001b[?2004l\r\r\n"
     ],
     [
-      0.001151,
-      "\u001b]2;R\u0007\u001b]1;R\u0007"
+      0.00116,
+      "\u001b]2;ls --color=tty\u0007\u001b]1;ls\u0007"
     ],
     [
-      0.080496,
-      "\r\nR version 3.3.1 (2016-06-21) -- \"Bug in Your Hair\"\r\nCopyright (C) 2016 The R Foundation for Statistical Computing\r\nPlatform: x86_64-pc-linux-gnu (64-bit)\r\n\r\nR is free software and comes with ABSOLUTELY NO WARRANTY.\r\nYou are welcome to redistribute it under certain conditions.\r\nType 'license()' or 'licence()' for distribution details.\r\n\r\n"
+      0.003367,
+      "DESCRIPTION  \u001b[0m\u001b[01;34mgraphics\u001b[0m  \u001b[01;34minst\u001b[0m  LICENSE  \u001b[01;34mman\u001b[0m  mrstudyr2.Rproj  mrstudyr-demo  NAMESPACE  \u001b[01;34mR\u001b[0m  README.md\r\n"
     ],
     [
-      0.000284,
-      "  Natural language support but running in an English locale\r\n\r\nR is a collaborative project with many contributors.\r\nType 'contributors()' for more information and\r\n'citation()' on how to cite R or R packages in publications.\r\n\r\nType 'demo()' for some demos, 'help()' for on-line help, or\r\n'help.start()' for an HTML browser interface to help.\r\nType 'q()' to quit R.\r\n\r\n"
+      0.00039,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r"
     ],
     [
-      0.072193,
-      "> "
+      0.000326,
+      "\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr\u0007"
     ],
     [
-      2.014887,
-      "\u001b[H\u001b[2J> "
+      6.4e-05,
+      "\u001b]1;..2016/mrstudyr\u0007"
     ],
     [
-      1.180444,
-      "i"
+      0.029873,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mmrstudyr\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
     ],
     [
-      0.077959,
-      "n"
+      9.3e-05,
+      "\u001b[?1h\u001b="
     ],
     [
-      0.02133,
-      "s"
+      0.000187,
+      "\u001b[?2004h"
     ],
     [
-      0.147534,
-      "t"
-    ],
-    [
-      0.093107,
-      "a"
-    ],
-    [
-      0.129122,
-      "l"
-    ],
-    [
-      0.11497,
-      "l"
-    ],
-    [
-      0.561552,
-      "."
-    ],
-    [
-      0.273863,
-      "p"
-    ],
-    [
-      0.098014,
-      "a"
-    ],
-    [
-      0.103235,
+      2.484779,
       "c"
     ],
     [
-      0.086504,
-      "k"
+      0.102112,
+      "\bcd"
     ],
     [
-      0.12073,
-      "a"
+      0.087983,
+      " "
     ],
     [
-      0.140775,
-      "g"
+      0.879355,
+      "R"
     ],
     [
-      0.110339,
-      "e"
+      1.451268,
+      "\u001b[?1l\u001b>\u001b[?2004l\r\r\n"
     ],
     [
-      0.116414,
-      "s"
+      0.000117,
+      "\u001b]2;cd R\u0007"
     ],
     [
-      0.818831,
-      "("
+      0.000109,
+      "\u001b]1;cd\u0007"
     ],
     [
-      0.41696,
-      "\""
+      0.000337,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r"
     ],
     [
-      0.264451,
-      "d"
+      0.00055,
+      "\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/R\u0007"
     ],
     [
-      0.188026,
-      "e"
+      0.000159,
+      "\u001b]1;..16/mrstudyr/R\u0007"
     ],
     [
-      0.111787,
-      "v"
-    ],
-    [
-      0.197442,
-      "t"
-    ],
-    [
-      0.101187,
-      "o"
-    ],
-    [
-      0.133146,
-      "o"
-    ],
-    [
-      0.164321,
-      "l"
-    ],
-    [
-      0.093349,
-      "s"
-    ],
-    [
-      0.534251,
-      "\""
-    ],
-    [
-      0.339381,
-      ")"
-    ],
-    [
-      0.224145,
-      "\r\n"
-    ],
-    [
-      0.015068,
-      "Installing package into ‘/home/mccurdyc/R/x86_64-pc-linux-gnu-library/3.3’\r\n(as ‘lib’ is unspecified)\r\n"
-    ],
-    [
-      1.650048,
-      "trying URL 'http://lib.stat.cmu.edu/R/CRAN/src/contrib/devtools_1.12.0.tar.gz'\r\n"
-    ],
-    [
-      0.162214,
-      "Content type 'application/x-gzip' length 467113 bytes (456 KB)\r\n="
-    ],
-    [
-      0.078972,
-      "=="
-    ],
-    [
-      0.006034,
-      "="
-    ],
-    [
-      0.048329,
-      "=="
-    ],
-    [
-      0.001545,
-      "=="
-    ],
-    [
-      8.7e-05,
-      "="
-    ],
-    [
-      0.004301,
-      "="
-    ],
-    [
-      0.040749,
-      "="
-    ],
-    [
-      0.003816,
-      "=="
-    ],
-    [
-      0.000241,
-      "="
-    ],
-    [
-      0.000383,
-      "="
-    ],
-    [
-      0.000709,
-      "="
-    ],
-    [
-      0.002285,
-      "="
-    ],
-    [
-      0.001281,
-      "="
-    ],
-    [
-      0.000285,
-      "="
-    ],
-    [
-      0.000681,
-      "="
-    ],
-    [
-      0.000157,
-      "="
-    ],
-    [
-      0.000564,
-      "="
-    ],
-    [
-      0.025225,
-      "="
-    ],
-    [
-      0.018754,
-      "="
-    ],
-    [
-      0.00264,
-      "="
-    ],
-    [
-      0.004925,
-      "="
-    ],
-    [
-      0.001628,
-      "=="
+      0.036461,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
     ],
     [
       7.5e-05,
-      "="
+      "\u001b[?1h\u001b="
     ],
     [
-      0.00158,
-      "=="
+      7.8e-05,
+      "\u001b[?2004h"
     ],
     [
-      0.000111,
-      "=="
+      2.830605,
+      "R"
     ],
     [
-      0.002026,
-      "="
+      0.759612,
+      "\u001b[?1l\u001b>"
     ],
     [
-      0.000107,
-      "="
+      0.000165,
+      "\u001b[?2004l\r\r\n"
     ],
     [
-      0.002319,
-      "="
+      0.000966,
+      "\u001b]2;R\u0007\u001b]1;R\u0007"
     ],
     [
-      0.000346,
-      "="
+      0.091945,
+      "\r\nR version 3.3.1 (2016-06-21) -- \"Bug in Your Hair\"\r\nCopyright (C) 2016 The R Foundation for Statistical Computing\r\nPlatform: x86_64-pc-linux-gnu (64-bit)\r\n\r\nR is free software and comes with ABSOLUTELY NO WARRANTY.\r\nYou are welcome to redistribute it under certain conditions.\r\nType 'license()' or 'licence()' for distribution details.\r\n\r\n"
     ],
     [
-      0.001476,
-      "="
+      0.000306,
+      "  Natural language support but running in an English locale\r\n\r\nR is a collaborative project with many contributors.\r\nType 'contributors()' for more information and\r\n'citation()' on how to cite R or R packages in publications.\r\n\r\nType 'demo()' for some demos, 'help()' for on-line help, or\r\n'help.start()' for an HTML browser interface to help.\r\nType 'q()' to quit R.\r\n\r\n"
     ],
     [
-      0.000907,
-      "="
-    ],
-    [
-      0.002321,
-      "="
-    ],
-    [
-      0.001315,
-      "=="
-    ],
-    [
-      0.00251,
-      "="
-    ],
-    [
-      0.000597,
-      "="
-    ],
-    [
-      0.003351,
-      "="
-    ],
-    [
-      0.022235,
-      "=="
-    ],
-    [
-      0.002151,
-      "="
-    ],
-    [
-      0.000227,
-      "="
-    ],
-    [
-      0.003516,
-      "=\r\ndownloaded 456 KB\r\n\r\n"
-    ],
-    [
-      0.512894,
-      "* installing *source* package ‘devtools’ ...\r\n"
-    ],
-    [
-      0.008728,
-      "** package ‘devtools’ successfully unpacked and MD5 sums checked\r\n"
-    ],
-    [
-      0.024644,
-      "** libs\r\n"
-    ],
-    [
-      0.006814,
-      "gcc -I/usr/include/R/ -DNDEBUG  -D_FORTIFY_SOURCE=2    -fpic  -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong  -c devtools.c -o devtools.o\r\n"
-    ],
-    [
-      0.03424,
-      "gcc -shared -L/usr/lib64/R/lib -Wl,-O1,--sort-common,--as-needed,-z,relro -o devtools.so devtools.o -L/usr/lib64/R/lib -lR\r\n"
-    ],
-    [
-      0.016026,
-      "installing to /home/mccurdyc/R/x86_64-pc-linux-gnu-library/3.3/devtools/libs\r\n"
-    ],
-    [
-      0.001399,
-      "** R\r\n"
-    ],
-    [
-      0.053852,
-      "** inst\r\n"
-    ],
-    [
-      0.00131,
-      "** preparing package for lazy loading\r\n"
-    ],
-    [
-      0.122492,
-      "** help\r\n"
-    ],
-    [
-      0.210107,
-      "*** installing help indices\r\n"
-    ],
-    [
-      0.12006,
-      "** building package indices\r\n"
-    ],
-    [
-      0.137924,
-      "** installing vignettes\r\n"
-    ],
-    [
-      0.007982,
-      "** testing if installed package can be loaded\r\n"
-    ],
-    [
-      0.386695,
-      "* DONE (devtools)\r\n"
-    ],
-    [
-      0.010005,
-      "\r\nThe downloaded source packages are in\r\n\t‘/tmp/RtmpoKhHN3/downloaded_packages’\r\n"
-    ],
-    [
-      2.5e-05,
+      0.068192,
       "> "
     ],
     [
-      1.006537,
-      "\u001b[H\u001b[2J> "
-    ],
-    [
-      0.415525,
-      "l"
-    ],
-    [
-      0.086348,
+      3.015012,
       "i"
     ],
     [
-      0.270779,
-      "b"
-    ],
-    [
-      0.164577,
-      "r"
-    ],
-    [
-      0.124833,
-      "a"
-    ],
-    [
-      0.078557,
-      "r"
-    ],
-    [
-      1.236301,
-      "y"
-    ],
-    [
-      0.322422,
-      "("
-    ],
-    [
-      0.508687,
-      "d"
-    ],
-    [
-      0.151035,
-      "e"
-    ],
-    [
-      0.110038,
-      "v"
-    ],
-    [
-      0.206942,
-      "t"
-    ],
-    [
-      0.104018,
-      "o"
-    ],
-    [
-      0.134844,
-      "o"
-    ],
-    [
-      0.166128,
-      "l"
-    ],
-    [
-      0.101873,
-      "s"
-    ],
-    [
-      0.607462,
-      ")"
-    ],
-    [
-      0.218351,
-      "\r\n"
-    ],
-    [
-      0.268398,
-      "> "
-    ],
-    [
-      0.878775,
-      "\u001b[H\u001b[2J> "
-    ],
-    [
-      0.493643,
-      "d"
-    ],
-    [
-      0.181054,
-      "e"
-    ],
-    [
-      0.153869,
-      "v"
-    ],
-    [
-      0.236006,
-      "t"
-    ],
-    [
-      0.348614,
-      "o"
-    ],
-    [
-      0.533881,
-      "ols::"
-    ],
-    [
-      0.692714,
-      "i"
-    ],
-    [
-      0.109314,
+      0.093114,
       "n"
     ],
     [
-      0.059603,
+      0.067612,
       "s"
     ],
     [
-      0.128315,
+      0.136608,
       "t"
     ],
     [
-      0.076814,
+      0.100595,
       "a"
     ],
     [
-      0.12875,
+      0.103035,
       "l"
     ],
     [
-      0.121872,
+      0.13617,
       "l"
     ],
     [
-      0.74266,
-      "_"
+      0.618078,
+      "."
     ],
     [
-      0.372728,
+      0.236464,
+      "p"
+    ],
+    [
+      0.151267,
+      "a"
+    ],
+    [
+      0.078976,
+      "c"
+    ],
+    [
+      0.139873,
+      "k"
+    ],
+    [
+      0.820934,
+      "a"
+    ],
+    [
+      0.142102,
       "g"
     ],
     [
-      0.096612,
-      "i"
+      0.124582,
+      "e"
     ],
     [
-      0.093004,
-      "t"
-    ],
-    [
-      0.130882,
-      "h"
-    ],
-    [
-      0.141152,
-      "u"
-    ],
-    [
-      0.109309,
-      "b"
-    ],
-    [
-      0.898726,
-      "("
-    ],
-    [
-      0.555744,
-      "\""
-    ],
-    [
-      0.286341,
-      "m"
-    ],
-    [
-      0.126317,
-      "r"
-    ],
-    [
-      0.530449,
-      "\b\u001b[K"
-    ],
-    [
-      0.087862,
-      "c"
-    ],
-    [
-      0.16607,
-      "c"
-    ],
-    [
-      0.487164,
-      "u"
-    ],
-    [
-      0.291188,
-      "r"
-    ],
-    [
-      0.652729,
-      "d"
-    ],
-    [
-      0.118931,
-      "y"
-    ],
-    [
-      0.084715,
-      "c"
-    ],
-    [
-      0.693313,
-      "/"
-    ],
-    [
-      0.294993,
-      "m"
-    ],
-    [
-      0.165862,
-      "r"
-    ],
-    [
-      0.187684,
+      0.161827,
       "s"
     ],
     [
-      0.747371,
-      "t"
+      0.436236,
+      "("
     ],
     [
-      0.089482,
-      "u"
-    ],
-    [
-      0.133651,
-      "d"
-    ],
-    [
-      0.10042,
-      "y"
-    ],
-    [
-      0.133227,
-      "r"
-    ],
-    [
-      0.545976,
+      0.497446,
       "\""
     ],
     [
-      0.321829,
-      ")"
+      0.278127,
+      "d"
     ],
     [
-      0.186662,
-      "\r\n"
+      0.16292,
+      "e"
     ],
     [
-      2.998713,
-      "Skipping install of 'mrstudyr' from a github remote, the SHA1 (dd57784a) has not changed since last install.\r\n  Use `force = TRUE` to force installation\r\n> "
+      0.145894,
+      "v"
     ],
     [
-      1.779656,
-      "\u001b[H\u001b[2J> "
+      0.189075,
+      "t"
     ],
     [
-      0.315137,
+      0.113671,
+      "o"
+    ],
+    [
+      0.133301,
+      "o"
+    ],
+    [
+      0.172749,
       "l"
     ],
     [
-      0.077677,
-      "i"
-    ],
-    [
-      0.335102,
-      "b"
-    ],
-    [
-      0.086711,
-      "r"
-    ],
-    [
-      0.106641,
-      "a"
-    ],
-    [
-      0.096169,
-      "r"
-    ],
-    [
-      0.693765,
-      "y"
-    ],
-    [
-      0.463037,
-      "("
-    ],
-    [
-      0.639144,
-      "\""
-    ],
-    [
-      1.536038,
-      "\b\u001b[K"
-    ],
-    [
-      0.148827,
-      "m"
-    ],
-    [
-      0.189234,
-      "r"
-    ],
-    [
-      0.411755,
+      0.067749,
       "s"
     ],
     [
-      0.537477,
-      "t"
+      0.554386,
+      "\""
     ],
     [
-      0.117782,
-      "u"
-    ],
-    [
-      0.105533,
-      "d"
-    ],
-    [
-      0.086774,
-      "y"
-    ],
-    [
-      0.108574,
-      "r"
-    ],
-    [
-      0.628722,
+      0.322509,
       ")"
     ],
     [
-      0.168916,
+      0.177624,
       "\r\n"
     ],
     [
-      0.010371,
-      "Loading required package: readr\r\n"
+      0.015087,
+      "Installing package into ‘/home/mccurdyc/R/x86_64-pc-linux-gnu-library/3.3’\r\n(as ‘lib’ is unspecified)\r\n"
     ],
     [
-      0.139623,
-      "Loading required package: dplyr\r\n"
+      0.965503,
+      "trying URL 'http://lib.stat.cmu.edu/R/CRAN/src/contrib/devtools_1.12.0.tar.gz'\r\n"
     ],
     [
-      0.152659,
-      "\r\nAttaching package: ‘dplyr’\r\n\r\n"
+      0.075734,
+      "Content type 'application/x-gzip' length 467113 bytes (456 KB)\r\n"
     ],
     [
-      0.000631,
-      "The following objects are masked from ‘package:stats’:\r\n\r\n    filter, lag\r\n\r\n"
+      0.000209,
+      "="
     ],
     [
-      0.001468,
-      "The following objects are masked from ‘package:base’:\r\n\r\n    intersect, setdiff, setequal, union\r\n\r\n"
+      0.040021,
+      "="
     ],
     [
-      0.00057,
-      "Loading required package: magrittr\r\n"
+      0.001316,
+      "=="
     ],
     [
-      0.004421,
-      "Loading required package: ggplot2\r\n"
+      0.035436,
+      "=="
     ],
     [
-      0.059688,
-      "Loading required package: broom\r\n"
+      0.00012,
+      "="
     ],
     [
-      0.077698,
-      "Loading required package: Cairo\r\n"
+      0.001016,
+      "="
     ],
     [
-      0.014834,
+      0.001924,
+      "="
+    ],
+    [
+      0.000504,
+      "="
+    ],
+    [
+      0.037022,
+      "="
+    ],
+    [
+      0.001517,
+      "="
+    ],
+    [
+      0.001205,
+      "=="
+    ],
+    [
+      0.000667,
+      "="
+    ],
+    [
+      0.001411,
+      "="
+    ],
+    [
+      0.000329,
+      "="
+    ],
+    [
+      0.001415,
+      "="
+    ],
+    [
+      0.000587,
+      "="
+    ],
+    [
+      0.000888,
+      "="
+    ],
+    [
+      8.9e-05,
+      "="
+    ],
+    [
+      0.002339,
+      "="
+    ],
+    [
+      0.021728,
+      "="
+    ],
+    [
+      0.001062,
+      "="
+    ],
+    [
+      0.008689,
+      "="
+    ],
+    [
+      0.002358,
+      "=="
+    ],
+    [
+      0.002002,
+      "="
+    ],
+    [
+      0.001848,
+      "==="
+    ],
+    [
+      0.001155,
+      "=="
+    ],
+    [
+      0.000226,
+      "="
+    ],
+    [
+      0.00096,
+      "="
+    ],
+    [
+      0.001707,
+      "="
+    ],
+    [
+      0.00132,
+      "="
+    ],
+    [
+      0.001584,
+      "="
+    ],
+    [
+      0.000922,
+      "="
+    ],
+    [
+      0.003611,
+      "="
+    ],
+    [
+      6.9e-05,
+      "="
+    ],
+    [
+      0.000713,
+      "="
+    ],
+    [
+      0.002555,
+      "="
+    ],
+    [
+      0.000655,
+      "="
+    ],
+    [
+      0.001005,
+      "="
+    ],
+    [
+      0.002664,
+      "="
+    ],
+    [
+      0.002068,
+      "="
+    ],
+    [
+      0.00713,
+      "="
+    ],
+    [
+      0.001757,
+      "="
+    ],
+    [
+      6.4e-05,
+      "=\r\n"
+    ],
+    [
+      4.1e-05,
+      "downloaded 456 KB\r\n\r\n"
+    ],
+    [
+      0.51657,
+      "* installing *source* package ‘devtools’ ...\r\n"
+    ],
+    [
+      0.008794,
+      "** package ‘devtools’ successfully unpacked and MD5 sums checked\r\n"
+    ],
+    [
+      0.028512,
+      "** libs\r\n"
+    ],
+    [
+      0.006873,
+      "gcc -I/usr/include/R/ -DNDEBUG  -D_FORTIFY_SOURCE=2    -fpic  -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong  -c devtools.c -o devtools.o\r\n"
+    ],
+    [
+      0.035738,
+      "gcc -shared -L/usr/lib64/R/lib -Wl,-O1,--sort-common,--as-needed,-z,relro -o devtools.so devtools.o -L/usr/lib64/R/lib -lR\r\n"
+    ],
+    [
+      0.015527,
+      "installing to /home/mccurdyc/R/x86_64-pc-linux-gnu-library/3.3/devtools/libs\r\n"
+    ],
+    [
+      0.001464,
+      "** R\r\n"
+    ],
+    [
+      0.052905,
+      "** inst\r\n"
+    ],
+    [
+      0.001318,
+      "** preparing package for lazy loading\r\n"
+    ],
+    [
+      0.123176,
+      "** help\r\n"
+    ],
+    [
+      0.220187,
+      "*** installing help indices\r\n"
+    ],
+    [
+      0.131291,
+      "** building package indices\r\n"
+    ],
+    [
+      0.13644,
+      "** installing vignettes\r\n"
+    ],
+    [
+      0.009693,
+      "** testing if installed package can be loaded\r\n"
+    ],
+    [
+      0.382183,
+      "* DONE (devtools)\r\n"
+    ],
+    [
+      0.009837,
+      "\r\nThe downloaded source packages are in\r\n\t‘/tmp/RtmpeyUnuR/downloaded_packages’\r\n"
+    ],
+    [
+      2e-05,
       "> "
     ],
     [
-      1.468206,
-      "\u001b[H\u001b[2J> "
+      0.833725,
+      "l"
     ],
     [
-      0.762504,
-      "c"
+      0.290611,
+      "i"
     ],
     [
-      1.340948,
+      0.160142,
+      "b"
+    ],
+    [
+      0.086563,
       "r"
     ],
     [
-      0.062582,
-      "e"
-    ],
-    [
-      0.162942,
+      0.114831,
       "a"
     ],
     [
-      0.132209,
-      "t"
-    ],
-    [
-      0.000518,
-      "e"
-    ],
-    [
-      0.995009,
-      "_"
-    ],
-    [
-      0.818908,
+      0.134898,
       "r"
     ],
     [
-      0.243433,
-      "andom_sampling_graphs"
+      0.585992,
+      "y"
     ],
     [
-      0.919781,
+      0.393745,
       "("
     ],
     [
-      0.172446,
+      1.390387,
+      "d"
+    ],
+    [
+      0.199956,
+      "e"
+    ],
+    [
+      0.169978,
+      "v"
+    ],
+    [
+      0.202535,
+      "t"
+    ],
+    [
+      0.094993,
+      "o"
+    ],
+    [
+      0.135661,
+      "o"
+    ],
+    [
+      0.164635,
+      "l"
+    ],
+    [
+      0.052204,
+      "s"
+    ],
+    [
+      0.56058,
       ")"
     ],
     [
-      0.191787,
+      0.227658,
       "\r\n"
     ],
     [
-      0.056212,
+      0.269847,
+      "> "
+    ],
+    [
+      1.881278,
+      "\u001b[H\u001b[2J> "
+    ],
+    [
+      0.716627,
+      "d"
+    ],
+    [
+      0.160055,
+      "e"
+    ],
+    [
+      0.129341,
+      "v"
+    ],
+    [
+      0.177095,
+      "\u0007"
+    ],
+    [
+      0.88075,
+      "t"
+    ],
+    [
+      0.10068,
+      "o"
+    ],
+    [
+      0.158084,
+      "ols::"
+    ],
+    [
+      1.172526,
+      "i"
+    ],
+    [
+      0.054499,
+      "n"
+    ],
+    [
+      0.05106,
+      "s"
+    ],
+    [
+      0.125053,
+      "t"
+    ],
+    [
+      0.128703,
+      "\u0007"
+    ],
+    [
+      0.729793,
+      "a"
+    ],
+    [
+      0.142612,
+      "l"
+    ],
+    [
+      0.139836,
+      "l"
+    ],
+    [
+      0.115587,
+      "\u0007"
+    ],
+    [
+      0.922631,
+      "_"
+    ],
+    [
+      0.886044,
+      "g"
+    ],
+    [
+      0.113561,
+      "i"
+    ],
+    [
+      0.115777,
+      "t"
+    ],
+    [
+      0.599279,
+      "h"
+    ],
+    [
+      0.185066,
+      "ub"
+    ],
+    [
+      1.011085,
+      "("
+    ],
+    [
+      0.480573,
+      "\""
+    ],
+    [
+      0.496584,
+      "m"
+    ],
+    [
+      0.096044,
+      "c"
+    ],
+    [
+      0.163331,
+      "c"
+    ],
+    [
+      0.072048,
+      "u"
+    ],
+    [
+      0.119713,
+      "r"
+    ],
+    [
+      0.08554,
+      "d"
+    ],
+    [
+      0.070529,
+      "y"
+    ],
+    [
+      0.194617,
+      "c"
+    ],
+    [
+      0.761906,
+      "/"
+    ],
+    [
+      0.299113,
+      "m"
+    ],
+    [
+      0.131388,
+      "r"
+    ],
+    [
+      0.204639,
+      "s"
+    ],
+    [
+      0.188697,
+      "t"
+    ],
+    [
+      0.470986,
+      "u"
+    ],
+    [
+      0.100637,
+      "d"
+    ],
+    [
+      0.101852,
+      "y"
+    ],
+    [
+      0.091634,
+      "r"
+    ],
+    [
+      0.591584,
+      "\""
+    ],
+    [
+      0.314248,
+      ")"
+    ],
+    [
+      0.520111,
+      "\r\n"
+    ],
+    [
+      2.847112,
+      "Downloading GitHub repo mccurdyc/mrstudyr@master\r\nfrom URL https://api.github.com/repos/mccurdyc/mrstudyr/zipball/master\r\n"
+    ],
+    [
+      1.735049,
+      "Installing mrstudyr\r\n"
+    ],
+    [
+      0.93301,
+      "'/usr/lib64/R/bin/R' --no-site-file --no-environ --no-save --no-restore  \\\r\n  --quiet CMD INSTALL  \\\r\n  '/tmp/RtmpeyUnuR/devtools2578566c1ff/mccurdyc-mrstudyr-ac32b81'  \\\r\n  --library='/home/mccurdyc/R/x86_64-pc-linux-gnu-library/3.3'  \\\r\n  --install-tests \r\n\r\n"
+    ],
+    [
+      0.145425,
+      "* installing *source* package ‘mrstudyr’ ...\r\n"
+    ],
+    [
+      0.023046,
+      "** R\r\n"
+    ],
+    [
+      0.004831,
+      "** inst\r\n"
+    ],
+    [
+      0.007819,
+      "** preparing package for lazy loading\r\n"
+    ],
+    [
+      0.472487,
+      "** help\r\n"
+    ],
+    [
+      0.077604,
+      "*** installing help indices\r\n"
+    ],
+    [
+      0.043538,
+      "** building package indices\r\n"
+    ],
+    [
+      0.045015,
+      "** testing if installed package can be loaded\r\n"
+    ],
+    [
+      0.578663,
+      "* DONE (mrstudyr)\r\n"
+    ],
+    [
+      0.033066,
+      "> "
+    ],
+    [
+      2.352739,
+      "l"
+    ],
+    [
+      0.248933,
+      "i"
+    ],
+    [
+      0.557935,
+      "b"
+    ],
+    [
+      0.079019,
+      "r"
+    ],
+    [
+      0.131167,
+      "a"
+    ],
+    [
+      0.095264,
+      "r"
+    ],
+    [
+      0.752051,
+      "y"
+    ],
+    [
+      0.554766,
+      "("
+    ],
+    [
+      0.335359,
+      "m"
+    ],
+    [
+      0.151582,
+      "r"
+    ],
+    [
+      0.597538,
+      "s"
+    ],
+    [
+      0.395417,
+      "t"
+    ],
+    [
+      0.144797,
+      "u"
+    ],
+    [
+      0.118222,
+      "d"
+    ],
+    [
+      0.087046,
+      "y"
+    ],
+    [
+      0.103821,
+      "r"
+    ],
+    [
+      0.544306,
+      ")"
+    ],
+    [
+      0.468726,
+      "\r\n"
+    ],
+    [
+      0.013799,
+      "Loading required package: readr\r\n"
+    ],
+    [
+      0.121737,
+      "Loading required package: dplyr\r\n"
+    ],
+    [
+      0.114584,
+      "\r\nAttaching package: ‘dplyr’\r\n\r\n"
+    ],
+    [
+      0.000318,
+      "The following objects are masked from ‘package:stats’:\r\n\r\n    filter, lag\r\n\r\n"
+    ],
+    [
+      0.001426,
+      "The following objects are masked from ‘package:base’:\r\n\r\n    intersect, setdiff, setequal, union\r\n\r\n"
+    ],
+    [
+      0.000621,
+      "Loading required package: magrittr\r\n"
+    ],
+    [
+      0.004325,
+      "Loading required package: ggplot2\r\n"
+    ],
+    [
+      0.067072,
+      "Loading required package: broom\r\n"
+    ],
+    [
+      0.081183,
+      "Loading required package: Cairo\r\n"
+    ],
+    [
+      0.015161,
+      "> "
+    ],
+    [
+      2.624396,
+      "\u001b[H\u001b[2J> "
+    ],
+    [
+      0.970147,
+      "c"
+    ],
+    [
+      0.220841,
+      "r"
+    ],
+    [
+      0.109716,
+      "e"
+    ],
+    [
+      0.138858,
+      "a"
+    ],
+    [
+      0.507216,
+      "t"
+    ],
+    [
+      0.15167,
+      "\u0007e"
+    ],
+    [
+      0.845023,
+      "_"
+    ],
+    [
+      0.212805,
+      "r"
+    ],
+    [
+      0.15444,
+      "andom_sampling_graphs"
+    ],
+    [
+      0.8711,
+      "("
+    ],
+    [
+      0.18099,
+      ")"
+    ],
+    [
+      0.595193,
+      "\r\n"
+    ],
+    [
+      0.05305,
       "Parsed with column specification:\r\ncols(\r\n  identifier = col_character(),\r\n  dbms = col_character(),\r\n  schema = col_character(),\r\n  operator = col_character(),\r\n  type = col_character(),\r\n  killed = col_character(),\r\n  time = col_integer()\r\n)\r\n"
     ],
     [
-      0.250032,
+      0.276285,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 1 percent ...\"\r\n"
     ],
     [
-      0.892882,
+      0.974498,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 10 percent ...\"\r\n"
     ],
     [
-      0.963397,
+      0.951727,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 20 percent ...\"\r\n"
     ],
     [
-      0.915155,
+      1.029564,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 30 percent ...\"\r\n"
     ],
     [
-      0.974896,
+      0.960915,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 40 percent ...\"\r\n"
     ],
     [
-      1.014012,
+      1.014085,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 50 percent ...\"\r\n"
     ],
     [
-      1.047848,
+      1.050563,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 60 percent ...\"\r\n"
     ],
     [
-      1.023814,
+      1.112152,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 70 percent ...\"\r\n"
     ],
     [
-      1.067808,
+      1.148258,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 80 percent ...\"\r\n"
     ],
     [
-      1.110355,
+      1.127898,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 90 percent ...\"\r\n"
     ],
     [
-      1.107095,
+      1.199195,
       "[1] \"RANDOM SAMPLING: Currently analysing x = 100 percent ...\"\r\n"
     ],
     [
-      1.94994,
-      "Observations: 11\r\n"
-    ],
-    [
-      8.3e-05,
-      "Variables: 4\r\n"
-    ],
-    [
-      0.000672,
-      "$ percent     <dbl> 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\r\n$ correlation <dbl> 0.3543934, 0.7161939, 0.7390794, 0.8318277, 0.8269172, ...\r\n$ mae         <dbl> 10.2801944, 2.7157345, 2.0720863, 1.3352823, 1.1982851,...\r\n$ rmse        <dbl> 13.4629603, 3.8475786, 2.9289196, 1.8841006, 1.5999642,...\r\n> "
-    ],
-    [
-      6.295033,
-      "create_random_sampling_graphs()"
-    ],
-    [
-      0.38507,
-      "\b"
-    ],
-    [
-      0.500943,
-      "\b"
-    ],
-    [
-      0.049644,
-      "\b"
-    ],
-    [
-      0.050441,
-      "\b"
-    ],
-    [
-      0.050444,
-      "\b"
-    ],
-    [
-      0.051813,
-      "\b"
-    ],
-    [
-      0.049293,
-      "\b"
-    ],
-    [
-      0.050671,
-      "\b"
-    ],
-    [
-      0.051187,
-      "\b"
-    ],
-    [
-      0.051465,
-      "\b"
-    ],
-    [
-      0.049799,
-      "\b"
-    ],
-    [
-      0.05027,
-      "\b"
-    ],
-    [
-      0.050337,
-      "\b"
-    ],
-    [
-      0.050198,
-      "\b"
-    ],
-    [
-      0.050694,
-      "\b"
-    ],
-    [
-      0.050737,
-      "\b"
-    ],
-    [
-      0.250449,
-      "\b"
-    ],
-    [
-      0.159519,
-      "\b"
-    ],
-    [
-      0.371606,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.170973,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.106787,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.195835,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.17626,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.453892,
-      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.417055,
-      "o_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.155266,
-      "p_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.151982,
-      "e_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.462672,
-      "r_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.15122,
-      "a_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.125813,
-      "t_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.118542,
-      "o_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
-    ],
-    [
-      0.126089,
-      "r_sampling_graphs()\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-    ],
-    [
-      0.629445,
-      "\r\n"
-    ],
-    [
-      0.0165,
-      "Parsed with column specification:\r\ncols(\r\n  identifier = col_character(),\r\n  dbms = col_character(),\r\n  schema = col_character(),\r\n  operator = col_character(),\r\n  type = col_character(),\r\n  killed = col_character(),\r\n  time = col_integer()\r\n)\r\n"
-    ],
-    [
-      0.161359,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 1 percent ...\"\r\n"
-    ],
-    [
-      0.982268,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 10 percent ...\"\r\n"
-    ],
-    [
-      0.938585,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 20 percent ...\"\r\n"
-    ],
-    [
-      0.977123,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 30 percent ...\"\r\n"
-    ],
-    [
-      1.028479,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 40 percent ...\"\r\n"
-    ],
-    [
-      1.050741,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 50 percent ...\"\r\n"
-    ],
-    [
-      1.088257,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 60 percent ...\"\r\n"
-    ],
-    [
-      1.076078,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 70 percent ...\"\r\n"
-    ],
-    [
-      1.170799,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 80 percent ...\"\r\n"
-    ],
-    [
-      1.107562,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 90 percent ...\"\r\n"
-    ],
-    [
-      1.230118,
-      "[1] \"ACROSS OPERATORS: Currently analysing x = 100 percent ...\"\r\n"
-    ],
-    [
-      1.944005,
+      2.047349,
       "Observations: 11\r\n"
     ],
     [
@@ -1105,62 +1057,426 @@
       "Variables: 4\r\n"
     ],
     [
-      0.000522,
-      "$ percent     <dbl> 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\r\n$ correlation <dbl> 0.3165962, 0.6808092, 0.7840503, 0.8052458, 0.8175134, ...\r\n$ mae         <dbl> 9.7359229, 3.1091096, 1.7502753, 1.4323587, 1.1305308, ...\r\n$ rmse        <dbl> 12.6677103, 4.1584037, 2.4714570, 1.9897637, 1.5777087,...\r\n> "
+      0.000664,
+      "$ percent     <dbl> 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\r\n$ correlation <dbl> 0.3945980, 0.6956448, 0.7320997, 0.8044588, 0.8175910, ...\r\n$ mae         <dbl> 9.2126578, 2.7196885, 2.0225142, 1.5158046, 1.1991171, ...\r\n$ rmse        <dbl> 12.5065912, 3.8026353, 2.8587462, 2.1308484, 1.7289514,...\r\n> "
     ],
     [
-      7.221192,
+      4.323271,
+      "create_random_sampling_graphs()"
+    ],
+    [
+      0.431597,
+      "\b"
+    ],
+    [
+      0.500964,
+      "\b"
+    ],
+    [
+      0.050706,
+      "\b"
+    ],
+    [
+      0.049589,
+      "\b"
+    ],
+    [
+      0.051045,
+      "\b"
+    ],
+    [
+      0.05045,
+      "\b"
+    ],
+    [
+      0.050628,
+      "\b"
+    ],
+    [
+      0.050602,
+      "\b"
+    ],
+    [
+      0.050215,
+      "\b"
+    ],
+    [
+      0.050657,
+      "\b"
+    ],
+    [
+      0.050109,
+      "\b"
+    ],
+    [
+      0.051642,
+      "\b"
+    ],
+    [
+      0.049789,
+      "\b"
+    ],
+    [
+      0.050419,
+      "\b"
+    ],
+    [
+      0.051513,
+      "\b"
+    ],
+    [
+      0.050594,
+      "\b"
+    ],
+    [
+      0.050821,
+      "\b"
+    ],
+    [
+      0.218858,
+      "\b"
+    ],
+    [
+      0.512731,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.166848,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.137224,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.155818,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.150649,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.190699,
+      "\b\u001b[1P_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.576369,
+      "o_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.118405,
+      "p_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.050986,
+      "e_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.070091,
+      "r_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.138288,
+      "a_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.126771,
+      "t_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.269069,
+      "o_sampling_graphs()\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C"
+    ],
+    [
+      0.093025,
+      "r_sampling_graphs()\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+    ],
+    [
+      1.51068,
+      "\r\n"
+    ],
+    [
+      0.016643,
+      "Parsed with column specification:\r\ncols(\r\n  identifier = col_character(),\r\n  dbms = col_character(),\r\n  schema = col_character(),\r\n  operator = col_character(),\r\n  type = col_character(),\r\n  killed = col_character(),\r\n  time = col_integer()\r\n)\r\n"
+    ],
+    [
+      0.175312,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 1 percent ...\"\r\n"
+    ],
+    [
+      1.020733,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 10 percent ...\"\r\n"
+    ],
+    [
+      0.986708,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 20 percent ...\"\r\n"
+    ],
+    [
+      1.02921,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 30 percent ...\"\r\n"
+    ],
+    [
+      1.066019,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 40 percent ...\"\r\n"
+    ],
+    [
+      1.129226,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 50 percent ...\"\r\n"
+    ],
+    [
+      1.103192,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 60 percent ...\"\r\n"
+    ],
+    [
+      1.161862,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 70 percent ...\"\r\n"
+    ],
+    [
+      1.205135,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 80 percent ...\"\r\n"
+    ],
+    [
+      1.234224,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 90 percent ...\"\r\n"
+    ],
+    [
+      1.218246,
+      "[1] \"ACROSS OPERATORS: Currently analysing x = 100 percent ...\"\r\n"
+    ],
+    [
+      2.027112,
+      "Observations: 11\r\n"
+    ],
+    [
+      8.5e-05,
+      "Variables: 4\r\n"
+    ],
+    [
+      0.000484,
+      "$ percent     <dbl> 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\r\n$ correlation <dbl> 0.3342734, 0.6697200, 0.7389747, 0.8092929, 0.8235458, ...\r\n$ mae         <dbl> 10.3053554, 3.1616695, 2.0259878, 1.4794416, 1.2571945,...\r\n$ rmse        <dbl> 13.8997747, 4.5098961, 2.7887745, 2.0155582, 1.7367427,...\r\n> "
+    ],
+    [
+      3.865896,
       "q"
     ],
     [
-      0.376081,
+      1.535213,
       "("
     ],
     [
-      0.322885,
+      0.195829,
       ")"
     ],
     [
-      0.7375,
+      0.531244,
       "\r\n"
     ],
     [
-      0.000711,
+      0.000715,
       "Save workspace image? [y/n/c]: "
     ],
     [
-      1.188045,
+      1.413085,
       "n"
     ],
     [
-      0.538041,
+      0.542985,
       "\r\n"
     ],
     [
-      0.039676,
+      0.044343,
       "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r"
     ],
     [
-      0.000115,
+      0.000101,
       "\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/R\u0007\u001b]1;..16/mrstudyr/R\u0007"
     ],
     [
-      0.009334,
-      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K\u001b[?1h\u001b=\u001b[?2004h"
+      0.009001,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K\u001b[?1h\u001b="
     ],
     [
-      0.950571,
+      2e-05,
+      "\u001b[?2004h"
+    ],
+    [
+      0.912375,
       "\u001b[H\u001b[2J\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mR\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
     ],
     [
-      1.400188,
-      "\u001b[?2004l\r"
+      0.563705,
+      "c"
     ],
     [
-      0.000111,
-      "\r\n"
+      0.094468,
+      "\bcd"
+    ],
+    [
+      0.127522,
+      " "
+    ],
+    [
+      0.362015,
+      "g"
+    ],
+    [
+      0.18753,
+      "r"
+    ],
+    [
+      0.136495,
+      "\u0007"
+    ],
+    [
+      1.951297,
+      "\b \b"
+    ],
+    [
+      0.132062,
+      "\b \b"
+    ],
+    [
+      0.172499,
+      "\b"
+    ],
+    [
+      0.371126,
+      " "
+    ],
+    [
+      0.162204,
+      "."
+    ],
+    [
+      0.147208,
+      "."
+    ],
+    [
+      0.120717,
+      "/"
+    ],
+    [
+      0.572223,
+      "g"
+    ],
+    [
+      0.172578,
+      "r"
+    ],
+    [
+      0.099018,
+      "aphics\u001b[1m/\u001b[0m"
+    ],
+    [
+      0.927442,
+      "\b\u001b[0m/f"
+    ],
+    [
+      0.168922,
+      "r"
+    ],
+    [
+      0.090935,
+      "om-data\u001b[1m/\u001b[0m"
+    ],
+    [
+      1.457792,
+      "\b\u001b[0m \b\u001b[?1l\u001b>\u001b[?2004l\r\r\n\u001b]2;cd ../graphics/from-data\u0007\u001b]1;cd\u0007\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/graphics/from-data\u0007\u001b]1;..ics/from-data\u0007"
+    ],
+    [
+      0.029003,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mfrom-data\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
+    ],
+    [
+      0.000148,
+      "\u001b[?1h\u001b=\u001b[?2004h"
+    ],
+    [
+      0.564305,
+      "l"
+    ],
+    [
+      0.074709,
+      "\bls"
+    ],
+    [
+      0.092304,
+      " "
+    ],
+    [
+      1.224602,
+      "\u001b[?1l\u001b>"
+    ],
+    [
+      9.6e-05,
+      "\u001b[?2004l\r\r\n"
+    ],
+    [
+      0.001137,
+      "\u001b]2;ls --color=tty\u0007\u001b]1;ls\u0007"
+    ],
+    [
+      0.003598,
+      "mutation_score_operator_plot.pdf  mutation_score_operator_plot.png  mutation_score_random_plot.pdf  mutation_score_random_plot.png  mutation_score_random_plot_trans.pdf\r\n"
+    ],
+    [
+      0.000599,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r"
+    ],
+    [
+      0.000302,
+      "\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/graphics/from-data\u0007"
+    ],
+    [
+      8.1e-05,
+      "\u001b]1;..ics/from-data\u0007"
+    ],
+    [
+      0.030132,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;32m➜  \u001b[36mfrom-data\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K\u001b[?1h\u001b="
+    ],
+    [
+      0.000119,
+      "\u001b[?2004h"
+    ],
+    [
+      3.815371,
+      "\u001b[?2004l\r\r\n"
+    ],
+    [
+      0.000573,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                                                                                         \r \r"
+    ],
+    [
+      0.000412,
+      "\u001b]2;mccurdyc@colton-arch: ~/computer-science/summer-2016/mrstudyr/graphics/from-data\u0007"
+    ],
+    [
+      8e-05,
+      "\u001b]1;..ics/from-data\u0007"
+    ],
+    [
+      0.031503,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[01;31m➜  \u001b[36mfrom-data\u001b[00m \u001b[01;34mgit:(\u001b[31mmaster\u001b[34m) \u001b[33m✗\u001b[00m \u001b[K"
+    ],
+    [
+      0.000103,
+      "\u001b[?1h\u001b="
+    ],
+    [
+      0.00019,
+      "\u001b[?2004h"
+    ],
+    [
+      1.727576,
+      "\u001b[?2004l\r\r\n"
     ]
   ],
-  "title": null,
-  "command": null
+  "duration": 130.270353,
+  "height": 68,
+  "version": 1,
+  "command": null,
+  "width": 250,
+  "title": null
 }

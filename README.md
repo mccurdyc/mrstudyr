@@ -45,7 +45,7 @@ library(mrstudyr)
 
 ## Usage
 
-[![asciicast](https://asciinema.org/a/eynxsw933r4td514ol5b2dqdh.png)](https://asciinema.org/a/eynxsw933r4td514ol5b2dqdh)
+[![asciicast](https://asciinema.org/a/86989.png)](https://asciinema.org/a/86989)
 
 ### Analysing Reduction Techniques
 

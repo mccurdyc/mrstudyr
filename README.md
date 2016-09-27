@@ -61,7 +61,8 @@ to create additional informative visualizations.
 
 To create the visualization in the accompanying paper, a single function call is necessary: `create_random_sampling_graphs`.
 In the paper, the visualization is focused on the random sampling mutant reduction technique but, creating the same visualization
-for the operator sampling technique is just as easy, `create_operator_sampling_graphs`.
+for the operator sampling technique is just as easy, `create_operator_sampling_graphs`. If you are interested in comparing
+different percentage values, you can change those values in the `R/create.R` file under the respective function.
 
 Which produces the following visualization from the paper:
 

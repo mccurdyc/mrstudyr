@@ -19,9 +19,13 @@ visualize_random_sampling_mutation_scores <- function(d, trans = FALSE) {
 #' Visualize mutation scores for the operator sampling reduction technique
 #' @export
 
-visualize_operator_sampling_mutation_scores <- function(d) {
+visualize_operator_sampling_mutation_scores <- function(d, trans = FALSE) {
   p <- visualize_plot_mutation_score(d)
-  name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
+  if (trans != FALSE) {
+    name <- "../graphics/from-data/mutation_score_operator_plot_trans.pdf"
+  } else {
+    name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
+  }
   visualize_save_graphic(name, p, 7, 7)
   return(p)
 }
@@ -43,8 +47,6 @@ visualize_plot_mutation_score <- function(d, trans = FALSE) {
     ggplot2::theme_bw(base_size = 10) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-    ggplot2::theme(panel.background = element_blank()) +
-    ggplot2::theme(plot.background = element_blank()) +
     ggplot2::xlab("Schema") +
     ggplot2::ylab("Mutation Score")
     return(p)
@@ -57,6 +59,8 @@ visualize_plot_mutation_score <- function(d, trans = FALSE) {
     ggplot2::theme_bw(base_size = 10) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent",colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent",colour = NA)) +
     ggplot2::xlab("Schema") +
     ggplot2::ylab("Mutation Score")
     return(p)

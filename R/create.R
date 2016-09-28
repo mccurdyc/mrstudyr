@@ -16,6 +16,7 @@ create_random_sampling_graphs <- function() {
   # calculate Kendall's Tau_B correlation coefficient, MAE, RMSE
   random_sampling_calculations <- random_sampling_data %>% analyze_calculations()
   dplyr::glimpse(random_sampling_calculations)
+  xtable::xtable(random_sampling_calculations) %>% print(type = "latex", file = "../output/random_sampling_calculation_table.tex")
 }
 
 #' FUNCTION: create_operator_sampling_graphs
@@ -36,4 +37,5 @@ create_operator_sampling_graphs <- function() {
   # calculate Kendall's Tau_B correlation coefficient, MAE, RMSE
   operator_sampling_calculations <- operator_sampling_data %>% analyze_calculations()
   dplyr::glimpse(operator_sampling_calculations)
+  xtable::xtable(operator_sampling_calculations) %>% print(type = "latex", file = "../output/operator_sampling_calculation_table.tex")
 }

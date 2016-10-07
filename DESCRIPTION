@@ -14,7 +14,6 @@ Depends:
     magrittr,
     ggplot2,
     broom,
-    Cairo,
     xtable
 Imports:
     readr,
@@ -22,7 +21,6 @@ Imports:
     magrittr,
     ggplot2,
     broom,
-    Cairo,
     xtable
 License: GNU GENERAL PUBLIC LICENSE v3.0
 Encoding: UTF-8

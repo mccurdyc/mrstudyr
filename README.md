@@ -71,11 +71,14 @@ Which produces the following visualization from the paper:
 </p>
 
 ## Building and Execution Environment
-All of the previous instructions for building, installing, and using mrstudyr have been tested on Mac OS X 10.11 "El Capitan".
-All of the development and testing was done using R version 3.2.3 "Wooden Christmas-Tree".
+All of the previous instructions for building, installing, and using mrstudyr have been tested on Mac OS X 10.11 "El Capitan" and
+Arch Linux 4.7.6.j
+All of the development and testing was done using R version 3.3.1 "Bug in Your Hair".
 While mrstudyr is very likely to work on other Unix-based development environments, we cannot guarantee correct results for systems
 different than the ones mentioned previously. Currently, mrstudyr does not provide support for the building, installation,
-or use on Windows unless using RStudio.
+or use on Windows unless using RStudio --- which also has not been tested.
+
+However, if you have questions or comments, please let me know and I will try to assist you.
 
 ## License
 [GNU General Public License v3.0](./LICENSE)

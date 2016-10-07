@@ -72,8 +72,7 @@ Which produces the following visualization from the paper:
 
 ## Building and Execution Environment
 All of the previous instructions for building, installing, and using mrstudyr have been tested on Mac OS X 10.11 "El Capitan" and
-Arch Linux 4.7.6.j
-All of the development and testing was done using R version 3.3.1 "Bug in Your Hair".
+Arch Linux 4.7.6. All of the development and testing was done using R version 3.3.1 "Bug in Your Hair".
 While mrstudyr is very likely to work on other Unix-based development environments, we cannot guarantee correct results for systems
 different than the ones mentioned previously. Currently, mrstudyr does not provide support for the building, installation,
 or use on Windows unless using RStudio --- which also has not been tested.

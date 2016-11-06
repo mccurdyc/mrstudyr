@@ -8,6 +8,16 @@ transform_replace_correlation <- function(d) {
   dt <- d %>% dplyr::rename(correlation = estimate)
 }
 
+#' FUNCTION: transform_add_trial
+#'
+#' Add the trial
+#' @export
+
+transform_add_trial <- function(d, t) {
+  dt <- d %>% dplyr::mutate(trial = t)
+  return(dt)
+}
+
 #' FUNCTION: transform_add_percentage_trial
 #'
 #' Add the analyzed percentage and current trial to data frame

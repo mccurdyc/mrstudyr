@@ -4,7 +4,7 @@
 \alias{visualize_save_graphic}
 \title{FUNCTION: visualize_save_graphic}
 \usage{
-visualize_save_graphic(save_name, save_plot, h, w)
+visualize_save_graphic(save_name, save_plot, w, h)
 }
 \description{
 Saves the provided graphic to the provided name.

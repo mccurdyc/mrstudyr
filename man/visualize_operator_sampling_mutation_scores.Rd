@@ -4,7 +4,7 @@
 \alias{visualize_operator_sampling_mutation_scores}
 \title{FUNCTION: visualize_operator_sampling_mutation_scores}
 \usage{
-visualize_operator_sampling_mutation_scores(d)
+visualize_operator_sampling_mutation_scores(d, trans = FALSE)
 }
 \description{
 Visualize mutation scores for the operator sampling reduction technique

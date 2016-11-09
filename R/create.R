@@ -63,3 +63,24 @@ create_selective_mutation_graphs <- function() {
   dplyr::glimpse(selective_mutation_calculations)
   # xtable::xtable(operator_sampling_calculations) %>% print(type = "latex", file = "../output/operator_sampling_calculation_table.tex")
 }
+
+#' FUNCTION: create_selective_random_mutation_graphs
+#'
+#' Create all of the visualizations associated with performing random sampling and selective mutation
+#' (selecting a set of operators). In other words, perform random sampling over a select set of operators.
+#' @export
+
+create_selective_random_mutation_graphs <- function() {
+
+  # read the sqlite-avmdefaults data and specifically filter for the schemas described in the paper
+  # if you want to analyze different data, call a different read function
+  # d <- read_sqlite_avmdefaults() %>% collect_study_schemas() %>% collect_normal_data()
+  d <- read_sqlite_avmdefaults() %>% collect_normal_data()
+
+  selective_random_mutation_data <- d %>% analyze_selective_random_mutation(c("FKCColumnPairE", "NNCA", "UCColumnA", "FKCColumnPairR", "PKCColumnA", "PKCColumnR", "PKCColumnE", "NNCR", "CCNullifier", "CCRelationalExpressionOperatorE", "UCColumnR", "UCColumnE", "CCInExpressionRHSListExpressionElementR"))
+
+  # calculate Kendall's Tau_B correlation coefficient, MAE, RMSE
+  selective_random_mutation_calculations <- selective_random_mutation_data %>% analyze_percent_calculations()
+  dplyr::glimpse(selective_random_mutation_calculations)
+  # xtable::xtable(operator_sampling_calculations) %>% print(type = "latex", file = "../output/operator_sampling_calculation_table.tex")
+}

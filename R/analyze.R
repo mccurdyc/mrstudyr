@@ -93,7 +93,7 @@ analyze_selective_mutation <- function(d, o) {
   df <- data.frame()
 
     for(j in 1:30) {
-    print(paste("OPERATOR SAMPLING: Currently on trial: ", j, " ..."))
+    print(paste("OPERATOR SELECTION: Currently on trial: ", j, " ..."))
       dt <- selective_mutation(d, j, o) %>% as.data.frame()
       df <- rbind(df, dt)
   }
@@ -119,6 +119,48 @@ selective_mutation <- function(d, j, o) {
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
         transform_add_trial(j)
+  return(dt)
+}
+
+#' FUNCTION: analyze_selective_random_mutation
+#'
+#' This function will analyze a select set of operators over percentages
+#' @export
+
+analyze_selective_random_mutation <- function(d, o) {
+
+  percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+  df <- data.frame()
+
+  for(i in percentages) {
+    print(paste("OPERATOR SAMPLING: Currently analyzing x =", (i*100), "percent ..."))
+    for(j in 1:30) {
+      dt <- selective_random(d, o, i, j) %>% as.data.frame()
+      df <- rbind(df, dt)
+    }
+  }
+  return(df)
+}
+
+#' FUNCTION: selective_random
+#'
+#' Perform selective mutation with random sampling per set
+#' @export
+
+selective_random <- function(d, o, i, j) {
+  original_data <- d %>% collect_schema_data()
+  selective_random_data <- original_data %>% select_operators(o) %>% select_x_percent_across_operators(i)
+  reduced_numerator <- selective_random_data %>% transform_reduced_killed_count()
+  reduced_denominator <- selective_random_data %>% transform_reduced_total_count()
+  original_numerator <-  original_data %>% transform_original_killed_count()
+  original_denominator <- original_data %>% transform_original_total_count()
+  reduced_time <- selective_random_data %>% summarize_reduced_time()
+  original_time <- original_data %>% summarize_original_time()
+  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- dt %>% transform_cost_reduction() %>%
+        transform_reduced_mutation_score() %>%
+        transform_original_mutation_score() %>%
+        transform_add_percentage_trial((i * 100), j)
   return(dt)
 }
 

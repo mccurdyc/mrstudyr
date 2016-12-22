@@ -7,7 +7,7 @@
 analyze_percent_calculations(d)
 }
 \description{
-Calculate the effectiveness of a reduction technique.
+Calculate the effectiveness of a reduction technique across schemas.
 The metrics to determine effectiveness will be Kendall's tau_b correlation coefficient,
 mae and rmse.
 }

@@ -7,6 +7,6 @@
 random_sampling(d, i, j)
 }
 \description{
-Perform random sampling
+Perform random sampling, also referred to as uniform random sampling
 }
 

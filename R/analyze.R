@@ -20,7 +20,7 @@ analyze_random_sampling <- function(d) {
 
 #' FUNCTION: random_sampling
 #'
-#' Perform random sampling
+#' Perform random sampling, also referred to as uniform random sampling
 #' @export
 
 random_sampling <- function(d, i, j) {
@@ -40,91 +40,11 @@ random_sampling <- function(d, i, j) {
   return(dt)
 }
 
-#' FUNCTION: analyze_across_operators
-#'
-#' This function will perform sampling across all operators --- this is not operators selection as alll
-#' operators will be present.
-#' @export
-
-analyze_across_operators <- function(d) {
-
-  percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-  df <- data.frame()
-
-  for(i in percentages) {
-    print(paste("ACROSS OPERATORS: Currently analyzing x =", (i*100), "percent ..."))
-    for(j in 1:30) {
-      dt <- across_operators(d, i, j) %>% as.data.frame()
-      df <- rbind(df, dt)
-    }
-  }
-  return(df)
-}
-
-#' FUNCTION: across_operators
-#'
-#' Perform random sampling across operators
-#' @export
-
-across_operators <- function(d, i, j) {
-  original_data <- d %>% collect_schema_data()
-  across_operator_data <- original_data %>% select_x_percent_across_operators(i)
-  reduced_numerator <- across_operator_data %>% transform_reduced_killed_count()
-  reduced_denominator <- across_operator_data %>% transform_reduced_total_count()
-  original_numerator <-  original_data %>% transform_original_killed_count()
-  original_denominator <- original_data %>% transform_original_total_count()
-  reduced_time <- across_operator_data %>% summarize_reduced_time()
-  original_time <- original_data %>% summarize_original_time()
-  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
-  dt <- dt %>% transform_cost_reduction() %>%
-        transform_reduced_mutation_score() %>%
-        transform_original_mutation_score() %>%
-        transform_add_percentage_trial((i * 100), j)
-  return(dt)
-}
-
-#' FUNCTION: analyze_selective_mutation
-#'
-#' This function will perform selective mutation over 30 trials
-#' @export
-
-analyze_selective_mutation <- function(d, o) {
-
-  df <- data.frame()
-
-    for(j in 1:30) {
-    print(paste("OPERATOR SELECTION: Currently on trial: ", j, " ..."))
-      dt <- selective_mutation(d, j, o) %>% as.data.frame()
-      df <- rbind(df, dt)
-  }
-  return(df)
-}
-
-#' FUNCTION: selective_mutation
-#'
-#' Perform selective mutation
-#' @export
-
-selective_mutation <- function(d, j, o) {
-  original_data <- d %>% collect_schema_data()
-  operator_data <- original_data %>% select_operators(o)
-  reduced_numerator <- operator_data %>% transform_reduced_killed_count()
-  reduced_denominator <- operator_data %>% transform_reduced_total_count()
-  original_numerator <-  original_data %>% transform_original_killed_count()
-  original_denominator <- original_data %>% transform_original_total_count()
-  reduced_time <- operator_data %>% summarize_reduced_time()
-  original_time <- original_data %>% summarize_original_time()
-  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
-  dt <- dt %>% transform_cost_reduction() %>%
-        transform_reduced_mutation_score() %>%
-        transform_original_mutation_score() %>%
-        transform_add_trial(j)
-  return(dt)
-}
-
 #' FUNCTION: analyze_selective_random_mutation
 #'
 #' This function will analyze a select set of operators over percentages
+#' This function can also be used to perform traditional selective mutation, i.e. mutation using a
+#' reduced set of operators by choosing a select set and analyzing at 100%.
 #' @export
 
 analyze_selective_random_mutation <- function(d, o) {
@@ -183,25 +103,6 @@ analyze_percent_calculations <- function(d) {
     dt <- dt %>% transform_mae(error) %>% transform_rmse(error)
     df <- rbind(df, dt)
   }
-  return(df)
-}
-
-#' FUNCTION: analyze_calculations
-#'
-#' Calculate the effectiveness of a reduction technique.
-#' The metrics to determine effectiveness will be Kendall's tau_b correlation coefficient,
-#' mae and rmse.
-#' @export
-
-analyze_calculations <- function(d) {
-  df <- data.frame()
-
-    corr <- d %>% analyze_correlation()
-    error <- d %>% analyze_error()
-    dt <- data.frame(corr[1])
-    dt <- dt %>% transform_mae(error) %>% transform_rmse(error)
-    df <- rbind(df, dt)
-
   return(df)
 }
 

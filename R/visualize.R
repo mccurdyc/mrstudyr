@@ -17,7 +17,7 @@ visualize_random_sampling_mutation_scores <- function(d) {
 
 visualize_selective_random_mutation_scores <- function(d) {
   p <- visualize_plot_mutation_score(d)
-  name <- "../graphics/from-data/mutation_score_operator_plot.pdf"
+  name <- "../graphics/from-data/mutation_score_selective_random_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }

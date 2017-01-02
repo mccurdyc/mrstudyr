@@ -88,9 +88,7 @@ selective_random <- function(d, o, i, j) {
 
 #' FUNCTION: analyze_percent_calculations
 #'
-#' Calculate the effectiveness of a reduction technique across schemas.
-#' The metrics to determine effectiveness will be Kendall's tau_b correlation coefficient,
-#' mae and rmse.
+#' Calculate the effectiveness of a reduction technique on a per-schema per-percentage basis.
 #' @export
 
 analyze_percent_calculations <- function(d) {

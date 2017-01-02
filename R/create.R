@@ -12,13 +12,13 @@ create_random_sampling_graphs <- function() {
   # return(random_sampling_calculations)
 }
 
-#' FUNCTION: create_selective_random_mutation_graphs
+#' FUNCTION: create_selective_random_graphs
 #'
 #' Create all of the visualizations associated with performing random sampling and selective mutation
 #' (selecting a set of operators). In other words, perform random sampling over a select set of operators.
 #' @export
 
-create_selective_random_mutation_graphs <- function() {
+create_selective_random_graphs <- function() {
 
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   o <- c("FKCColumnPairE",

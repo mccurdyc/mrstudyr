@@ -1,7 +1,6 @@
 # mrstudyr
 ---
 
-
 <img src="https://raw.githubusercontent.com/mccurdyc/mrstudyr/master/graphics/logo/mrstudyr-logo.png" height="250" alt="mrstudyr - retrospective mutant analysis.">
 
 mrstudyr is a tool for retrospectively analysing the effectiveness of
@@ -52,7 +51,7 @@ library(mrstudyr)
 | Function Name  | Output |
 | :-------------: | :-------------: |
 | `create_random_sampling_graphs`  | Creates all graphs for the random sampling reduction technique |
-| `create_operator_sampling_graphs`  | Creates all graphs for the operator sampling reduction technique |
+| `create_selective_random_graphs`  | Creates all graphs for the selective random reduction technique |
 
 Both of these functions create a single visualization in the current state of the project but, can easily be extended
 to create additional informative visualizations.

@@ -36,6 +36,7 @@ random_sampling <- function(d, i, j) {
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
+        transform_error() %>%
         transform_add_percentage_trial((i * 100), j)
   return(dt)
 }
@@ -80,6 +81,7 @@ selective_random <- function(d, o, i, j) {
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
+        transform_error() %>%
         transform_add_percentage_trial((i * 100), j)
   return(dt)
 }
@@ -92,28 +94,7 @@ selective_random <- function(d, o, i, j) {
 #' @export
 
 analyze_percent_calculations <- function(d) {
-  # d <- d %>% dplyr::filter(original_mutation_score != 100.00000)
-  # percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-  # schemas <- d %>% select_all_schemas()
   d <- d %>% collect_percent_data()
-  # return(schemas)
-
-  # df <- data.frame()
-  # for(s in schemas) {
-    # for(i in percentages) {
-      # a <- d %>% dplyr::filter(schema == s[1], percentage == (i*100))
-      # current_schema <- s
-      # percent <- (i*100)
-      # corr <- a %>% analyze_correlation()
-      # error <- d %>% analyze_error() %>%
-      dt <- d %>% transform_error() %>% transform_mae() %>% transform_rmse()
-
-      # dt <- data.frame(current_schema, percent) %>%
-      # dt <- data.frame(current_schema, percent, corr[1]) %>%
-            # transform_mae() %>% transform_rmse()
-      # df <- rbind(df, dt)
-          return(dt)
-    # }
-  # }
-  # return(df)
+  dt <- d %>% transform_mae() %>% transform_rmse()
+  return(dt)
 }

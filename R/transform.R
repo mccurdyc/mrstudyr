@@ -109,7 +109,7 @@ transform_original_mutation_score <- function(d) {
 #' @export
 
 transform_error <- function(d) {
-  dt <- d %>% dplyr::mutate(error = (d$original_mutation_score - d$reduced_mutation_score))
+  dt <- d %>% dplyr::mutate(error = abs((original_mutation_score - reduced_mutation_score)))
   return(dt)
 }
 
@@ -119,7 +119,7 @@ transform_error <- function(d) {
 #' @export
 
 transform_mae <- function(d) {
-  dt <- d %>% dplyr::mutate(mae = mean(abs(d$error)))
+  dt <- d %>% dplyr::mutate(mae = mean(abs(error)))
   return(dt)
 }
 
@@ -129,7 +129,7 @@ transform_mae <- function(d) {
 #' @export
 
 transform_rmse <- function(d) {
-  dt <- d %>% dplyr::mutate(rmse = sqrt(mean((d$error)^2)))
+  dt <- d %>% dplyr::mutate(rmse = sqrt(mean((error)^2)))
   return(dt)
 }
 

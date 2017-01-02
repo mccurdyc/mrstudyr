@@ -4,7 +4,7 @@
 \alias{transform_rmse}
 \title{FUNCTION: transform_rmse}
 \usage{
-transform_rmse(d, e)
+transform_rmse(d)
 }
 \description{
 Calculate Root Mean Squared Error (rmse)

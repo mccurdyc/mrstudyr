@@ -57,7 +57,6 @@ transform_reduced_total_count <- function(d) {
 #' @export
 
 transform_original_killed_count <- function(d) {
-  # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(original_numerator = dplyr::filter(o, killed %in% c("true")) %>% dplyr::count())
   dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(original_numerator = n)
   return(dt)
@@ -104,15 +103,23 @@ transform_original_mutation_score <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: transform_error
+#'
+#' Calculate the error --- the difference --- between the original mutation score and the reduced mutation score.
+#' @export
+
+transform_error <- function(d) {
+  dt <- d %>% dplyr::mutate(error = (d$original_mutation_score - d$reduced_mutation_score))
+  return(dt)
+}
+
 #' FUNCTION: transform_mae
 #'
 #' Calculate Mean Absolute Error (mae)
 #' @export
 
-transform_mae <- function(d, e) {
-  # e <- d %>% dplyr::select(error)
-  e <- e %>% unlist() %>% as.numeric()
-  dt <- d %>% dplyr::mutate(mae = mean(abs(e)))
+transform_mae <- function(d) {
+  dt <- d %>% dplyr::mutate(mae = mean(abs(d$error)))
   return(dt)
 }
 
@@ -121,8 +128,31 @@ transform_mae <- function(d, e) {
 #' Calculate Root Mean Squared Error (rmse)
 #' @export
 
-transform_rmse <- function(d, e) {
-  # e <- d %>% dplyr::select(error)
-  dt <- d %>% dplyr::mutate(rmse = sqrt(mean((e)^2)))
+transform_rmse <- function(d) {
+  dt <- d %>% dplyr::mutate(rmse = sqrt(mean((d$error)^2)))
+  return(dt)
+}
+
+#' FUNCTION: calculate_correlation
+#'
+#' This function will calculate the correlation between the reduced and the original
+#' mutation score for a given percent. This is a helper function for the transform_correlation function
+#' @export
+
+calculate_correlation <- function(x, y) {
+  model <- cor.test(x, y, method = "kendall", use = "pairwise")
+  tidy_model <- model %>% broom::tidy()
+  return(tidy_model)
+}
+
+#' FUNCTION: transform_correlation
+#'
+#' Calculate Kendall's tau_b correlation coefficient between the reduced and original mutation score
+#' @export
+
+transform_correlation <- function(d) {
+  x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
+  y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
+  dt <- calculate_correlation(x, y) %>% transform_replace_correlation()
   return(dt)
 }

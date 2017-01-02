@@ -4,7 +4,7 @@
 \alias{transform_mae}
 \title{FUNCTION: transform_mae}
 \usage{
-transform_mae(d, e)
+transform_mae(d)
 }
 \description{
 Calculate Mean Absolute Error (mae)

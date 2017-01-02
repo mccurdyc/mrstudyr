@@ -39,3 +39,13 @@ select_all_operators <- function(d) {
   dt <- d %>% dplyr::select(operator) %>% dplyr::distinct()
   return(dt)
 }
+
+#' FUNCTION: select_all_schemas
+#'
+#' This function returns all available schemas
+#' @export
+
+select_all_schemas <- function(d) {
+  dt <- d %>% dplyr::select(schema) %>% dplyr::distinct()
+  return(dt)
+}

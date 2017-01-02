@@ -92,52 +92,28 @@ selective_random <- function(d, o, i, j) {
 #' @export
 
 analyze_percent_calculations <- function(d) {
-  percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
-  df <- data.frame()
-  for(i in percentages) {
-    percent_data <- d %>% dplyr::filter(percentage == (i*100))
-    percent <- (i*100)
-    corr <- percent_data %>% analyze_correlation()
-    error <- percent_data %>% analyze_error()
-    dt <- data.frame(percent, corr[1])
-    dt <- dt %>% transform_mae(error) %>% transform_rmse(error)
-    df <- rbind(df, dt)
-  }
-  return(df)
-}
+  # d <- d %>% dplyr::filter(original_mutation_score != 100.00000)
+  # percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+  # schemas <- d %>% select_all_schemas()
+  d <- d %>% collect_percent_data()
+  # return(schemas)
 
-#' FUNCTION: calculate_correlation
-#'
-#' This function will calculate the correlation between the reduced and the original
-#' mutation score for a given percent.
-#' @export
+  # df <- data.frame()
+  # for(s in schemas) {
+    # for(i in percentages) {
+      # a <- d %>% dplyr::filter(schema == s[1], percentage == (i*100))
+      # current_schema <- s
+      # percent <- (i*100)
+      # corr <- a %>% analyze_correlation()
+      # error <- d %>% analyze_error() %>%
+      dt <- d %>% transform_error() %>% transform_mae() %>% transform_rmse()
 
-calculate_correlation <- function(x, y) {
-  model <- cor.test(x, y, method = "kendall", use = "pairwise")
-  tidy_model <- model %>% broom::tidy()
-  return(tidy_model)
-}
-
-#' FUNCTION: analyze_correlation
-#'
-#' Calculate Kendall's tau_b correlation coefficient between the reduced and original mutation score
-#' @export
-
-analyze_correlation <- function(d) {
-  x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
-  y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
-  dt <- calculate_correlation(x, y) %>% transform_replace_correlation()
-  return(dt)
-}
-
-#' FUNCTION: analyze_error
-#'
-#' Calculate the error between two sets of mutation scores
-#' @export
-
-analyze_error <- function(d) {
-  x <- d %>% dplyr::select(reduced_mutation_score)
-  y <- d %>% dplyr::select(original_mutation_score)
-  dt <- (y - x)
-  return(dt)
+      # dt <- data.frame(current_schema, percent) %>%
+      # dt <- data.frame(current_schema, percent, corr[1]) %>%
+            # transform_mae() %>% transform_rmse()
+      # df <- rbind(df, dt)
+          return(dt)
+    # }
+  # }
+  # return(df)
 }

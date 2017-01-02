@@ -41,20 +41,22 @@ random_sampling <- function(d, i, j) {
   return(dt)
 }
 
-#' FUNCTION: analyze_selective_random_mutation
+#' FUNCTION: analyze_selective_random
 #'
 #' This function will analyze a select set of operators over percentages
 #' This function can also be used to perform traditional selective mutation, i.e. mutation using a
 #' reduced set of operators by choosing a select set and analyzing at 100%.
 #' @export
 
-analyze_selective_random_mutation <- function(d, o) {
+analyze_selective_random <- function(d, o) {
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
 
+  print("OPERATORS SELECTED:")
+  print(o)
   for(i in percentages) {
-    print(paste("OPERATOR SAMPLING: Currently analyzing x =", (i*100), "percent ..."))
+    print(paste("SELECTIVE RANDOM: Currently analyzing x =", (i*100), "percent ..."))
     for(j in 1:30) {
       dt <- selective_random(d, o, i, j) %>% as.data.frame()
       df <- rbind(df, dt)

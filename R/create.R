@@ -7,9 +7,11 @@ create_random_sampling_graphs <- function() {
 
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   random_sampling_data <- d %>% analyze_random_sampling()
-  # random_sampling_calculations <- random_sampling_data %>% analyze_percent_calculations()
-  return(random_sampling_data)
-  # return(random_sampling_calculations)
+  random_sampling_calculations <- random_sampling_data %>% analyze_percent_calculations()
+  dplyr::glimpse(random_sampling_calculations)
+
+  visualize_random_sampling_mutation_scores(random_sampling_data)
+  visualize_random_sampling_error(random_sampling_data)
 }
 
 #' FUNCTION: create_selective_random_graphs
@@ -34,7 +36,10 @@ create_selective_random_graphs <- function() {
          "UCColumnR",
          "UCColumnE",
          "CCInExpressionRHSListExpressionElementR")
-  selective_random_mutation_data <- d %>% analyze_selective_random_mutation(o)
-  selective_random_mutation_calculations <- selective_random_mutation_data %>% analyze_percent_calculations()
-  dplyr::glimpse(selective_random_mutation_calculations)
+  selective_random_data <- d %>% analyze_selective_random(o)
+  selective_random_calculations <- selective_random_data %>% analyze_percent_calculations()
+  dplyr::glimpse(selective_random_calculations)
+
+  visualize_selective_random_mutation_scores(selective_random_data)
+  visualize_selective_random_error(selective_random_data)
 }

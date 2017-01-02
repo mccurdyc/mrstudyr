@@ -4,7 +4,7 @@
 \alias{visualize_random_sampling_mutation_scores}
 \title{FUNCTION: visualize_random_sampling_mutation_scores}
 \usage{
-visualize_random_sampling_mutation_scores(d, trans = FALSE)
+visualize_random_sampling_mutation_scores(d)
 }
 \description{
 Visualize mutation scores for the random sampling reduction technique

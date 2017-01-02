@@ -4,7 +4,7 @@
 \alias{visualize_plot_mutation_score}
 \title{FUNCTION: visualize_plot_mutation_score}
 \usage{
-visualize_plot_mutation_score(d, trans = FALSE)
+visualize_plot_mutation_score(d)
 }
 \description{
 Produces a visualization of the reduced mutation

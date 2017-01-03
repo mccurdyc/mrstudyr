@@ -151,8 +151,11 @@ calculate_correlation <- function(x, y) {
 #' @export
 
 transform_correlation <- function(d) {
-  x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
-  y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
-  dt <- calculate_correlation(x, y) %>% transform_replace_correlation()
-  return(dt)
+#   # x <- d %>% dplyr::select(reduced_mutation_score)
+#   # y <- d %>% dplyr::select(original_mutation_score)
+    x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
+    y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
+    corr <- calculate_correlation(x, y) %>% transform_replace_correlation()
+#   dt <- d %>% dplyr::mutate(correlation = calculate_correlation(d$reduced_mutation_score, d$original_mutation_score)) %>% transform_replace_correlation()
+  return(corr)
 }

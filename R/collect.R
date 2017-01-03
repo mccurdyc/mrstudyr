@@ -31,6 +31,16 @@ collect_schema_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_percent_data
+#'
+#' Group data by dbms and percentage
+#' @export
+
+collect_percent_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, percentage)
+  return(dt)
+}
+
 #' FUNCTION: collect_operator_data
 #'
 #' Group data by dbms, schema and operator
@@ -41,12 +51,12 @@ collect_operator_data <- function(d) {
   return(dt)
 }
 
-#' FUNCTION: collect_percent_data
+#' FUNCTION: collect_schema_percent_data
 #'
 #' Group data by dbms, schema and percentage
 #' @export
 
-collect_percent_data <- function(d) {
+collect_schema_percent_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, schema, percentage)
   return(dt)
 }

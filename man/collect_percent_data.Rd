@@ -7,6 +7,6 @@
 collect_percent_data(d)
 }
 \description{
-Group data by dbms, schema and percentage
+Group data by dbms and percentage
 }
 

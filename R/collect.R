@@ -70,3 +70,13 @@ collect_chosen_percent_data <- function(d, i) {
   dt <- d %>% dplyr::filter(percentage %in% i)
   return(dt)
 }
+
+#' FUNCTION: collect_keep_data
+#'
+#' Filter data to only include data that is 'kept' i.e., a value of '1' in the keep column.
+#' @export
+
+collect_keep_data <- function(d) {
+  dt <- d %>% dplyr::filter(keep == 1)
+  return(dt)
+}

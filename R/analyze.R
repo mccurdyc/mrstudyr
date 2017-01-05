@@ -32,7 +32,7 @@ random_sampling <- function(d, i, j) {
   original_denominator <- original_data %>% transform_original_total_count()
   reduced_time <- random_sample_data %>% summarize_reduced_time()
   original_time <- original_data %>% summarize_original_time()
-  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- join_reduced_original_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
@@ -79,7 +79,7 @@ selective_random <- function(d, o, i, j) {
   original_denominator <- original_data %>% transform_original_total_count()
   reduced_time <- selective_random_data %>% summarize_reduced_time()
   original_time <- original_data %>% summarize_original_time()
-  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- join_reduced_original_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
@@ -117,4 +117,23 @@ analyze_summary_percent_calculations <- function(d) {
       df <- rbind(df, dt)
   }
   return(df)
+}
+
+#' FUNCTION: analyze_reduced_rmse
+#'
+#' Calculate the rmse of the mutation score of the chosen set to the original set of mutants.
+#' @export
+
+analyze_reduced_rmse <- function(d) {
+  k <- d %>% collect_keep_data()
+  numerator <-  k %>% transform_killed_count()
+  denominator <- k %>% transform_total_count()
+  time <- k %>% summarize_time()
+  dt <- join_numerator_denominator_time_data(numerator, denominator, time)
+  dt <- dt %>% transform_mutation_score() %>%
+        transform_error() %>%
+        transform_add_percentage_trial((i * 100), j)
+
+  # dt <- d %>% transform_mae() %>% transform_rmse()
+  return(k)
 }

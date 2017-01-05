@@ -68,9 +68,30 @@ transform_original_killed_count <- function(d) {
 #' @export
 
 transform_original_total_count <- function(d) {
-  # dt <- d %>% dplyr::group_by(dbms, schema) %>% dplyr::mutate(original_denominator = dplyr::filter(o, killed %in% c("true", "false")) %>% dplyr::count())
   dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
   dt <- dt %>% dplyr::rename(original_denominator = n)
+  return(dt)
+}
+
+#' FUNCTION: transform_killed_count
+#'
+#' Count the number of killed mutants
+#' @export
+
+transform_killed_count <- function(d) {
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
+  dt <- dt %>% dplyr::rename(numerator = n)
+  return(dt)
+}
+
+#' FUNCTION: transform_total_count
+#'
+#' Count the total number of mutants for a set
+#' @export
+
+transform_total_count <- function(d) {
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
+  dt <- dt %>% dplyr::rename(denominator = n)
   return(dt)
 }
 
@@ -89,7 +110,7 @@ transform_cost_reduction <- function(d) {
 #' @export
 
 transform_reduced_mutation_score <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::mutate(reduced_mutation_score = ((reduced_numerator / reduced_denominator) * 100))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(reduced_mutation_score = ((reduced_numerator / reduced_denominator)))
   return(dt)
 }
 
@@ -99,7 +120,17 @@ transform_reduced_mutation_score <- function(d) {
 #' @export
 
 transform_original_mutation_score <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::mutate(original_mutation_score = ((original_numerator / original_denominator) * 100))
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(original_mutation_score = ((original_numerator / original_denominator)))
+  return(dt)
+}
+
+#' FUNCTION: transform_mutation_score
+#'
+#' Calculate the mutation score for a set (number of killed mutants / total number of mutants)
+#' @export
+
+transform_mutation_score <- function(d) {
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(mutation_score = ((original_numerator / original_denominator)))
   return(dt)
 }
 

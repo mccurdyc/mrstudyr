@@ -156,3 +156,15 @@ transform_correlation <- function(d) {
   corr <- calculate_correlation(x, y) %>% transform_replace_correlation()
   return(corr)
 }
+
+#' FUNCTION: transform_keep
+#'
+#' Add a binary value of 1 (for keeping) and 0 (for not keeping) a mutant.
+#' This will be used for hill climbing and other learning approaches.
+#' @export
+
+transform_keep <- function(d) {
+  s <- c(0, 1)
+  dt <- d %>% dplyr::mutate(keep = sample(s, 1, size = nrow(d)))
+  return(dt)
+}

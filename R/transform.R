@@ -73,28 +73,6 @@ transform_original_total_count <- function(d) {
   return(dt)
 }
 
-#' FUNCTION: transform_killed_count
-#'
-#' Count the number of killed mutants
-#' @export
-
-transform_killed_count <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
-  dt <- dt %>% dplyr::rename(numerator = n)
-  return(dt)
-}
-
-#' FUNCTION: transform_total_count
-#'
-#' Count the total number of mutants for a set
-#' @export
-
-transform_total_count <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
-  dt <- dt %>% dplyr::rename(denominator = n)
-  return(dt)
-}
-
 #' FUNCTION: transform_cost_reduction
 #'
 #' Calculate the reduction in time for performing mutation analysis on the reduced set compared to the original set
@@ -197,5 +175,15 @@ transform_correlation <- function(d) {
 transform_keep <- function(d) {
   s <- c(0, 1)
   dt <- d %>% dplyr::mutate(keep = sample(s, 1, size = nrow(d)))
+  return(dt)
+}
+
+#' FUNCTION: transform_keep_all
+#'
+#' Add a binary value of 1 (for keeping) all mutants for consistency between data tables.
+#' @export
+
+transform_keep_all <- function(d) {
+  dt <- d %>% dplyr::mutate(keep = 1)
   return(dt)
 }

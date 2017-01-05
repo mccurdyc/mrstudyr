@@ -4,7 +4,7 @@
 \alias{join_numerator_denominator_time_data}
 \title{FUNCTION: join_numerator_denominator_time_data}
 \usage{
-join_numerator_denominator_time_data(n, d, t)
+join_numerator_denominator_time_data(rn, rd, on, od, rt, ot)
 }
 \description{
 DESCRIPTION: Join together six tables containing the numerator and denominator counts as well as the mutation analysis time for the reduced and original mutant sets

@@ -32,7 +32,7 @@ random_sampling <- function(d, i, j) {
   original_denominator <- original_data %>% transform_original_total_count()
   reduced_time <- random_sample_data %>% summarize_reduced_time()
   original_time <- original_data %>% summarize_original_time()
-  dt <- join_reduced_original_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
@@ -79,7 +79,7 @@ selective_random <- function(d, o, i, j) {
   original_denominator <- original_data %>% transform_original_total_count()
   reduced_time <- selective_random_data %>% summarize_reduced_time()
   original_time <- original_data %>% summarize_original_time()
-  dt <- join_reduced_original_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
         transform_reduced_mutation_score() %>%
         transform_original_mutation_score() %>%
@@ -119,21 +119,40 @@ analyze_summary_percent_calculations <- function(d) {
   return(df)
 }
 
-#' FUNCTION: analyze_reduced_rmse
+#' FUNCTION: analyze_keep
 #'
-#' Calculate the rmse of the mutation score of the chosen set to the original set of mutants.
 #' @export
 
-analyze_reduced_rmse <- function(d) {
-  k <- d %>% collect_keep_data()
-  numerator <-  k %>% transform_killed_count()
-  denominator <- k %>% transform_total_count()
-  time <- k %>% summarize_time()
-  dt <- join_numerator_denominator_time_data(numerator, denominator, time)
-  dt <- dt %>% transform_mutation_score() %>%
-        transform_error() %>%
-        transform_add_percentage_trial((i * 100), j)
+analyze_keep <- function(d) {
+  df <- data.frame()
 
-  # dt <- d %>% transform_mae() %>% transform_rmse()
-  return(k)
+    for(j in 1:30) {
+    print(paste("KEEP: Currently on trial ", j, " ..."))
+      dt <- reduce_keep(d, j) %>% as.data.frame()
+      df <- rbind(df, dt)
+  }
+  return(df)
+}
+
+#' FUNCTION: reduce_keep
+#'
+#' Using some keep column calculate the reduced set's mutation score
+#' @export
+
+reduce_keep <- function(d, j) {
+  original_data <- d %>% transform_keep_all() %>% collect_schema_data()
+  keep_data <- d %>% transform_keep() %>% collect_keep_data()
+  reduced_numerator <- keep_data %>% transform_reduced_killed_count()
+  reduced_denominator <- keep_data %>% transform_reduced_total_count()
+  original_numerator <-  original_data %>% transform_original_killed_count()
+  original_denominator <- original_data %>% transform_original_total_count()
+  reduced_time <- keep_data %>% summarize_reduced_time()
+  original_time <- original_data %>% summarize_original_time()
+  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- dt %>% transform_cost_reduction() %>%
+        transform_reduced_mutation_score() %>%
+        transform_original_mutation_score() %>%
+        transform_error() %>%
+        transform_add_trial(j)
+  return(dt)
 }

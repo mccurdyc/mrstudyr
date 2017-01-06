@@ -156,3 +156,14 @@ reduce_keep <- function(d, j) {
         transform_add_trial(j)
   return(dt)
 }
+
+#' FUNCTION: analyze_keep_calculations
+#'
+#' Calculate the effectiveness of a reduction technique on a per-schema.
+#' @export
+
+analyze_percent_calculations <- function(d) {
+  d <- d %>% collect_schema_data()
+  dt <- d %>% transform_mae() %>% transform_rmse()
+  return(dt)
+}

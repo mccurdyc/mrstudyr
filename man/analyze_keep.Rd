@@ -7,6 +7,6 @@
 analyze_keep(d)
 }
 \description{
-FUNCTION: analyze_keep
+Generate a neighborhood (keep_data). This will be used as a starting point from which to incrementally bit-flip.
 }
 

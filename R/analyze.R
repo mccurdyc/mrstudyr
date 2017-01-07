@@ -121,15 +121,17 @@ analyze_summary_percent_calculations <- function(d) {
 
 #' FUNCTION: analyze_keep
 #'
+#' Generate a neighborhood (keep_data). This will be used as a starting point from which to incrementally bit-flip.
 #' @export
 
 analyze_keep <- function(d) {
   df <- data.frame()
 
-    for(j in 1:30) {
+  for(j in 1:30) {
     print(paste("KEEP: Currently on trial ", j, " ..."))
-      dt <- reduce_keep(d, j) %>% as.data.frame()
-      df <- rbind(df, dt)
+    keep_data <- d %>% transform_keep() %>% collect_keep_data()
+    dt <- reduce_keep(d, keep_data, j) %>% as.data.frame()
+    df <- rbind(df, dt)
   }
   return(df)
 }
@@ -139,9 +141,8 @@ analyze_keep <- function(d) {
 #' Using some keep column calculate the reduced set's mutation score
 #' @export
 
-reduce_keep <- function(d, j) {
+reduce_keep <- function(d, keep_data, j) {
   original_data <- d %>% transform_keep_all() %>% collect_schema_data()
-  keep_data <- d %>% transform_keep() %>% collect_keep_data()
   reduced_numerator <- keep_data %>% transform_reduced_killed_count()
   reduced_denominator <- keep_data %>% transform_reduced_total_count()
   original_numerator <-  original_data %>% transform_original_killed_count()

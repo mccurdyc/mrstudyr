@@ -121,7 +121,6 @@ analyze_summary_percent_calculations <- function(d) {
 
 #' FUNCTION: analyze_keep
 #'
-#' Generate a neighborhood (keep_data). This will be used as a starting point from which to incrementally bit-flip.
 #' @export
 
 analyze_keep <- function(d) {
@@ -129,8 +128,9 @@ analyze_keep <- function(d) {
 
   for(j in 1:30) {
     print(paste("KEEP: Currently on trial ", j, " ..."))
-    keep_data <- d %>% transform_keep() %>% collect_keep_data()
-    dt <- reduce_keep(d, keep_data, j) %>% as.data.frame()
+    d <- d %>% transform_keep()
+    # keep_data <- d %>% transform_keep() %>% collect_keep_data()
+    dt <- reduce_keep(d, j) %>% as.data.frame()
     df <- rbind(df, dt)
   }
   return(df)
@@ -141,8 +141,9 @@ analyze_keep <- function(d) {
 #' Using some keep column calculate the reduced set's mutation score
 #' @export
 
-reduce_keep <- function(d, keep_data, j) {
-  original_data <- d %>% transform_keep_all() %>% collect_schema_data()
+reduce_keep <- function(d, j) {
+  original_data <- d %>% collect_schema_data()
+  keep_data <- d %>% collect_keep_data() %>% collect_schema_data()
   reduced_numerator <- keep_data %>% transform_reduced_killed_count()
   reduced_denominator <- keep_data %>% transform_reduced_total_count()
   original_numerator <-  original_data %>% transform_original_killed_count()
@@ -156,6 +157,19 @@ reduce_keep <- function(d, keep_data, j) {
         transform_error() %>%
         transform_add_trial(j)
   return(dt)
+}
+
+#' FUNCTION: bitflip_keep
+#'
+#' @export
+
+# bitflip_keep <- function(d, order_by = "none", partition_size = 1, group_by = "none") {
+bitflip_keep <- function(d) {
+  dt <- d %>% dplyr::slice(1)
+  rest <- d %>% dplyr::slice(2:n())
+  updated <- dt %>% dplyr::mutate(keep = !dt$keep)
+  df <- rbind(updated, rest)
+  return(df)
 }
 
 #' FUNCTION: analyze_keep_calculations

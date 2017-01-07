@@ -173,17 +173,7 @@ transform_correlation <- function(d) {
 #' @export
 
 transform_keep <- function(d) {
-  s <- c(0, 1)
+  s <- c(TRUE, FALSE)
   dt <- d %>% dplyr::mutate(keep = sample(s, 1, size = nrow(d)))
-  return(dt)
-}
-
-#' FUNCTION: transform_keep_all
-#'
-#' Add a binary value of 1 (for keeping) all mutants for consistency between data tables.
-#' @export
-
-transform_keep_all <- function(d) {
-  dt <- d %>% dplyr::mutate(keep = 1)
   return(dt)
 }

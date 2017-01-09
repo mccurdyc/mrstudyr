@@ -121,29 +121,42 @@ analyze_summary_percent_calculations <- function(d) {
 
 #' FUNCTION: analyze_keep
 #'
+#' This function performs a hill-climbing reduction technique.
 #' @export
 
 analyze_keep <- function(d) {
-  df <- data.frame()
+  k <- d %>% generate_keep()
+  dt <- k %>% reduce_keep()
+  return(dt)
+}
+
+#' FUNCTION: generate_keep
+#'
+#' This function generates a data frame consisting of the 30 starting neighborhoods of the randomly-generated
+#' keep data.
+#' @export
+
+generate_keep <- function(d) {
+  dk <- data.frame()
 
   for(j in 1:30) {
-    print(paste("KEEP: Currently on trial ", j, " ..."))
-    d <- d %>% transform_keep()
-    # keep_data <- d %>% transform_keep() %>% collect_keep_data()
-    dt <- reduce_keep(d, j) %>% as.data.frame()
-    df <- rbind(df, dt)
+    d <- d %>% transform_keep() %>% transform_add_trial(j)
+    dk <- rbind(dk, d)
   }
-  return(df)
+  return(dk)
 }
 
 #' FUNCTION: reduce_keep
 #'
-#' Using some keep column calculate the reduced set's mutation score
+#' Using keep column, calculate the original and reduced sets' mutation score, error and execution time.
 #' @export
 
-reduce_keep <- function(d, j) {
-  original_data <- d %>% collect_schema_data()
-  keep_data <- d %>% collect_keep_data() %>% collect_schema_data()
+reduce_keep <- function(d) {
+  df <- data.frame()
+  for (j in 1:30) {
+  trial_data <- d %>% collect_chosen_trial_data(j)
+  original_data <- trial_data %>% collect_schema_data()
+  keep_data <- trial_data %>% collect_keep_data() %>% collect_schema_data()
   reduced_numerator <- keep_data %>% transform_reduced_killed_count()
   reduced_denominator <- keep_data %>% transform_reduced_total_count()
   original_numerator <-  original_data %>% transform_original_killed_count()
@@ -152,23 +165,38 @@ reduce_keep <- function(d, j) {
   original_time <- original_data %>% summarize_original_time()
   dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
   dt <- dt %>% transform_cost_reduction() %>%
-        transform_reduced_mutation_score() %>%
-        transform_original_mutation_score() %>%
-        transform_error() %>%
-        transform_add_trial(j)
-  return(dt)
+    transform_reduced_mutation_score() %>%
+    transform_original_mutation_score() %>%
+    transform_error() %>%
+    transform_add_trial(j)
+  df <- rbind(df, dt)
+  }
+  return(df)
 }
 
 #' FUNCTION: bitflip_keep
 #'
 #' @export
 
-# bitflip_keep <- function(d, order_by = "none", partition_size = 1, group_by = "none") {
-bitflip_keep <- function(d) {
-  dt <- d %>% dplyr::slice(1)
-  rest <- d %>% dplyr::slice(2:n())
-  updated <- dt %>% dplyr::mutate(keep = !dt$keep)
-  df <- rbind(updated, rest)
+bitflip_keep <- function(d, position, partition_size=1) {
+# bitflip_keep <- function(d, position, order_by="none", partition_size=1, group_by="none") {
+# bitflip_keep <- function(d) {
+  df <- data.frame()
+
+  if (position == 1) {
+    m <- d %>% dplyr::slice(position:((position + partition_size) - 1))
+    r <- d %>% dplyr::slice((position + partition_size):n())
+    u <- m %>% dplyr::mutate(keep = !m$keep)
+    df <- rbind(u, r)
+  }
+
+  else {
+    b <- d %>% dplyr::slice(1:(position - 1))
+    m <- d %>% dplyr::slice(position:((position + partition_size) - 1))
+    r <- d %>% dplyr::slice((position + partition_size):n())
+    u <- m %>% dplyr::mutate(keep = !m$keep)
+    df <- rbind(b, u, r)
+  }
   return(df)
 }
 

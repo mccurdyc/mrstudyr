@@ -4,7 +4,7 @@
 \alias{bitflip_keep}
 \title{FUNCTION: bitflip_keep}
 \usage{
-bitflip_keep(d)
+bitflip_keep(d, position, partition_size = 1)
 }
 \description{
 FUNCTION: bitflip_keep

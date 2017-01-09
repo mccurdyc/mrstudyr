@@ -51,6 +51,7 @@ collect_operator_data <- function(d) {
   return(dt)
 }
 
+
 #' FUNCTION: collect_schema_percent_data
 #'
 #' Group data by dbms, schema and percentage
@@ -61,6 +62,16 @@ collect_schema_percent_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_schema_trial_data
+#'
+#' Group data by dbms, schema and trial
+#' @export
+
+collect_schema_trial_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, schema, trial)
+  return(dt)
+}
+
 #' FUNCTION: collect_chosen_percent_data
 #'
 #' Collect the data for a user-specified percentage
@@ -68,6 +79,16 @@ collect_schema_percent_data <- function(d) {
 
 collect_chosen_percent_data <- function(d, i) {
   dt <- d %>% dplyr::filter(percentage %in% i)
+  return(dt)
+}
+
+#' FUNCTION: collect_chosen_trial_data
+#'
+#' Collect the data for a user-specified trial
+#' @export
+
+collect_chosen_trial_data <- function(d, t) {
+  dt <- d %>% dplyr::filter(trial %in% t)
   return(dt)
 }
 

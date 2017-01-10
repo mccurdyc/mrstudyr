@@ -129,7 +129,7 @@ analyze_keep <- function(d) {
 
   for (j in 1:30) {
     k <- d %>% generate_keep(j)
-    dt <- k %>% reduce_keep(j) %>% as.data.frame()
+    dt <- k %>% reduce_keep(j) %>% analyze_keep_calculations(j) %>% as.data.frame()
     df <- rbind(df, dt)
   }
   return(df)
@@ -171,10 +171,14 @@ reduce_keep <- function(d, trial) {
 
 #' FUNCTION: bitflip_keep
 #'
+#' Currently, this function negates boolean values i.e., TRUE -> FALSE, FALSE -> TRUE. Position is
+#' used to idicate the current position to bitflip and partition_size is the number of subsequent
+#' positions to also flip --- this could be useful if we wanted to try different sizes to reduce time
+#' of HC by increasing step size. **We could add another parameter 'group_by' so that instead of just
+#' flipping consecutive values, we could flip based on some group (e.g., operators).
 #' @export
 
 bitflip_keep <- function(d, position, partition_size=1) {
-# bitflip_keep <- function(d, position, order_by="none", partition_size=1, group_by="none") {
   df <- data.frame()
 
   if (position == 1) {
@@ -196,11 +200,11 @@ bitflip_keep <- function(d, position, partition_size=1) {
 
 #' FUNCTION: analyze_keep_calculations
 #'
-#' Calculate the effectiveness of a reduction technique on a per-schema.
+#' Calculate the effectiveness of a reduction technique on a per-trial, per-schema.
 #' @export
 
-analyze_percent_calculations <- function(d) {
-  d <- d %>% collect_schema_data()
+analyze_keep_calculations <- function(d, trial) {
+  d <- d %>% dplyr::ungroup() %>% collect_chosen_trial_data(trial)
   dt <- d %>% transform_mae() %>% transform_rmse()
   return(dt)
 }

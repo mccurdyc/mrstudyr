@@ -7,6 +7,10 @@
 bitflip_keep(d, position, partition_size = 1)
 }
 \description{
-FUNCTION: bitflip_keep
+Currently, this function negates boolean values i.e., TRUE -> FALSE, FALSE -> TRUE. Position is
+used to idicate the current position to bitflip and partition_size is the number of subsequent
+positions to also flip --- this could be useful if we wanted to try different sizes to reduce time
+of HC by increasing step size. **We could add another parameter 'group_by' so that instead of just
+flipping consecutive values, we could flip based on some group (e.g., operators).
 }
 

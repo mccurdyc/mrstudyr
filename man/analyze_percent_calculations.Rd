@@ -5,12 +5,8 @@
 \title{FUNCTION: analyze_percent_calculations}
 \usage{
 analyze_percent_calculations(d)
-
-analyze_percent_calculations(d)
 }
 \description{
 Calculate the effectiveness of a reduction technique on a per-schema per-percentage basis.
-
-Calculate the effectiveness of a reduction technique on a per-schema.
 }
 

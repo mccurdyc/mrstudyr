@@ -125,25 +125,24 @@ analyze_summary_percent_calculations <- function(d) {
 #' @export
 
 analyze_keep <- function(d) {
-  k <- d %>% generate_keep()
-  dt <- k %>% reduce_keep()
-  return(dt)
+  df <- data.frame()
+
+  for (j in 1:30) {
+    k <- d %>% generate_keep(j)
+    dt <- k %>% reduce_keep(j) %>% as.data.frame()
+    df <- rbind(df, dt)
+  }
+  return(df)
 }
 
 #' FUNCTION: generate_keep
 #'
-#' This function generates a data frame consisting of the 30 starting neighborhoods of the randomly-generated
-#' keep data.
+#' This function generates a data frame consisting of a starting neighborhood that has been randomly-generated.
 #' @export
 
-generate_keep <- function(d) {
-  dk <- data.frame()
-
-  for(j in 1:30) {
-    d <- d %>% transform_keep() %>% transform_add_trial(j)
-    dk <- rbind(dk, d)
-  }
-  return(dk)
+generate_keep <- function(d, trial) {
+  dt <- d %>% transform_keep() %>% transform_add_trial(trial)
+  return(dt)
 }
 
 #' FUNCTION: reduce_keep
@@ -151,10 +150,8 @@ generate_keep <- function(d) {
 #' Using keep column, calculate the original and reduced sets' mutation score, error and execution time.
 #' @export
 
-reduce_keep <- function(d) {
-  df <- data.frame()
-  for (j in 1:30) {
-  trial_data <- d %>% collect_chosen_trial_data(j)
+reduce_keep <- function(d, trial) {
+  trial_data <- d %>% collect_chosen_trial_data(trial)
   original_data <- trial_data %>% collect_schema_data()
   keep_data <- trial_data %>% collect_keep_data() %>% collect_schema_data()
   reduced_numerator <- keep_data %>% transform_reduced_killed_count()
@@ -168,10 +165,8 @@ reduce_keep <- function(d) {
     transform_reduced_mutation_score() %>%
     transform_original_mutation_score() %>%
     transform_error() %>%
-    transform_add_trial(j)
-  df <- rbind(df, dt)
-  }
-  return(df)
+    transform_add_trial(trial)
+  return(dt)
 }
 
 #' FUNCTION: bitflip_keep
@@ -180,7 +175,6 @@ reduce_keep <- function(d) {
 
 bitflip_keep <- function(d, position, partition_size=1) {
 # bitflip_keep <- function(d, position, order_by="none", partition_size=1, group_by="none") {
-# bitflip_keep <- function(d) {
   df <- data.frame()
 
   if (position == 1) {

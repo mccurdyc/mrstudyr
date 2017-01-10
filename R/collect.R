@@ -94,10 +94,10 @@ collect_chosen_trial_data <- function(d, t) {
 
 #' FUNCTION: collect_keep_data
 #'
-#' Filter data to only include data that is 'kept' i.e., a value of '1' in the keep column.
+#' Filter data to only include data that is 'kept' i.e., a boolean value of 'TRUE' in the keep column.
 #' @export
 
 collect_keep_data <- function(d) {
-  dt <- d %>% dplyr::filter(keep == 1)
+  dt <- d %>% dplyr::filter(keep == TRUE)
   return(dt)
 }

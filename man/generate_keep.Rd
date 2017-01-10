@@ -4,10 +4,9 @@
 \alias{generate_keep}
 \title{FUNCTION: generate_keep}
 \usage{
-generate_keep(d)
+generate_keep(d, trial)
 }
 \description{
-This function generates a data frame consisting of the 30 starting neighborhoods of the randomly-generated
-keep data.
+This function generates a data frame consisting of a starting neighborhood that has been randomly-generated.
 }
 

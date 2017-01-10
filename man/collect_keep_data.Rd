@@ -7,6 +7,6 @@
 collect_keep_data(d)
 }
 \description{
-Filter data to only include data that is 'kept' i.e., a value of '1' in the keep column.
+Filter data to only include data that is 'kept' i.e., a boolean value of 'TRUE' in the keep column.
 }
 

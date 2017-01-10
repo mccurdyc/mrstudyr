@@ -4,7 +4,7 @@
 \alias{reduce_keep}
 \title{FUNCTION: reduce_keep}
 \usage{
-reduce_keep(d)
+reduce_keep(d, trial)
 }
 \description{
 Using keep column, calculate the original and reduced sets' mutation score, error and execution time.

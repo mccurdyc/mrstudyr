@@ -4,9 +4,9 @@
 \alias{analyze_keep_calculations}
 \title{FUNCTION: analyze_keep_calculations}
 \usage{
-analyze_keep_calculations(d, trial)
+analyze_keep_calculations(d)
 }
 \description{
-Calculate the effectiveness of a reduction technique on a per-trial, per-schema.
+Calculate the effectiveness of a reduction technique across trials i.e., there is a single MAE, RMSE, CORR value across all trials.
 }
 

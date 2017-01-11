@@ -124,15 +124,50 @@ analyze_summary_percent_calculations <- function(d) {
 #' This function performs a hill-climbing reduction technique.
 #' @export
 
-analyze_keep <- function(d) {
-  df <- data.frame()
+analyze_keep <- function(d, partition_size = 1) {
+  start_keep <- data.frame()
+  start_calculations <- data.frame()
+  end_calculations <- data.frame()
 
+  # this generates and evaluates the starting neighborhood
   for (j in 1:30) {
-    k <- d %>% generate_keep(j)
-    dt <- k %>% reduce_keep(j) %>% analyze_keep_calculations(j) %>% as.data.frame()
-    df <- rbind(df, dt)
+    print(paste("Generating neighborhood, on trial ", j))
+    neighborhood <- d %>% generate_keep(j)
+    dt <- neighborhood %>% reduce_keep(j) %>% as.data.frame
+    start_keep <- rbind(start_keep, neighborhood)
+    start_calculations <- rbind(start_calculations, dt)
   }
-  return(df)
+    start_calculations <- start_calculations %>% analyze_keep_calculations() %>% as.data.frame()
+    print("Calculated start calculations")
+
+  # while counter < # keeps, bitflip, evaluate, compare
+    step <- start_keep
+    count <- 1
+  # repeat {
+    # print(paste("Stepping OUTSIDE, at position ", count))
+    for (j in 1:30) {
+      dplyr::glimpse(step)
+      print(paste("Stepping INSIDE, on trial ", j))
+      f <- step %>% dplyr::filter(trial == j)
+      if (count > nrow(f)) {
+        break
+      } else {
+        f <- f %>% bitflip_keep(count, partition_size)
+        dplyr::glimpse(f)
+        da <- f %>% reduce_keep(j) %>% as.data.frame()
+        # dplyr::glimpse(da)
+        end_calculations <- rbind(end_calculations, da)
+      }
+    # }
+
+    # end_calculations <- end_calculations %>% analyze_keep_calculations() %>% as.data.frame()
+    print("Calculated end calculations")
+    # if (RMSE > start$RMSE) {
+    # break
+    # }
+    count <- count + 1
+  }
+  return(end)
 }
 
 #' FUNCTION: generate_keep
@@ -200,11 +235,13 @@ bitflip_keep <- function(d, position, partition_size=1) {
 
 #' FUNCTION: analyze_keep_calculations
 #'
-#' Calculate the effectiveness of a reduction technique on a per-trial, per-schema.
+#' Calculate the effectiveness of a reduction technique across trials i.e., there is a single MAE, RMSE, CORR value across all trials.
 #' @export
 
-analyze_keep_calculations <- function(d, trial) {
-  d <- d %>% dplyr::ungroup() %>% collect_chosen_trial_data(trial)
+analyze_keep_calculations <- function(d) {
+  d <- d %>% dplyr::ungroup()
+  # d <- d %>% dplyr::ungroup() %>% collect_chosen_trial_data(trial)
   dt <- d %>% transform_mae() %>% transform_rmse()
+  # dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_keep_correlation()
   return(dt)
 }

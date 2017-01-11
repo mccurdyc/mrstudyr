@@ -4,7 +4,7 @@
 \alias{analyze_keep}
 \title{FUNCTION: analyze_keep}
 \usage{
-analyze_keep(d)
+analyze_keep(d, partition_size = 1)
 }
 \description{
 This function performs a hill-climbing reduction technique.

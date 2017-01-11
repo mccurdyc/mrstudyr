@@ -131,44 +131,60 @@ analyze_keep <- function(d, partition_size = 1) {
 
   # this generates and evaluates the starting neighborhood
   for (j in 1:1) {
+  # for (j in 1:30) {
     print(paste("Generating neighborhood, on trial ", j))
     neighborhood <- d %>% generate_keep(j)
     dt <- neighborhood %>% reduce_keep(j) %>% as.data.frame
     start_keep <- rbind(start_keep, neighborhood)
     start_calculations <- rbind(start_calculations, dt)
   }
-    start_calculations_rmse_mae <- start_calculations %>% analyze_keep_calculations() %>% as.data.frame()
-    print("Calculated start calculations")
+
+  start_calculations_rmse_mae <- start_calculations %>% analyze_keep_calculations() %>% as.data.frame()
+  start_calculations_rmse_mae %>% dplyr::glimpse()
+  print("Calculated start calculations")
 
   # while counter < # keeps, bitflip, evaluate, compare
-    step <- start_keep
-    count <- 1
-  step %>% dplyr::glimpse()
+  step <- start_keep
+  step_number <- 1
+  # step %>% dplyr::glimpse()
+
   repeat {
-    print(paste("Stepping OUTSIDE, at position ", count))
+    if (step_number > 2) {
+      # if (step_number > nrow(f)) {
+      break
+    }
+
+    print(paste("Stepping OUTSIDE, at position ", step_number))
+
     for (j in 1:1) {
+    # for (j in 1:30) {
+
       print(paste("Stepping INSIDE, on trial ", j))
+      print(paste("STEP NUMBER = ", step_number))
+
       f <- step %>% dplyr::filter(trial == j)
-      if (count > 2) {
-      # if (count > nrow(f)) {
-        break
-      } else {
-        f <- f %>% bitflip_keep(count, partition_size)
+
+      if (step_number <= 2) {
+      # if (step_number <= nrow(f)) {
+        f <- f %>% bitflip_keep(step_number, partition_size)
         step <- f
-        f %>% dplyr::glimpse()
+        # f %>% dplyr::glimpse()
         da <- f %>% reduce_keep(j) %>% as.data.frame()
         end_calculations <- rbind(end_calculations, da)
       }
     }
+
+    print("MADE IT HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     end_calculations_rmse_mae <- end_calculations %>% analyze_keep_calculations() %>% as.data.frame()
-    count <- count + 1
+    end_calculations_rmse_mae %>% dplyr::glimpse()
+    step_number <- step_number + 1
   }
   print("Calculated end calculations")
   # if (RMSE > start$RMSE) {
   # break
   # }
   # }
-  # return(end)
+  return(end_calculations_rmse_mae)
 }
 
 #' FUNCTION: generate_keep

@@ -130,44 +130,45 @@ analyze_keep <- function(d, partition_size = 1) {
   end_calculations <- data.frame()
 
   # this generates and evaluates the starting neighborhood
-  for (j in 1:30) {
+  for (j in 1:1) {
     print(paste("Generating neighborhood, on trial ", j))
     neighborhood <- d %>% generate_keep(j)
     dt <- neighborhood %>% reduce_keep(j) %>% as.data.frame
     start_keep <- rbind(start_keep, neighborhood)
     start_calculations <- rbind(start_calculations, dt)
   }
-    start_calculations <- start_calculations %>% analyze_keep_calculations() %>% as.data.frame()
+    start_calculations_rmse_mae <- start_calculations %>% analyze_keep_calculations() %>% as.data.frame()
     print("Calculated start calculations")
 
   # while counter < # keeps, bitflip, evaluate, compare
     step <- start_keep
     count <- 1
-  # repeat {
-    # print(paste("Stepping OUTSIDE, at position ", count))
-    for (j in 1:30) {
-      dplyr::glimpse(step)
+  step %>% dplyr::glimpse()
+  repeat {
+    print(paste("Stepping OUTSIDE, at position ", count))
+    for (j in 1:1) {
       print(paste("Stepping INSIDE, on trial ", j))
       f <- step %>% dplyr::filter(trial == j)
-      if (count > nrow(f)) {
+      if (count > 2) {
+      # if (count > nrow(f)) {
         break
       } else {
         f <- f %>% bitflip_keep(count, partition_size)
-        dplyr::glimpse(f)
+        step <- f
+        f %>% dplyr::glimpse()
         da <- f %>% reduce_keep(j) %>% as.data.frame()
-        # dplyr::glimpse(da)
         end_calculations <- rbind(end_calculations, da)
       }
-    # }
-
-    # end_calculations <- end_calculations %>% analyze_keep_calculations() %>% as.data.frame()
-    print("Calculated end calculations")
-    # if (RMSE > start$RMSE) {
-    # break
-    # }
+    }
+    end_calculations_rmse_mae <- end_calculations %>% analyze_keep_calculations() %>% as.data.frame()
     count <- count + 1
   }
-  return(end)
+  print("Calculated end calculations")
+  # if (RMSE > start$RMSE) {
+  # break
+  # }
+  # }
+  # return(end)
 }
 
 #' FUNCTION: generate_keep

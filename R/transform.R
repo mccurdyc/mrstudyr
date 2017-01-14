@@ -168,12 +168,17 @@ transform_correlation <- function(d) {
 
 #' FUNCTION: transform_keep
 #'
-#' Add a binary value of 1 (for keeping) and 0 (for not keeping) a mutant.
-#' This will be used for hill climbing and other learning approaches.
+#' This column has values representing whether or not a mutant is considered when calculating mutation score
+#' as well as other metrics.
 #' @export
 
-transform_keep <- function(d) {
+transform_keep <- function(d, all=TRUE) {
   s <- c(TRUE, FALSE)
-  dt <- d %>% dplyr::mutate(keep = sample(s, 1, size = nrow(d)))
+
+  if (all == TRUE) {
+    dt <- d %>% dplyr::mutate(keep = TRUE)
+  } else {
+    dt <- d %>% dplyr::mutate(keep = sample(s, 1, size = nrow(d)))
+  }
   return(dt)
 }

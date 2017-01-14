@@ -41,7 +41,6 @@ analyze_selective_random <- function(d, o) {
     for(j in 1:30) {
       r <- o %>% select_operators(operators) %>% select_x_percent_across_operators(i)
       dt <- evaluate_reduction_technique(o, r) %>% transform_add_percentage_trial((i * 100), j) %>% as.data.frame()
-      # dt <- evaluate_selective_random(d, o, i, j) %>% as.data.frame()
       df <- rbind(df, dt)
     }
   }
@@ -60,17 +59,16 @@ analyze_incremental <- function(d, partition_size = 1) {
   df <- data.frame()
 
   repeat {
-    if (step_number > 10) {
-    # if (step_number > nrow(f)) {
+    if (step_number > 100) {
+    # if (step_number > nrow(o)) {
       break
     }
 
     print(paste("Current step number is: ", step_number))
-    if (step_number <= 10) {
-    # if (step_number <= nrow(f)) {
+    if (step_number <= 100) {
+    # if (step_number <= nrow(o)) {
       r <- r %>% helper_bitflip_keep(step_number, partition_size) %>% collect_keep_data()
       da <- evaluate_reduction_technique(o, r) %>% transform_add_step_number(step_number) %>% as.data.frame()
-      # da <- step_data %>% evaluate_incremental(step_number) %>% as.data.frame()
       df <- rbind(df, da)
     }
     step_number <- step_number + 1

@@ -119,6 +119,58 @@ analyze_summary_percent_calculations <- function(d) {
   return(df)
 }
 
+#' FUNCTION: analyze_incremental
+#'
+#' Analyze how reducing the set incrementally effects the error between MS and MS'
+#' @export
+
+analyze_incremental <- function(d, partition_size = 1) {
+  step_number <- 1
+  step_data <- d %>% transform_keep()
+  df <- data.frame()
+
+  repeat {
+    if (step_number > 10) {
+    # if (step_number > nrow(f)) {
+      break
+    }
+
+    print(paste("Current step number is: ", step_number))
+    if (step_number <= 10) {
+    # if (step_number <= nrow(f)) {
+      step_data <- step_data %>% bitflip_keep(step_number, partition_size)
+      # step_data %>% dplyr::filter(row_number() == step_number) %>% dplyr::glimpse()
+      da <- step_data %>% reduce_incremental(step_number) %>% as.data.frame()
+      df <- rbind(df, da)
+    }
+    step_number <- step_number + 1
+  }
+  return(df)
+}
+
+#' FUNCTION: reduce_incremental
+#'
+#' Using keep column, calculate the original and reduced sets mutation score, error and execution time.
+#' @export
+
+reduce_incremental <- function(d, step_number) {
+  original_data <- d %>% transform_keep()
+  reduced_data <- d %>% collect_keep_data()
+  reduced_numerator <- reduced_data %>% transform_reduced_killed_count()
+  reduced_denominator <- reduced_data %>% transform_reduced_total_count()
+  original_numerator <- original_data %>% transform_original_killed_count()
+  original_denominator <- original_data %>% transform_original_total_count()
+  reduced_time <- reduced_data %>% summarize_reduced_time()
+  original_time <- original_data %>% summarize_original_time()
+  dt <- join_numerator_denominator_time_data(reduced_numerator, reduced_denominator, original_numerator, original_denominator, reduced_time, original_time)
+  dt <- dt %>% transform_cost_reduction() %>%
+        transform_reduced_mutation_score() %>%
+        transform_original_mutation_score() %>%
+        transform_error() %>%
+        transform_add_step_number(step_number)
+  return(dt)
+}
+
 #' FUNCTION: analyze_keep
 #'
 #' This function performs a hill-climbing reduction technique.
@@ -146,35 +198,33 @@ analyze_keep <- function(d, partition_size = 1) {
   # while counter < # keeps, bitflip, evaluate, compare
   step <- start_keep
   step_number <- 1
-  # step %>% dplyr::glimpse()
 
   repeat {
-    if (step_number > 2) {
+    if (step_number > 800) {
       # if (step_number > nrow(f)) {
       break
     }
 
-    print(paste("Stepping OUTSIDE, at position ", step_number))
+    print(paste("Stepping POSITION, at position ", step_number))
 
     for (j in 1:1) {
     # for (j in 1:30) {
 
-      print(paste("Stepping INSIDE, on trial ", j))
-      print(paste("STEP NUMBER = ", step_number))
+      print(paste("Stepping TRIAL, on trial ", j))
 
-      f <- step %>% dplyr::filter(trial == j)
+      # each trial is a different neighborhood, so we only want to step at each neighborhood
+      f <- step %>% collect_chosen_trial_data(j)
 
-      if (step_number <= 2) {
+      if (step_number <= 800) {
       # if (step_number <= nrow(f)) {
         f <- f %>% bitflip_keep(step_number, partition_size)
         step <- f
-        # f %>% dplyr::glimpse()
         da <- f %>% reduce_keep(j) %>% as.data.frame()
+        # da %>% dplyr::glimpse()
         end_calculations <- rbind(end_calculations, da)
       }
     }
 
-    print("MADE IT HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     end_calculations_rmse_mae <- end_calculations %>% analyze_keep_calculations() %>% as.data.frame()
     end_calculations_rmse_mae %>% dplyr::glimpse()
     step_number <- step_number + 1
@@ -231,20 +281,19 @@ reduce_keep <- function(d, trial) {
 #' @export
 
 bitflip_keep <- function(d, position, partition_size=1) {
+  d <- d %>% collect_schema_data()
   df <- data.frame()
 
   if (position == 1) {
-    m <- d %>% dplyr::slice(position:((position + partition_size) - 1))
-    r <- d %>% dplyr::slice((position + partition_size):n())
-    u <- m %>% dplyr::mutate(keep = !m$keep)
+    m <- d %>% dplyr::filter(row_number() <= ((position + partition_size) - 1))
+    r <- d %>% dplyr::filter(row_number() > ((position + partition_size) - 1))
+    u <- m %>% dplyr::mutate(keep = !keep)
     df <- rbind(u, r)
-  }
-
-  else {
-    b <- d %>% dplyr::slice(1:(position - 1))
-    m <- d %>% dplyr::slice(position:((position + partition_size) - 1))
-    r <- d %>% dplyr::slice((position + partition_size):n())
-    u <- m %>% dplyr::mutate(keep = !m$keep)
+  } else {
+    b <- d %>% dplyr::filter(row_number() < position)
+    m <- d %>% dplyr::filter(row_number() == ((position + partition_size) - 1))
+    r <- d %>% dplyr::filter(row_number() > ((position + partition_size) - 1))
+    u <- m %>% dplyr::mutate(keep = !keep)
     df <- rbind(b, u, r)
   }
   return(df)
@@ -256,9 +305,9 @@ bitflip_keep <- function(d, position, partition_size=1) {
 #' @export
 
 analyze_keep_calculations <- function(d) {
-  d <- d %>% dplyr::ungroup()
+  # d <- d %>% dplyr::ungroup()
   # d <- d %>% dplyr::ungroup() %>% collect_chosen_trial_data(trial)
-  dt <- d %>% transform_mae() %>% transform_rmse()
-  # dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_keep_correlation()
+  # dt <- d %>% transform_mae() %>% transform_rmse()
+  dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_keep_correlation()
   return(dt)
 }

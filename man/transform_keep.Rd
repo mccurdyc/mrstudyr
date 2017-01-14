@@ -4,10 +4,10 @@
 \alias{transform_keep}
 \title{FUNCTION: transform_keep}
 \usage{
-transform_keep(d)
+transform_keep(d, all = TRUE)
 }
 \description{
-Add a binary value of 1 (for keeping) and 0 (for not keeping) a mutant.
-This will be used for hill climbing and other learning approaches.
+This column has values representing whether or not a mutant is considered when calculating mutation score
+as well as other metrics.
 }
 

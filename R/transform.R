@@ -18,6 +18,16 @@ transform_add_trial <- function(d, t) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_step_number
+#'
+#' Add the step number
+#' @export
+
+transform_add_step_number <- function(d, t) {
+  dt <- d %>% dplyr::mutate(step_number = t)
+  return(dt)
+}
+
 #' FUNCTION: transform_add_percentage_trial
 #'
 #' Add the analyzed percentage and current trial to data frame

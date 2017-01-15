@@ -12,15 +12,16 @@ helper_bitflip_keep <- function(d, position, partition_size=1) {
   d <- d %>% collect_schema_data()
   df <- data.frame()
 
-  if (position == 1) {
-    m <- d %>% dplyr::filter(row_number() <= ((position + partition_size) - 1))
-    r <- d %>% dplyr::filter(row_number() > ((position + partition_size) - 1))
+  if (position == partition_size) {
+    m <- d %>% dplyr::filter(row_number() <= position)
+    r <- d %>% dplyr::filter(row_number() > position)
     u <- m %>% dplyr::mutate(keep = !keep)
     df <- rbind(u, r)
+
   } else {
-    b <- d %>% dplyr::filter(row_number() < position)
-    m <- d %>% dplyr::filter(row_number() == ((position + partition_size) - 1))
-    r <- d %>% dplyr::filter(row_number() > ((position + partition_size) - 1))
+    b <- d %>% dplyr::filter(row_number() <= (position - partition_size))
+    m <- d %>% dplyr::filter(row_number() > (position - partition_size), row_number() <= position)
+    r <- d %>% dplyr::filter(row_number() > position)
     u <- m %>% dplyr::mutate(keep = !keep)
     df <- rbind(b, u, r)
   }

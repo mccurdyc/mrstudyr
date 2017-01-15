@@ -52,26 +52,27 @@ analyze_selective_random <- function(d, o) {
 #' Analyze how reducing the set incrementally effects the error between MS and MS'
 #' @export
 
-analyze_incremental <- function(d, partition_size = 1) {
-  step_number <- 1
+analyze_incremental <- function(d, partition_size=1) {
+  step_number <- partition_size
   o <- d %>% transform_keep()
-  r <- o
+  f <- o
   df <- data.frame()
 
   repeat {
-    if (step_number > 100) {
+    if (step_number > 300) {
     # if (step_number > nrow(o)) {
       break
     }
 
     print(paste("Current step number is: ", step_number))
-    if (step_number <= 100) {
+    if (step_number <= 300) {
     # if (step_number <= nrow(o)) {
-      r <- r %>% helper_bitflip_keep(step_number, partition_size) %>% collect_keep_data()
+      f <- f %>% helper_bitflip_keep(step_number, partition_size)
+      r <- f %>% collect_keep_data()
       da <- evaluate_reduction_technique(o, r) %>% transform_add_step_number(step_number) %>% as.data.frame()
       df <- rbind(df, da)
     }
-    step_number <- step_number + 1
+    step_number <- step_number + partition_size
   }
   return(df)
 }

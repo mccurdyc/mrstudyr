@@ -59,14 +59,14 @@ analyze_incremental <- function(d, partition_size=1) {
   df <- data.frame()
 
   repeat {
-    if (step_number > 300) {
-    # if (step_number > nrow(o)) {
+    # if (step_number > 300) {
+    if (step_number > nrow(o)) {
       break
     }
 
     print(paste("Current step number is: ", step_number))
-    if (step_number <= 300) {
-    # if (step_number <= nrow(o)) {
+    # if (step_number <= 300) {
+    if (step_number <= nrow(o)) {
       f <- f %>% helper_bitflip_keep(step_number, partition_size)
       r <- f %>% collect_keep_data()
       da <- evaluate_reduction_technique(o, r) %>% transform_add_step_number(step_number) %>% as.data.frame()

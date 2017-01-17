@@ -4,7 +4,7 @@
 \alias{analyze_selective_random}
 \title{FUNCTION: analyze_selective_random}
 \usage{
-analyze_selective_random(d, o)
+analyze_selective_random(d, operators)
 }
 \description{
 This function will analyze a select set of operators over percentages

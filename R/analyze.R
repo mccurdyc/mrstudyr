@@ -28,7 +28,7 @@ analyze_random_sampling <- function(d) {
 #' reduced set of operators by choosing a select set and analyzing at 100%.
 #' @export
 
-analyze_selective_random <- function(d, o) {
+analyze_selective_random <- function(d, operators) {
   o <- d %>% collect_schema_data()
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)

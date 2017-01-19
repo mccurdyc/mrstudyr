@@ -55,21 +55,22 @@ analyze_selective_random <- function(d, operators) {
 analyze_incremental <- function(d, partition_size=1) {
   step_number <- partition_size
   o <- d %>% transform_keep()
-  f <- o
+  current_best_fit <- data.frame()
   df <- data.frame()
 
   repeat {
-    # if (step_number > 300) {
-    if (step_number > nrow(o)) {
+    if (step_number > 300) {
+    # if (step_number > nrow(o)) {
       break
     }
 
     print(paste("Current step number is: ", step_number))
-    # if (step_number <= 300) {
-    if (step_number <= nrow(o)) {
-      f <- f %>% helper_bitflip_keep(step_number, partition_size)
-      r <- f %>% collect_keep_data()
-      da <- evaluate_reduction_technique(o, r) %>% transform_add_step_number(step_number) %>% as.data.frame()
+    if (step_number <= 300) {
+    # if (step_number <= nrow(o)) {
+      r <- o %>% helper_bitflip_keep(step_number, partition_size) %>% collect_keep_data()
+      da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
+      # might need to move outside (probably)
+      current_best_fit <- da %>% calculate_best_fit()
       df <- rbind(df, da)
     }
     step_number <- step_number + partition_size

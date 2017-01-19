@@ -29,3 +29,11 @@ calculate_percent_summary <- function(d) {
   return(df)
 }
 
+#' FUNCTION: calculate_best_fit
+#'
+#' Determine which step is best fit for a given schema
+#' @export
+
+calculate_best_fit <- function(d) {
+  d %>% collect_schema_data() %>% dplyr::summarise(best_fit = max(fitness))
+}

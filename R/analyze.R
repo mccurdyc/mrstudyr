@@ -69,11 +69,11 @@ analyze_incremental <- function(d, partition_size=1) {
     # if (step_number <= nrow(o)) {
       r <- o %>% helper_bitflip_keep(step_number, partition_size) %>% collect_keep_data()
       da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
-      # might need to move outside (probably)
-      current_best_fit <- da %>% calculate_best_fit()
       df <- rbind(df, da)
     }
     step_number <- step_number + partition_size
   }
+
+  current_best_fit <- df %>% calculate_best_fit()
   return(df)
 }

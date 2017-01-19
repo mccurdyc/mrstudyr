@@ -192,3 +192,14 @@ transform_keep <- function(d, all=TRUE) {
   }
   return(dt)
 }
+
+#' FUNCTION: transform_fitness
+#'
+#' Calculate the "fitness" of a step.
+#' @export
+
+transform_fitness <- function(d, error_weight, cost_weight) {
+  d <- d %>% collect_schema_data()
+  dt <- d %>% dplyr::mutate(fitness = ((cost_weight * cost_reduction) - (error_weight * error)))
+  return(dt)
+}

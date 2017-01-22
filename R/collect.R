@@ -101,3 +101,13 @@ collect_keep_data <- function(d) {
   dt <- d %>% dplyr::filter(keep == TRUE)
   return(dt)
 }
+
+#' FUNCTION: collect_best_fit_data
+#'
+#' Filter the data where fitness equals the best fitness for a given schema.
+#' @export
+
+collect_best_fit_data <- function(d) {
+  dt <- d %>% dplyr::filter(best_fit == fitness)
+  return(dt)
+}

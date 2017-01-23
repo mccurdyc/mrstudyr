@@ -56,6 +56,7 @@ analyze_incremental <- function(d, partition_size=1) {
   step_number <- partition_size
   o <- d %>% transform_keep()
   current_best_fit <- data.frame()
+  dk <- data.frame()
   df <- data.frame()
 
   repeat {
@@ -71,12 +72,14 @@ analyze_incremental <- function(d, partition_size=1) {
       k <- o %>% helper_bitflip_keep(step_number, partition_size) %>% transform_add_step_number(step_number) %>% as.data.frame()
       r <- k %>% collect_keep_data()
       da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
-      df <- rbind(df, k)
-      # df <- rbind(df, da)
+      dk <- rbind(dk, k)
+      df <- rbind(df, da)
     }
     step_number <- step_number + partition_size
   }
-  # b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
-  # current_best_fit <- b[!duplicated(b$schema), ]
-  return(df)
+  b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
+  current_best_fit <- b[!duplicated(b$schema), ]
+  h <- helper_gather_keep_data(b, dk)
+  return(h)
+  # return(current_best_fit)
 }

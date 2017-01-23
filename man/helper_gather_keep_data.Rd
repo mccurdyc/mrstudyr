@@ -7,6 +7,6 @@
 helper_gather_keep_data(b, k)
 }
 \description{
-Gather data
+Gather data only the keep data cooresponding the best fit step for a given schema.
 }
 

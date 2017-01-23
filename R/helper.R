@@ -30,7 +30,7 @@ helper_bitflip_keep <- function(d, position, partition_size=1) {
 
 #' FUNCTION: helper_gather_keep_data
 #'
-#' Gather data
+#' Gather data only the keep data cooresponding the best fit step for a given schema.
 #' @export
 
 helper_gather_keep_data <- function(b, k) {

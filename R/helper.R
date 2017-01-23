@@ -27,3 +27,19 @@ helper_bitflip_keep <- function(d, position, partition_size=1) {
   }
   return(df)
 }
+
+#' FUNCTION: helper_gather_keep_data
+#'
+#' Gather data
+#' @export
+
+helper_gather_keep_data <- function(b, k) {
+  df <- data.frame()
+  i <- 1
+  while (i <= nrow(b)) {
+    dt <- b %>% dplyr::ungroup() %>% dplyr::filter(row_number() == i) %>% collect_schema_step_data(k)
+    df <- rbind(df, dt)
+    i <- i + 1
+  }
+  return(df)
+}

@@ -111,3 +111,14 @@ collect_best_fit_data <- function(d) {
   dt <- d %>% dplyr::filter(best_fit == fitness)
   return(dt)
 }
+
+#' FUNCTION: collect_schema_step_data <- function()
+#'
+#' Given the best-fit data, gather the keep data for the respective step number
+#' for a given schema.
+#' @export
+
+collect_schema_step_data <- function(b, k) {
+  dt <- k %>% dplyr::filter(schema == b$schema, step_number == b$step_number)
+  return(dt)
+}

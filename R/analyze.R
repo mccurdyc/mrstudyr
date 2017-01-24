@@ -53,27 +53,41 @@ analyze_selective_random <- function(d, operators) {
 #' @export
 
 analyze_incremental <- function(d, partition_size=1) {
-  step_number <- partition_size
+  outside_step <- 1
   o <- d %>% transform_keep()
-  dk <- data.frame()
-  df <- data.frame()
+  g <- o
+  temp <- data.frame()
+  # temp <- evaluate_reduction_technique(o, o) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
+  # dk <- data.frame()
+  # df <- data.frame()
 
-  while (step_number <= 300) {
-  # while (step_number <= nrow(o)) {
-    print(paste("Current step number is: ", step_number))
-    # we keep this so that we can show which mutants to ignore (instead of only the ones to keep)
-    k <- o %>% helper_bitflip_keep(step_number, partition_size) %>% transform_add_step_number(step_number) %>% as.data.frame()
-    r <- k %>% collect_keep_data()
-    da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
-    dk <- rbind(dk, k)
-    df <- rbind(df, da)
-    step_number <- step_number + partition_size
+  # while schema$fitness < schema$best_fit (is this the same as checking identical? no! could decrease) || certain number of rounds / time / ...
+  while (!identical(g, temp)) {
+    step_number <- partition_size
+    dk <- data.frame()
+    df <- data.frame()
+    print(paste("outside step number: ", outside_step))
+    # while (step_number <= 300) {
+    while (step_number <= nrow(g)) {
+      print(paste("step number: ", step_number))
+      # we keep this so that we can show which mutants to ignore (instead of only the ones to keep)
+      k <- g %>% helper_bitflip_keep(step_number, partition_size) %>% transform_add_step_number(step_number) %>% as.data.frame()
+      r <- k %>% collect_keep_data()
+      da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
+      dk <- rbind(dk, k)
+      df <- rbind(df, da)
+      step_number <- step_number + partition_size
+    }
+
+    b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
+    current_best_fit <- b[!duplicated(b$schema), ]
+    temp <- g
+    g <- helper_gather_keep_data(current_best_fit, dk)
+    outside_step <- outside_step + 1
+    dplyr::glimpse(temp)
+    dplyr::glimpse(g)
   }
-
-  b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
-  current_best_fit <- b[!duplicated(b$schema), ]
-  g <- helper_gather_keep_data(current_best_fit, dk)
-  return(g)
-  # return(dk)
-  # return(current_best_fit)
+  # return(g)
+  # return(dk) # all of the keep data, not filtered like 'g'
+  return(current_best_fit) # just the actual best_fit values and their respective step for each schema
 }

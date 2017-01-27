@@ -57,19 +57,18 @@ analyze_incremental <- function(d, partition_size=1) {
   o <- d %>% transform_keep()
   g <- o
   temp <- data.frame()
-  # temp <- evaluate_reduction_technique(o, o) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
-  # dk <- data.frame()
-  # df <- data.frame()
+  current_best_fit <- evaluate_reduction_technique(o, o) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(0) %>% calculate_best_fit() %>% collect_schema_data()
 
   # while schema$fitness < schema$best_fit (is this the same as checking identical? no! could decrease) || certain number of rounds / time / ...
-  while (!identical(g, temp)) {
+  # while (!identical(g, temp)) {
+  for (s )
+  while ((current_best_fit$best_fit == current_best_fit$fitness) && !identical(g, temp)) {
     step_number <- partition_size
     dk <- data.frame()
     df <- data.frame()
     print(paste("outside step number: ", outside_step))
-    # while (step_number <= 300) {
-    while (step_number <= nrow(g)) {
-      print(paste("step number: ", step_number))
+    while (step_number <= 300) {
+      # while (step_number <= nrow(g)) {
       # we keep this so that we can show which mutants to ignore (instead of only the ones to keep)
       k <- g %>% helper_bitflip_keep(step_number, partition_size) %>% transform_add_step_number(step_number) %>% as.data.frame()
       r <- k %>% collect_keep_data()
@@ -84,9 +83,9 @@ analyze_incremental <- function(d, partition_size=1) {
     temp <- g
     g <- helper_gather_keep_data(current_best_fit, dk)
     outside_step <- outside_step + 1
-    dplyr::glimpse(temp)
-    dplyr::glimpse(g)
+    dplyr::glimpse(current_best_fit %>% dplyr::filter(schema == "BankAccount"))
   }
+
   # return(g)
   # return(dk) # all of the keep data, not filtered like 'g'
   return(current_best_fit) # just the actual best_fit values and their respective step for each schema

@@ -57,12 +57,16 @@ analyze_incremental <- function(d, partition_size=1) {
   o <- d %>% transform_keep()
   g <- o
   temp <- data.frame()
-  current_best_fit <- evaluate_reduction_technique(o, o) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(0) %>% calculate_best_fit() %>% collect_schema_data()
+  current_best_fit <- evaluate_reduction_technique(o, o) %>%
+                        transform_fitness(0.5, 0.5) %>%
+                        transform_add_step_number(0) %>%
+                        calculate_best_fit() %>%
+                        collect_schema_data()
+  temp_best_fit <- current_best_fit
 
   # while schema$fitness < schema$best_fit (is this the same as checking identical? no! could decrease) || certain number of rounds / time / ...
   # while (!identical(g, temp)) {
-  for (s )
-  while ((current_best_fit$best_fit == current_best_fit$fitness) && !identical(g, temp)) {
+  while (TRUE) {
     step_number <- partition_size
     dk <- data.frame()
     df <- data.frame()
@@ -78,15 +82,22 @@ analyze_incremental <- function(d, partition_size=1) {
       step_number <- step_number + partition_size
     }
 
+    temp_best_fit <- current_best_fit
     b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
     current_best_fit <- b[!duplicated(b$schema), ]
     temp <- g
     g <- helper_gather_keep_data(current_best_fit, dk)
     outside_step <- outside_step + 1
-    dplyr::glimpse(current_best_fit %>% dplyr::filter(schema == "BankAccount"))
+      # print(paste("current: ", current_best_fit$best_fit))
+      # print(paste("temp: ", temp_best_fit$best_fit))
+      # print(current_best_fit$best_fit < temp_best_fit$best_fit)
+      dplyr::glimpse(current_best_fit %>% dplyr::filter(schema == "BankAccount"))
+    if ((current_best_fit$best_fit < temp_best_fit$best_fit)) {
+      break;
+    }
   }
 
   # return(g)
   # return(dk) # all of the keep data, not filtered like 'g'
-  return(current_best_fit) # just the actual best_fit values and their respective step for each schema
+  return(temp_best_fit) # just the actual best_fit values and their respective step for each schema
 }

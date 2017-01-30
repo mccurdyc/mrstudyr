@@ -53,51 +53,58 @@ analyze_selective_random <- function(d, operators) {
 #' @export
 
 analyze_incremental <- function(d, partition_size=1) {
-  outside_step <- 1
-  o <- d %>% transform_keep()
-  g <- o
-  temp <- data.frame()
-  current_best_fit <- evaluate_reduction_technique(o, o) %>%
-                        transform_fitness(0.5, 0.5) %>%
-                        transform_add_step_number(0) %>%
-                        calculate_best_fit() %>%
-                        collect_schema_data()
-  temp_best_fit <- current_best_fit
+  dd <- data.frame()
+  schemas <- d %>% dplyr::select(schema) %>% dplyr::distinct()
+  for(s in schemas[[1]]) {
+    print(paste("current schema: ", s))
+    outside_step <- 1
+    o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
+    g <- o
+    # initialized to set temp_best_fit to fitness of original data
+    current_best_fit <- evaluate_reduction_technique(o, o) %>%
+      transform_fitness(0.5, 0.5) %>%
+      transform_add_step_number(0) %>%
+      calculate_best_fit() %>%
+      collect_schema_data()
 
-  # while schema$fitness < schema$best_fit (is this the same as checking identical? no! could decrease) || certain number of rounds / time / ...
-  # while (!identical(g, temp)) {
-  while (TRUE) {
-    step_number <- partition_size
-    dk <- data.frame()
-    df <- data.frame()
-    print(paste("outside step number: ", outside_step))
-    while (step_number <= 300) {
-      # while (step_number <= nrow(g)) {
-      # we keep this so that we can show which mutants to ignore (instead of only the ones to keep)
-      k <- g %>% helper_bitflip_keep(step_number, partition_size) %>% transform_add_step_number(step_number) %>% as.data.frame()
-      r <- k %>% collect_keep_data()
-      da <- evaluate_reduction_technique(o, r) %>% transform_fitness(0.5, 0.5) %>% transform_add_step_number(step_number) %>% as.data.frame()
-      dk <- rbind(dk, k)
-      df <- rbind(df, da)
-      step_number <- step_number + partition_size
-    }
+    while (TRUE) {
+      step_number <- partition_size
+      dk <- data.frame()
+      df <- data.frame()
+      print(paste("outside step number: ", outside_step))
+      # right now, only flip the first 300 hundred --- this is also why most only take 7 outside steps right now
+      while (step_number <= 300) {
+        # print(paste("inside step number: ", step_number))
+        # while (step_number <= nrow(g)) {
+        # keep to show which mutants to ignore (instead of only the ones to keep)
+        k <- g %>% helper_bitflip_keep(step_number, partition_size) %>%
+          transform_add_step_number(step_number) %>%
+          as.data.frame()
+        r <- k %>% collect_keep_data()
+        da <- evaluate_reduction_technique(o, r) %>%
+          transform_fitness(0.5, 0.5) %>%
+          transform_add_step_number(step_number) %>%
+          as.data.frame()
+        dk <- rbind(dk, k) # keep data
+        df <- rbind(df, da) # calculation data
+        step_number <- step_number + partition_size
+      }
 
-    temp_best_fit <- current_best_fit
-    b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
-    current_best_fit <- b[!duplicated(b$schema), ]
-    temp <- g
-    g <- helper_gather_keep_data(current_best_fit, dk)
-    outside_step <- outside_step + 1
+      temp_best_fit <- current_best_fit %>% as.data.frame()
+      b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
+      current_best_fit <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
+      g <- helper_gather_keep_data(current_best_fit, dk)
+      outside_step <- outside_step + 1
       # print(paste("current: ", current_best_fit$best_fit))
       # print(paste("temp: ", temp_best_fit$best_fit))
       # print(current_best_fit$best_fit < temp_best_fit$best_fit)
-      dplyr::glimpse(current_best_fit %>% dplyr::filter(schema == "BankAccount"))
-    if ((current_best_fit$best_fit < temp_best_fit$best_fit)) {
-      break;
-    }
-  }
-
-  # return(g)
-  # return(dk) # all of the keep data, not filtered like 'g'
-  return(temp_best_fit) # just the actual best_fit values and their respective step for each schema
+      # dplyr::glimpse(current_best_fit)
+      # we stop if it is equal because then we are no longer climbing, we have plateaued
+      if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
+        dd <- rbind(dd, temp_best_fit)
+        break
+      } # if
+    } # while
+  } # for
+return(dd) # just the actual best_fit values and their respective step for each schema
 }

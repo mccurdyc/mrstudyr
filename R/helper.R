@@ -39,7 +39,7 @@ helper_gather_keep_data <- function(b, k) {
   while (i <= nrow(b)) {
     dt <- b %>% dplyr::ungroup() %>%
                   dplyr::filter(row_number() == i) %>%
-                  collect_schema_step_data(k)
+                  collect_schema_position_data(k)
     df <- rbind(df, dt)
     i <- i + 1
   }

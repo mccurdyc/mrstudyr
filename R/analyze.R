@@ -63,30 +63,30 @@ analyze_incremental <- function(d, partition_size=1) {
     # initialized to set temp_best_fit to fitness of original data
     current_best_fit <- evaluate_reduction_technique(o, o) %>%
       transform_fitness(0.5, 0.5) %>%
-      transform_add_step_number(0) %>%
+      transform_add_position(0) %>%
       calculate_best_fit() %>%
       collect_schema_data()
 
     while (TRUE) {
-      step_number <- partition_size
+      position <- partition_size # THIS NEEDS RANDOMIZED
       dk <- data.frame()
       df <- data.frame()
       print(paste("outside step number: ", outside_step))
-      # while (step_number <= 300) {
-      while (step_number <= nrow(g)) {
-        # print(paste("inside step number: ", step_number))
+      # while (position <= 300) {
+      while (position <= nrow(g)) {
+        # print(paste("inside position: ", position))
         # keep to show which mutants to ignore (instead of only the ones to keep)
-        k <- g %>% helper_bitflip_keep(step_number, partition_size) %>%
-          transform_add_step_number(step_number) %>%
+        k <- g %>% helper_bitflip_keep(position, partition_size) %>%
+          transform_add_position(position) %>%
           as.data.frame()
         r <- k %>% collect_keep_data()
         da <- evaluate_reduction_technique(o, r) %>%
           transform_fitness(0.5, 0.5) %>%
-          transform_add_step_number(step_number) %>%
+          transform_add_position(position) %>%
           as.data.frame()
         dk <- rbind(dk, k) # keep data
         df <- rbind(df, da) # calculation data
-        step_number <- step_number + partition_size
+        position <- position + partition_size
       }
 
       temp_best_fit <- current_best_fit %>% as.data.frame()

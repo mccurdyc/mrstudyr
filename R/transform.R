@@ -18,13 +18,13 @@ transform_add_trial <- function(d, t) {
   return(dt)
 }
 
-#' FUNCTION: transform_add_step_number
+#' FUNCTION: transform_add_position
 #'
-#' Add the step number
+#' Add the position column
 #' @export
 
-transform_add_step_number <- function(d, t) {
-  dt <- d %>% dplyr::mutate(step_number = t)
+transform_add_position <- function(d, t) {
+  dt <- d %>% dplyr::mutate(position = t)
   return(dt)
 }
 

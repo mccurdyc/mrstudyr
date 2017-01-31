@@ -72,10 +72,9 @@ analyze_incremental <- function(d, partition_size=1) {
       dk <- data.frame()
       df <- data.frame()
       print(paste("outside step number: ", outside_step))
-      # right now, only flip the first 300 hundred --- this is also why most only take 7 outside steps right now
-      while (step_number <= 300) {
+      # while (step_number <= 300) {
+      while (step_number <= nrow(g)) {
         # print(paste("inside step number: ", step_number))
-        # while (step_number <= nrow(g)) {
         # keep to show which mutants to ignore (instead of only the ones to keep)
         k <- g %>% helper_bitflip_keep(step_number, partition_size) %>%
           transform_add_step_number(step_number) %>%
@@ -95,10 +94,7 @@ analyze_incremental <- function(d, partition_size=1) {
       current_best_fit <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
       g <- helper_gather_keep_data(current_best_fit, dk)
       outside_step <- outside_step + 1
-      # print(paste("current: ", current_best_fit$best_fit))
-      # print(paste("temp: ", temp_best_fit$best_fit))
-      # print(current_best_fit$best_fit < temp_best_fit$best_fit)
-      # dplyr::glimpse(current_best_fit)
+      temp_best_fit %>% dplyr::glimpse()
       # we stop if it is equal because then we are no longer climbing, we have plateaued
       if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
         dd <- rbind(dd, temp_best_fit)
@@ -106,5 +102,6 @@ analyze_incremental <- function(d, partition_size=1) {
       } # if
     } # while
   } # for
-return(dd) # just the actual best_fit values and their respective step for each schema
+return(k) # the final reduced keep data telling you which mutants to keep and ignore
+# return(dd) # just the actual best_fit values and their respective step for each schema
 }

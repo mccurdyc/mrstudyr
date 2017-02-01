@@ -49,3 +49,13 @@ select_all_schemas <- function(d) {
   dt <- d %>% dplyr::select(schema) %>% dplyr::distinct()
   return(dt)
 }
+
+#' FUNCTION: select_random_start_position
+#'
+#' For the hill climbing approach a start position needs to be randomly chosen.
+#' This function randomly selects a start position between 1 and the number of observations associated
+#' with a schema (i.e., the number of rows or number of mutants).
+
+select_random_start_position <- function(x) {
+  return(sample(1:x, 1, TRUE))
+}

@@ -11,18 +11,22 @@
 helper_bitflip_keep <- function(d, position, partition_size=1) {
   d <- d %>% collect_schema_data()
   df <- data.frame()
+  rows <- nrow(d)
 
-  if (position == partition_size) {
-    m <- d %>% dplyr::filter(row_number() <= position)
-    r <- d %>% dplyr::filter(row_number() > position)
-    u <- m %>% dplyr::mutate(keep = !keep)
-    df <- rbind(u, r)
+  if ((position + partition_size) > rows) {
+    remainder <- (position + partition_size) - rows
 
+    b <- d %>% dplyr::filter(row_number() < remainder) # mutants before remainder position
+    a <- d %>% dplyr::filter(row_number() >= remainder, row_number() < position) # mutants between remainder and flippers
+    m <- d %>% dplyr::filter(row_number() >= position) # mutants to flip
+    bb <- b %>% dplyr::mutate(keep = !keep) # do the flip
+    u <- m %>% dplyr::mutate(keep = !keep) # do the flip
+    df <- rbind(bb, a, u)
   } else {
-    b <- d %>% dplyr::filter(row_number() <= (position - partition_size))
-    m <- d %>% dplyr::filter(row_number() > (position - partition_size), row_number() <= position)
-    r <- d %>% dplyr::filter(row_number() > position)
-    u <- m %>% dplyr::mutate(keep = !keep)
+    b <- d %>% dplyr::filter(row_number() < position) # mutants before position
+    m <- d %>% dplyr::filter(row_number() >= position, row_number() < (position + partition_size)) # mutants to flip
+    r <- d %>% dplyr::filter(row_number() >= (position + partition_size)) # mutants following flip position
+    u <- m %>% dplyr::mutate(keep = !keep) # do the flip
     df <- rbind(b, u, r)
   }
   return(df)

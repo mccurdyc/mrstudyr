@@ -57,5 +57,5 @@ select_all_schemas <- function(d) {
 #' with a schema (i.e., the number of rows or number of mutants).
 
 select_random_start_position <- function(x) {
-  return(sample(1:x, 1, TRUE))
+  return(sample(1:x[[1]], 1, TRUE))
 }

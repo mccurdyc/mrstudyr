@@ -67,30 +67,44 @@ analyze_incremental <- function(d, partition_size=1) {
       calculate_best_fit() %>%
       collect_schema_data()
 
-    for(j in 1:30) {
+    for(j in 1:1) {
       start_position <- o %>% dplyr::count() %>% select_random_start_position()
-      print(start_position)
+      print(paste("start position: ", start_position))
       while (TRUE) {
         position <- start_position
-        # position <- partition_size # THIS NEEDS RANDOMIZED
-        dk <- data.frame()
-        df <- data.frame()
+        print(paste("position: ", position))
+        dk <- data.frame() # hold the keep data
+        df <- data.frame() # hold the best_fit data
         print(paste("outside step number: ", outside_step))
-        # while (position <= 300) {
-        while (position <= nrow(g)) {
-          # print(paste("inside position: ", position))
+        print(paste("nrow g: ", nrow(g)))
+        while (TRUE) { 
+        # while (position <= nrow(g) || position < start_position) {
+        print(paste("start position: ", start_position))
           # keep to show which mutants to ignore (instead of only the ones to keep)
           k <- g %>% helper_bitflip_keep(position, partition_size) %>%
             transform_add_position(position) %>%
             as.data.frame()
-          r <- k %>% collect_keep_data()
+          dplyr::glimpse(k)
+          r <- k %>% collect_keep_data() # only data that was 'kept'
           da <- evaluate_reduction_technique(o, r) %>%
             transform_fitness(0.5, 0.5) %>%
             transform_add_position(position) %>%
             as.data.frame()
           dk <- rbind(dk, k) # keep data
-          df <- rbind(df, da) # calculation data
-          position <- position + partition_size
+          df <- rbind(df, da) # best_fit data
+          # THIS ABOUT THIS MORE
+          if ((position + partition_size) > nrow(g)) {
+            remainder <- (position + partition_size) - nrow(d)
+            position <- remainder
+            print(paste("if position: ", position))
+          } else {
+            position <- position + partition_size
+            print(paste("else position: ", position))
+          }
+          if (position == start_position) {
+            break
+            print(paste("start position: ", start_position))
+          }
         }
 
         temp_best_fit <- current_best_fit %>% as.data.frame()
@@ -98,15 +112,15 @@ analyze_incremental <- function(d, partition_size=1) {
         current_best_fit <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
         g <- helper_gather_keep_data(current_best_fit, dk)
         outside_step <- outside_step + 1
-        temp_best_fit %>% dplyr::glimpse()
+
         # we stop if it is equal because then we are no longer climbing, we have plateaued
         if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
           dd <- rbind(dd, temp_best_fit)
           break
         } # if
       } # while
-    } # for 
+    } # for
   } # for
-  return(k) # the final reduced keep data telling you which mutants to keep and ignore
-  # return(dd) # just the actual best_fit values and their respective step for each schema
+  # return(k) # the final reduced keep data telling you which mutants to keep and ignore
+  return(dd) # just the actual best_fit values and their respective step for each schema
 }

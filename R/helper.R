@@ -16,9 +16,9 @@ helper_bitflip_keep <- function(d, position, partition_size=1) {
   if ((position + partition_size) > rows) {
     remainder <- (position + partition_size) - rows
 
-    b <- d %>% dplyr::filter(row_number() < remainder) # mutants before remainder position
-    a <- d %>% dplyr::filter(row_number() >= remainder, row_number() < position) # mutants between remainder and flippers
-    m <- d %>% dplyr::filter(row_number() >= position) # mutants to flip
+    b <- d %>% dplyr::filter(row_number() < remainder)
+    a <- d %>% dplyr::filter(row_number() >= remainder, row_number() < position) # don't flip
+    m <- d %>% dplyr::filter(row_number() >= position, row_number() <= rows) # flip
     bb <- b %>% dplyr::mutate(keep = !keep) # do the flip
     u <- m %>% dplyr::mutate(keep = !keep) # do the flip
     df <- rbind(bb, a, u)

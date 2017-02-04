@@ -4,7 +4,7 @@
 \alias{helper_bitflip_keep}
 \title{FUNCTION: helper_bitflip_keep}
 \usage{
-helper_bitflip_keep(d, position, partition_size = 1)
+helper_bitflip_keep(d, p, partition_size = 1)
 }
 \description{
 This is a helper function for ANALYZE_INCREMENTAL

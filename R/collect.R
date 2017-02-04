@@ -112,6 +112,16 @@ collect_best_fit_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_best_keep_data
+#'
+#' Filter the collected keep data from all positions and filter where position was best fit.
+#' @export
+
+collect_best_keep_data <- function(b, k) {
+  dt <- k %>% dplyr::filter(position == b$position)
+  return(dt)
+}
+
 #' FUNCTION: collect_schema_step_data <- function()
 #'
 #' Given the best-fit data, gather the keep data for the respective position

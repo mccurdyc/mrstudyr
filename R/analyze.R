@@ -67,14 +67,17 @@ analyze_incremental <- function(d, partition_size=1) {
       calculate_best_fit() %>%
       collect_schema_data()
 
-    # for(j in 1:1) {
-      start_position <- 106
-      # start_position <- o %>% dplyr::count() %>% select_random_start_position()
+    # for(j in 1:30) {
+    for(j in 1:1) { # debuggin purposes
+      start_position <- o %>% dplyr::count() %>% select_random_start_position()
+      print(paste("START POSITION: ", start_position))
+
       while (TRUE) {
 
-        position <- start_position
         dk <- data.frame() # hold the keep data
         df <- data.frame() # hold the best_fit data
+        fst <- TRUE
+        position <- start_position
         print(paste("outside step number: ", outside_step))
 
         while (TRUE) {
@@ -86,25 +89,26 @@ analyze_incremental <- function(d, partition_size=1) {
             transform_fitness(0.5, 0.5) %>%
             transform_add_position(position) %>%
             as.data.frame()
-          dk <- rbind(dk, k) # keep data
-          df <- rbind(df, da) # best_fit data
 
           if ((position + partition_size) > nrow(g)) {
             position <- (position + partition_size) - nrow(d)
-          }
-            position <- position + partition_size
-
-          if (position == start_position) {
+          } else if (position == start_position && fst != TRUE) {
             break
+          } else {
+            position <- position + partition_size
           }
+
+          fst <- FALSE
+          dk <- rbind(dk, k) # keep data
+          df <- rbind(df, da) # best_fit data
         }
 
         temp_best_fit <- current_best_fit %>% as.data.frame()
         b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
         current_best_fit <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-        g <- helper_gather_keep_data(current_best_fit, dk)
-        outside_step <- outside_step + 1
         current_best_fit %>% dplyr::glimpse()
+        g <- collect_best_keep_data(current_best_fit, dk)
+        outside_step <- outside_step + 1
 
         # we stop if it is equal because then we are no longer climbing, we have plateaued
         if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
@@ -113,6 +117,7 @@ analyze_incremental <- function(d, partition_size=1) {
         }
       }
     }
+  }
   # return(k) # the final reduced keep data telling you which mutants to keep and ignore
   return(dd) # just the actual best_fit values and their respective step for each schema
 }

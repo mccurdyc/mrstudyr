@@ -28,6 +28,16 @@ transform_add_position <- function(d, t) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_start_position
+#'
+#' Add the start position column
+#' @export
+
+transform_add_start_position <- function(d, t) {
+  dt <- d %>% dplyr::mutate(start_position = t)
+  return(dt)
+}
+
 #' FUNCTION: transform_add_percentage_trial
 #'
 #' Add the analyzed percentage and current trial to data frame

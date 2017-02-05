@@ -57,26 +57,27 @@ analyze_incremental <- function(d, partition_size=1) {
   schemas <- d %>% dplyr::select(schema) %>% dplyr::distinct()
   for(s in schemas[[1]]) {
     print(paste("current schema: ", s))
-    outside_step <- 1
     o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
-    g <- o
-    # initialized to set temp_best_fit to fitness of original data
-    current_best_fit <- evaluate_reduction_technique(o, o) %>%
+
+    for(j in 1:30) {
+      outside_step <- 1
+      g <- o
+      # initialized to set temp_best_fit to fitness of original data
+      current_best_fit <- evaluate_reduction_technique(o, o) %>%
       transform_fitness(0.5, 0.5) %>%
       transform_add_position(0) %>%
       calculate_best_fit() %>%
       collect_schema_data()
 
-    # for(j in 1:30) {
-    for(j in 1:1) { # debuggin purposes
+      print(paste("TRIAL: ", j))
       start_position <- o %>% dplyr::count() %>% select_random_start_position()
       print(paste("START POSITION: ", start_position))
 
       while (TRUE) {
 
+        fst <- TRUE
         dk <- data.frame() # hold the keep data
         df <- data.frame() # hold the best_fit data
-        fst <- TRUE
         position <- start_position
         print(paste("outside step number: ", outside_step))
 
@@ -90,10 +91,16 @@ analyze_incremental <- function(d, partition_size=1) {
             transform_add_position(position) %>%
             as.data.frame()
 
-          if ((position + partition_size) > nrow(g)) {
-            position <- (position + partition_size) - nrow(d)
+          # Keep randomly chosen start position as flipped mutant(s)
+          if (position == start_position && outside_step == 1) {
+            dk <- rbind(dk, k) # keep data
+            df <- rbind(df, da) # best_fit data
+            break
+          # Tested all flip partitions, time to choose the best and build on that
           } else if (position == start_position && fst != TRUE) {
             break
+          } else if ((position + partition_size) > nrow(g)) {
+            position <- (position + partition_size) - nrow(d)
           } else {
             position <- position + partition_size
           }
@@ -112,7 +119,8 @@ analyze_incremental <- function(d, partition_size=1) {
 
         # we stop if it is equal because then we are no longer climbing, we have plateaued
         if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
-          dd <- rbind(dd, temp_best_fit)
+          a <- temp_best_fit %>% transform_add_start_position(start_position) %>% transform_add_trial(j)
+          dd <- rbind(dd, a)
           break
         }
       }

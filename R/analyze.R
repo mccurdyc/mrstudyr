@@ -59,7 +59,10 @@ analyze_incremental <- function(d, partition_size=1) {
     print(paste("current schema: ", s))
     o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
 
-    for(j in 1:30) {
+    for(j in 1:1) {
+      dk <- data.frame() # hold the keep data
+      df <- data.frame() # hold the best_fit data
+
       outside_step <- 1
       g <- o
       # initialized to set temp_best_fit to fitness of original data
@@ -70,34 +73,49 @@ analyze_incremental <- function(d, partition_size=1) {
       collect_schema_data()
 
       print(paste("TRIAL: ", j))
-      start_position <- o %>% dplyr::count() %>% select_random_start_position()
+      start_position <- 6
+      # start_position <- o %>% dplyr::count() %>% select_random_start_position()
       print(paste("START POSITION: ", start_position))
+
+      g <- g %>% helper_bitflip_keep(start_position, partition_size) %>%
+        transform_add_position(start_position) %>%
+        as.data.frame()
+      g %>% dplyr::glimpse()
+      # r <- k %>% collect_keep_data() # only data that was 'kept'
+      # da <- evaluate_reduction_technique(o, r) %>%
+      #   transform_fitness(0.5, 0.5) %>%
+      #   transform_add_position(start_position) %>%
+      #   as.data.frame()
+      #
+      #   dk <- rbind(dk, k) # keep data
+      #   df <- rbind(df, da) # best_fit data
 
       while (TRUE) {
 
         fst <- TRUE
         dk <- data.frame() # hold the keep data
         df <- data.frame() # hold the best_fit data
-        position <- start_position
+
+        position <- start_position + partition_size
         print(paste("outside step number: ", outside_step))
 
         while (TRUE) {
+          if (position == start_position && outside_step == 1) {
+            position <- position + partition_size
+            break
+          }
           k <- g %>% helper_bitflip_keep(position, partition_size) %>%
             transform_add_position(position) %>%
             as.data.frame()
+          k %>% dplyr::glimpse()
           r <- k %>% collect_keep_data() # only data that was 'kept'
           da <- evaluate_reduction_technique(o, r) %>%
             transform_fitness(0.5, 0.5) %>%
             transform_add_position(position) %>%
             as.data.frame()
 
-          # Keep randomly chosen start position as flipped mutant(s)
-          if (position == start_position && outside_step == 1) {
-            dk <- rbind(dk, k) # keep data
-            df <- rbind(df, da) # best_fit data
-            break
           # Tested all flip partitions, time to choose the best and build on that
-          } else if (position == start_position && fst != TRUE) {
+          if (position == start_position && fst != TRUE) {
             break
           } else if ((position + partition_size) > nrow(g)) {
             position <- (position + partition_size) - nrow(d)

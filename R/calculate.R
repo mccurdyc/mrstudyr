@@ -9,6 +9,18 @@ calculate_percent_effectiveness <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: calculate_correlation
+#'
+#' This function will calculate the correlation between the reduced and the original
+#' mutation score for a given percent. This is a helper function for the transform_correlation function
+#' @export
+
+calculate_correlation <- function(x, y) {
+  model <- cor.test(x, y, method = "kendall", use = "pairwise")
+  tidy_model <- model %>% broom::tidy()
+  return(tidy_model)
+}
+
 #' FUNCTION: calculate_percent_summary
 #'
 #' Calculate the effectiveness of a reduction technique.

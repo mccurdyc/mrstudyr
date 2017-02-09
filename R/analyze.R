@@ -72,7 +72,7 @@ analyze_incremental <- function(d, partition_size=1) {
 incremental <- function(d, partition_size=1) {
   dd <- data.frame()
 
-    for(j in 1:30) {
+    for(j in 1:1) {
       dk <- data.frame() # hold the keep data
       df <- data.frame() # hold the best_fit data
 

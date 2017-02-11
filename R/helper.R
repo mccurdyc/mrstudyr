@@ -122,6 +122,8 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, partition_size=1) {
-  start_position <- d %>% select_random_start_position()
+  start_position_frac <- select_random_percent()
+  start_position <- d %>% do(dplyr::summarize(., start_position = select_start_position(., start_position_frac)))
+  # start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
   return(start_position)
 }

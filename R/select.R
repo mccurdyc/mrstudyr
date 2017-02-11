@@ -61,14 +61,23 @@ select_random_start_position <- function(x) {
   return(sample(1:x[[1]], 1, TRUE))
 }
 
-#' FUNCTION: select_random_start_position_frac
+#' FUNCTION: select_random_percent
 #'
 #' Might merge into other similar function, still thinking
 #' @export
 
-select_random_start_position_frac <- function(d) {
-  r <- (sample(1:100[[1]], 1, TRUE)/100)
-  print(r)
+select_random_percent <- function() {
+  dt <- (sample(1:100[[1]], 1, TRUE)/100)
+  print(dt)
+  return(dt)
+}
+
+#' FUNCTION: select_start_position
+#'
+#' Might merge into other similar function, still thinking
+#' @export
+
+select_start_position <- function(d, r) {
   dt <- (r * nrow(d)) %>% round()
   return(dt)
 }

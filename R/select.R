@@ -55,7 +55,20 @@ select_all_schemas <- function(d) {
 #' For the hill climbing approach a start position needs to be randomly chosen.
 #' This function randomly selects a start position between 1 and the number of observations associated
 #' with a schema (i.e., the number of rows or number of mutants).
+#' @export
 
 select_random_start_position <- function(x) {
   return(sample(1:x[[1]], 1, TRUE))
+}
+
+#' FUNCTION: select_random_start_position_frac
+#'
+#' Might merge into other similar function, still thinking
+#' @export
+
+select_random_start_position_frac <- function(d) {
+  r <- (sample(1:100[[1]], 1, TRUE)/100)
+  print(r)
+  dt <- (r * nrow(d)) %>% round()
+  return(dt)
 }

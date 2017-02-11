@@ -64,3 +64,14 @@ analyze_incremental <- function(d, partition_size=1) {
   return(df)
 }
 
+#' FUNCTION: analyze_incremental_across_schemas
+#'
+#' Analyze how reducing the set incrementally effects the error between MS and MS' considering across
+#' schemas
+#' @export
+
+analyze_incremental_across_schemas <- function(d, partition_size=1) {
+    o <- d %>% collect_schema_data() %>% dplyr::arrange(desc(operator)) %>% transform_keep() # add keep column, set all to true
+    dt <- helper_incremental_across_schemas(o, partition_size)
+  return(dt)
+}

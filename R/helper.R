@@ -114,3 +114,14 @@ helper_incremental <- function(d, partition_size=1) {
   # return(k) # the final reduced keep data telling you which mutants to keep and ignore
   return(dd) # just the actual best_fit values and their respective step for each schema
 }
+
+#' FUNCTION: helper_incremental_across_schemas
+#'
+#' Helper analyze incremental across all schemas to provide a "more actionable" and generalized
+#' approach to follow.
+#' @export
+
+helper_incremental_across_schemas <- function(d, partition_size=1) {
+  start_position <- d %>% select_random_start_position()
+  return(start_position)
+}

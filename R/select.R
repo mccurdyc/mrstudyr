@@ -79,5 +79,24 @@ select_random_percent <- function() {
 
 select_start_position <- function(d, r) {
   dt <- (r * nrow(d)) %>% round()
+  # indexing of mutants starts at 1; don't let it start at 0
+  if (dt == 0) {
+    dt <- 1
+  }
+  print(dt)
+  return(dt)
+}
+
+#' FUNCTION: select_step_size
+#'
+#' @export
+
+select_step_size <- function(d, s) {
+  dt <- (s * nrow(d)) %>% round()
+  # don't let step size be 0
+  if (dt == 0) {
+    dt <- 1
+  }
+  print(dt)
   return(dt)
 }

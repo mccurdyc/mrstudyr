@@ -4,7 +4,7 @@
 \alias{helper_incremental_across_schemas}
 \title{FUNCTION: helper_incremental_across_schemas}
 \usage{
-helper_incremental_across_schemas(d, partition_size = 1)
+helper_incremental_across_schemas(d, s)
 }
 \description{
 Helper analyze incremental across all schemas to provide a "more actionable" and generalized

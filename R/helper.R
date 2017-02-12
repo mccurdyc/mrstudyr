@@ -122,13 +122,16 @@ helper_incremental <- function(d, partition_size=1) {
 #' approach to follow.
 #' @export
 
-helper_incremental_across_schemas <- function(d, partition_size=1) {
-  # start_position_frac <- select_random_percent()
-  # start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
-  g_split <- split(d$keep, d$schema) %>% sapply(helper_bitflip_keep_across, p=7, partition_size=5)
-  g <- d %>% dplyr::mutate(keep = unlist(matrix(g_split)))
-  dplyr::glimpse(g)
-  return(g)
+helper_incremental_across_schemas <- function(d, s) {
+  start_position_frac <- select_random_percent()
+  d <- d %>% do(dplyr::mutate(., position = select_start_position(., start_position_frac))) %>%
+         do(dplyr::mutate(., step_size = select_step_size(., s))) %>% dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
+  g_split <- split(d, d$schema)
+  # g_split_flipped <- g_split %>% sapply(helper_bitflip_keep_across)
+  # g_split_flipped <- g_split %>% sapply(helper_bitflip_keep_across, p=as.numeric(g_split[[1]]$position[1]), partition_size=partition_size)
+  # g_split <- split(d$keep, d$schema) %>% sapply(helper_bitflip_keep_across, p=position, partition_size=partition_size)
+  # g <- d %>% dplyr::mutate(keep = unlist(matrix(g_split)))
+  return(g_split)
 }
 
 #' FUNCTION: helper_bitflip_keep_across
@@ -141,11 +144,11 @@ helper_incremental_across_schemas <- function(d, partition_size=1) {
 #' flipping consecutive values, we could flip based on some group (e.g., operators).
 #' @export
 
-helper_bitflip_keep_across <- function(d, p, partition_size=1) {
+helper_bitflip_keep_across <- function(d) {
   rows <- length(d)
 
-  if ((p + partition_size) > rows) {
-    remainder <- (p + partition_size) - rows
+  if ((d$position + d$step_size) > rows) {
+    remainder <- (d$position + d$step_size) - rows
 
     # this should never occur unless partition size >= rows --- shouldn't happen
     # if (remainder >= p) {

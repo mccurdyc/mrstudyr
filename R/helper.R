@@ -39,18 +39,19 @@ helper_bitflip_keep <- function(d, p, partition_size=1) {
 helper_incremental <- function(d, partition_size=1) {
   dd <- data.frame()
 
+  # initialized to set temp_best_fit to fitness of original data
+  current_best_fit <- evaluate_reduction_technique(d, d) %>%
+    transform_fitness(0.5, 0.5) %>%
+    transform_add_position(0) %>%
+    calculate_best_fit() %>%
+    collect_schema_data()
+
     for(j in 1:30) {
       dk <- data.frame() # hold the keep data
       df <- data.frame() # hold the best_fit data
 
       outside_step <- 1
       g <- d
-      # initialized to set temp_best_fit to fitness of original data
-      current_best_fit <- evaluate_reduction_technique(d, d) %>%
-      transform_fitness(0.5, 0.5) %>%
-      transform_add_position(0) %>%
-      calculate_best_fit() %>%
-      collect_schema_data()
 
       print(paste("TRIAL: ", j))
       start_position <- d %>% dplyr::count() %>% select_random_start_position()
@@ -122,8 +123,47 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, partition_size=1) {
+  g <- d
   start_position_frac <- select_random_percent()
-  start_position <- d %>% do(dplyr::summarize(., start_position = select_start_position(., start_position_frac)))
-  # start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
-  return(start_position)
+  start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
+  # start_position <- d %>% do(dplyr::summarize(., start_position = select_start_position(., start_position_frac))) # debugging
+  g_split <- split(g$keep, g$schema)
+  g <- sapply(g_split, helper_bitflip_keep_across, p=7, partition_size=5)
+  return(g)
+}
+
+#' FUNCTION: helper_bitflip_keep_across
+#'
+#' This is a helper function for ANALYZE_INCREMENTAL
+#' Currently, this function negates boolean values i.e., TRUE -> FALSE, FALSE -> TRUE. Position is
+#' used to idicate the current position to bitflip and partition_size is the number of subsequent
+#' positions to also flip --- this could be useful if we wanted to try different sizes to reduce time
+#' of HC by increasing step size. **We could add another parameter 'group_by' so that instead of just
+#' flipping consecutive values, we could flip based on some group (e.g., operators).
+#' @export
+
+helper_bitflip_keep_across <- function(d, p, partition_size=1) {
+  rows <- length(d)
+
+  if ((p + partition_size) > rows) {
+    remainder <- (p + partition_size) - rows
+
+    # this should never occur unless partition size >= rows --- shouldn't happen
+    # if (remainder >= p) {
+    #   b <- !d[1:remainder] # do the flip
+    #   m <- d[(remainder+1):(p-1)]
+    #   e <- !d[p:rows] # do the flip
+    # } else {
+    # }
+      b <- !d[1:(remainder-1)] # do the flip
+      m <- d[remainder:(p-1)]
+      e <- !d[p:rows] # do the flip
+    flipped <- c(b,m,e)
+  } else {
+    b <- d[1:(p-1)]
+    m <- !d[p:(p+partition_size-1)] # do the flip
+    e <- d[(p+partition_size):rows]
+    flipped <- c(b,m,e)
+  }
+  return(flipped)
 }

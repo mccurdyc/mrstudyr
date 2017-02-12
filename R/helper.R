@@ -123,12 +123,11 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, partition_size=1) {
-  g <- d
-  start_position_frac <- select_random_percent()
-  start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
-  # start_position <- d %>% do(dplyr::summarize(., start_position = select_start_position(., start_position_frac))) # debugging
-  g_split <- split(g$keep, g$schema)
-  g <- sapply(g_split, helper_bitflip_keep_across, p=7, partition_size=5)
+  # start_position_frac <- select_random_percent()
+  # start_position <- d %>% do(dplyr::mutate(., start_position = select_start_position(., start_position_frac)))
+  g_split <- split(d$keep, d$schema) %>% sapply(helper_bitflip_keep_across, p=7, partition_size=5)
+  g <- d %>% dplyr::mutate(keep = unlist(matrix(g_split)))
+  dplyr::glimpse(g)
   return(g)
 }
 

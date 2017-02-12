@@ -71,7 +71,9 @@ analyze_incremental <- function(d, partition_size=1) {
 #' @export
 
 analyze_incremental_across_schemas <- function(d, partition_size=1) {
-    o <- d %>% collect_schema_data() %>% dplyr::arrange(desc(operator)) %>% transform_keep() # add keep column, set all to true
+    o <- d %>% transform_keep() # add keep column, set all to true
+    # o <- d %>% collect_schema_data() %>% transform_keep() # removed because schema grouping was messing up mutate in helper
+    o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator
     dt <- helper_incremental_across_schemas(o, partition_size)
   return(dt)
 }

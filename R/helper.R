@@ -127,11 +127,8 @@ helper_incremental_across_schemas <- function(d, s) {
   d <- d %>% do(dplyr::mutate(., position = select_start_position(., start_position_frac))) %>%
          do(dplyr::mutate(., step_size = select_step_size(., s))) %>% dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
   g_split <- split(d, d$schema)
-  g_split_flipped <- g_split[[1]] %>% helper_bitflip_keep_across()
+  g_split_flipped <- g_split[[2]] %>% helper_bitflip_keep_across() # debugging for a single schema
   # g_split_flipped <- g_split %>% parallel::mclapply(helper_bitflip_keep_across)
-  # g_split_flipped <- g_split %>% sapply(helper_bitflip_keep_across, p=as.numeric(g_split[[1]]$position[1]), partition_size=partition_size)
-  # g_split <- split(d$keep, d$schema) %>% sapply(helper_bitflip_keep_across, p=position, partition_size=partition_size)
-  # g <- d %>% dplyr::mutate(keep = unlist(matrix(g_split)))
   return(g_split_flipped)
 }
 
@@ -156,7 +153,6 @@ helper_bitflip_keep_across <- function(d) {
 
   if ((p + s - 1) > rows) {
     rem <- (p + s - 1) - rows
-    if (rem == 1) {
       b <- d[1:rem, ]
       a <- d[(rem + 1):(p - 1), ]
       m <- d[p:rows, ]
@@ -173,24 +169,6 @@ helper_bitflip_keep_across <- function(d) {
       print("U")
       u %>% dplyr::glimpse()
       df <- rbind(bb, a, u)
-    } else {
-      b <- d[1:(rem - 1), ]
-      a <- d[rem:(p - 1), ]
-      m <- d[p:rows, ]
-      bb <- b %>% dplyr::mutate(keep = !keep) # do the flip
-      u <- m %>% dplyr::mutate(keep = !keep) # do the flip
-      print("B")
-      b %>% dplyr::glimpse()
-      print("A")
-      a %>% dplyr::glimpse()
-      print("M")
-      m %>% dplyr::glimpse()
-      print("BB")
-      bb %>% dplyr::glimpse()
-      print("U")
-      u %>% dplyr::glimpse()
-      df <- rbind(bb, a, u)
-    }
   } else if ((p + s - 1) == rows) {
     b <- d[1:(p - 1), ]
     m <- d[p:rows, ]

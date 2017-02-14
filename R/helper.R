@@ -127,8 +127,11 @@ helper_incremental_across_schemas <- function(d, s) {
   d <- d %>% do(dplyr::mutate(., position = select_start_position(., start_position_frac))) %>%
          do(dplyr::mutate(., step_size = select_step_size(., s))) %>% dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
   g_split <- split(d, d$schema)
-  g_split_flipped <- g_split[[2]] %>% helper_bitflip_keep_across() # debugging for a single schema
-  # g_split_flipped <- g_split %>% parallel::mclapply(helper_bitflip_keep_across)
+  # g_split_flipped <- g_split[[3]] %>% helper_bitflip_keep_across() # debugging for a single schema
+  g_split_flipped <- g_split %>% parallel::mclapply(helper_bitflip_keep_across) %>%
+                                lapply(as.data.frame) %>%
+                                dplyr::bind_rows()
+  # z <- g_split_flipped %>% lapply(as.data.frame) %>% dplyr::bind_rows()
   return(g_split_flipped)
 }
 

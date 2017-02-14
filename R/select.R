@@ -68,7 +68,7 @@ select_random_start_position <- function(x) {
 
 select_random_percent <- function() {
   dt <- (sample(1:100[[1]], 1, TRUE)/100)
-  print(dt)
+  print(paste("random start position: ", dt))
   return(dt)
 }
 
@@ -83,7 +83,7 @@ select_start_position <- function(d, r) {
   if (dt == 0) {
     dt <- 1
   }
-  print(dt)
+  print(paste("position: ", dt))
   return(dt)
 }
 
@@ -97,6 +97,26 @@ select_step_size <- function(d, s) {
   if (dt == 0) {
     dt <- 1
   }
-  print(dt)
+  print(paste("step size: ", dt))
+  return(dt)
+}
+
+#' FUNCTION: select_current_position
+#'
+#' Get the current position (a single value), not a column
+#' @export
+
+select_current_position <- function(d) {
+  dt <- d %>% dplyr::select(position) %>% dplyr::distinct()
+  return(dt)
+}
+
+#' FUNCTION: select_current_step_size
+#'
+#' Get the current step size (a single value), not a column
+#' @export
+
+select_current_step_size <- function(d) {
+  dt <- d %>% dplyr::select(step_size) %>% dplyr::distinct()
   return(dt)
 }

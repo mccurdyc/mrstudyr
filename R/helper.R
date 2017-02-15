@@ -123,16 +123,27 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, s) {
-  start_position_frac <- select_random_percent()
-  d <- d %>% do(dplyr::mutate(., position = select_start_position(., start_position_frac))) %>%
-         do(dplyr::mutate(., step_size = select_step_size(., s))) %>% dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
-  g_split <- split(d, d$schema)
+  g <- helper_first_flip(d, s)
+  return(g)
+}
+
+#' FUNCTION: helper_first_flip
+#'
+#' This function is responsible for doing the first flip. This includes choosing the random start
+#' positions and ignoring the respective mutants.
+#' @export
+
+helper_first_flip <- function(d, s) {
+  f <- select_random_percent()
+  d <- d %>% do(dplyr::mutate(., position = select_start_position(., f))) %>%
+             do(dplyr::mutate(., step_size = select_step_size(., s))) %>%
+             dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
+  ds <- split(d, d$schema)
   # g_split_flipped <- g_split[[3]] %>% helper_bitflip_keep_across() # debugging for a single schema
-  g_split_flipped <- g_split %>% parallel::mclapply(helper_bitflip_keep_across) %>%
-                                lapply(as.data.frame) %>%
-                                dplyr::bind_rows()
-  # z <- g_split_flipped %>% lapply(as.data.frame) %>% dplyr::bind_rows()
-  return(g_split_flipped)
+  dt <- ds %>% parallel::mclapply(helper_bitflip_keep_across) %>%
+               lapply(as.data.frame) %>%
+               dplyr::bind_rows()
+  return(dt)
 }
 
 #' FUNCTION: helper_bitflip_keep_across

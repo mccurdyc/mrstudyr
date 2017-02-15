@@ -123,8 +123,12 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, s) {
-  g <- helper_first_flip(d, s)
-  return(g)
+  # o <- evaluate_reduction_technique(d, d) # evaluate original data compared to itself; mainly to get mutation scores
+  k <- helper_first_flip(d, s) # include ignore values for next flip
+  f <- k %>% collect_keep_data() %>% collect_schema_data()
+  e <- evaluate_reduction_technique(d, f)
+  first_step_corr <- calculate_correlation(e)
+  return()
 }
 
 #' FUNCTION: helper_first_flip

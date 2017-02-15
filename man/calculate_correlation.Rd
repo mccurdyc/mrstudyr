@@ -4,7 +4,7 @@
 \alias{calculate_correlation}
 \title{FUNCTION: calculate_correlation}
 \usage{
-calculate_correlation(x, y)
+calculate_correlation(d)
 }
 \description{
 This function will calculate the correlation between the reduced and the original

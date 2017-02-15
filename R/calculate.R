@@ -19,10 +19,13 @@ calculate_effectiveness <- function(d, p=FALSE) {
 #' mutation score for a given percent. This is a helper function for the transform_correlation function
 #' @export
 
-calculate_correlation <- function(x, y) {
+calculate_correlation <- function(d) {
+  x <- d[['reduced_mutation_score']]
+  y <- d[['original_mutation_score']]
+
   model <- cor.test(x, y, method = "kendall", use = "pairwise")
-  tidy_model <- model %>% broom::tidy()
-  return(tidy_model)
+  dt <- model %>% broom::tidy() %>% transform_replace_correlation()
+  return(dt[['correlation']]) # return just correlation
 }
 
 #' FUNCTION: calculate_percent_summary

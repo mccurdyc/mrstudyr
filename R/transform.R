@@ -162,18 +162,6 @@ transform_rmse <- function(d) {
   return(dt)
 }
 
-#' FUNCTION: transform_correlation
-#'
-#' Calculate Kendall's tau_b correlation coefficient between the reduced and original mutation score
-#' @export
-
-transform_correlation <- function(d) {
-  x <- d %>% dplyr::select(reduced_mutation_score) %>% unlist() %>% as.numeric()
-  y <- d %>% dplyr::select(original_mutation_score) %>% unlist() %>% as.numeric()
-  corr <- calculate_correlation(x, y) %>% transform_replace_correlation()
-  return(corr)
-}
-
 #' FUNCTION: transform_keep
 #'
 #' This column has values representing whether or not a mutant is considered when calculating mutation score

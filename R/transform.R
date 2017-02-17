@@ -38,6 +38,30 @@ transform_add_start_position <- function(d, t) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_start_and_step
+#'
+#' Append the randomly-generated start position and appropriate step size
+#' @export
+
+transform_add_start_and_step <- function(d, s) {
+  f <- select_random_percent()
+  dt <- d %>% do(dplyr::mutate(., position = select_start_position(., f))) %>%
+    do(dplyr::mutate(., start_position = select_start_position(., f))) %>%
+    do(dplyr::mutate(., step_size = select_step_size(., s))) %>%
+    dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
+  return(dt)
+}
+
+#' FUNCTION: transform_update_position
+#'
+#' Update the position after the flip
+#' @export
+
+transform_update_position <- function(d, p) {
+  dt <- d %>% do(dplyr::mutate(., position = p)) %>% dplyr::ungroup()
+  return(dt)
+}
+
 #' FUNCTION: transform_add_percentage_trial
 #'
 #' Add the analyzed percentage and current trial to data frame

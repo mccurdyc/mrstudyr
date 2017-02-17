@@ -123,30 +123,41 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, s) {
-  # o <- evaluate_reduction_technique(d, d) # evaluate original data compared to itself; mainly to get mutation scores
-  k <- helper_first_flip(d, s) # include ignore values for next flip
-  f <- k %>% collect_keep_data() %>% collect_schema_data()
-  e <- evaluate_reduction_technique(d, f)
-  first_step_corr <- calculate_correlation(e)
-  return()
+  # for (j in 1:30) {
+  # outside_step <- 1
+  dt <- d %>% transform_add_start_and_step(s)
+  k <- dt %>% helper_flip() # include ignore values for next flip
+  # r <- k %>% collect_keep_data() %>% collect_schema_data()
+  # f_corr <- evaluate_reduction_technique(d, r) %>% calculate_correlation()
+  #
+          # if (g$position == gstart_position && fst != TRUE) {
+          #   break
+          # if ((g$position + g$step_size) > nrow(g)) {
+          #   position <- (g$position + partition_size) - nrow(d)
+          # } else {
+           p <- k$position + k$step_size
+          # }
+  g <- k %>% transform_update_position(p)
+  g <- g %>% helper_flip()
+  g %>% dplyr::glimpse()
+
+  # g <- g %>% helper_flip()
+  # g %>% dplyr::glimpse()
+
+  return(g)
 }
 
-#' FUNCTION: helper_first_flip
+#' FUNCTION: helper_flip
 #'
 #' This function is responsible for doing the first flip. This includes choosing the random start
 #' positions and ignoring the respective mutants.
 #' @export
 
-helper_first_flip <- function(d, s) {
-  f <- select_random_percent()
-  d <- d %>% do(dplyr::mutate(., position = select_start_position(., f))) %>%
-             do(dplyr::mutate(., step_size = select_step_size(., s))) %>%
-             dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
+helper_flip <- function(d) {
   ds <- split(d, d$schema)
-  # g_split_flipped <- g_split[[3]] %>% helper_bitflip_keep_across() # debugging for a single schema
   dt <- ds %>% parallel::mclapply(helper_bitflip_keep_across) %>%
-               lapply(as.data.frame) %>%
-               dplyr::bind_rows()
+    lapply(as.data.frame) %>%
+    dplyr::bind_rows()
   return(dt)
 }
 
@@ -163,11 +174,11 @@ helper_first_flip <- function(d, s) {
 helper_bitflip_keep_across <- function(d) {
   df <- data.frame()
   rows <- d %>% nrow() %>% as.numeric()
-  print(paste("current rows: ", rows))
   p <- d %>% select_current_position() %>% as.numeric()
-  print(paste("current position: ", p))
   s <- d %>% select_current_step_size() %>% as.numeric()
-  print(paste("current step size: ", s))
+  # print(paste("current rows: ", rows))
+  # print(paste("current position: ", p))
+  # print(paste("current step size: ", s))
 
   if ((p + s - 1) > rows) {
     rem <- (p + s - 1) - rows
@@ -176,54 +187,54 @@ helper_bitflip_keep_across <- function(d) {
       m <- d[p:rows, ]
       bb <- b %>% dplyr::mutate(keep = !keep) # do the flip
       u <- m %>% dplyr::mutate(keep = !keep) # do the flip
-      print("B")
-      b %>% dplyr::glimpse()
-      print("A")
-      a %>% dplyr::glimpse()
-      print("M")
-      m %>% dplyr::glimpse()
-      print("BB")
-      bb %>% dplyr::glimpse()
-      print("U")
-      u %>% dplyr::glimpse()
+      # print("B")
+      # b %>% dplyr::glimpse()
+      # print("A")
+      # a %>% dplyr::glimpse()
+      # print("M")
+      # m %>% dplyr::glimpse()
+      # print("BB")
+      # bb %>% dplyr::glimpse()
+      # print("U")
+      # u %>% dplyr::glimpse()
       df <- rbind(bb, a, u)
   } else if ((p + s - 1) == rows) {
     b <- d[1:(p - 1), ]
     m <- d[p:rows, ]
     u <- m %>% dplyr::mutate(keep = !keep) # do the flip
-    print("B")
-    b %>% dplyr::glimpse()
-    print("U")
-    u %>% dplyr::glimpse()
+    # print("B")
+    # b %>% dplyr::glimpse()
+    # print("U")
+    # u %>% dplyr::glimpse()
     df <- rbind(b, u)
   } else {
     if (p == 1) {
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
       u <- m %>% dplyr::mutate(keep = !keep) # do the flip
-      print("M")
-      m %>% dplyr::glimpse()
-      print("U")
-      u %>% dplyr::glimpse()
-      print("R")
-      r %>% dplyr::glimpse()
+      # print("M")
+      # m %>% dplyr::glimpse()
+      # print("U")
+      # u %>% dplyr::glimpse()
+      # print("R")
+      # r %>% dplyr::glimpse()
       df <- rbind(u, r)
     } else {
       b <- d[1:(p - 1), ]
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
       u <- m %>% dplyr::mutate(keep = !keep) # do the flip
-      print("B")
-      b %>% dplyr::glimpse()
-      print("M")
-      m %>% dplyr::glimpse()
-      print("U")
-      u %>% dplyr::glimpse()
-      print("R")
-      r %>% dplyr::glimpse()
+      # print("B")
+      # b %>% dplyr::glimpse()
+      # print("M")
+      # m %>% dplyr::glimpse()
+      # print("U")
+      # u %>% dplyr::glimpse()
+      # print("R")
+      # r %>% dplyr::glimpse()
       df <- rbind(b, u, r)
     }
   }
-  df %>% dplyr::glimpse()
+  # df %>% dplyr::glimpse()
   return(df)
 }

@@ -123,34 +123,36 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, s) {
-  dt <- d %>% transform_add_start_and_step(s)
+  dk <- data.frame()
+  df <- data.frame()
+
+  dt <- d %>% transform_add_start_and_step(s) %>% transform_mutant_count() %>% as.data.frame()
   g <- dt # initialize g to original set of mutants
   frst <- TRUE
   previous_corr <- 0
 
   while (TRUE) {
-    g <- g %>% helper_flip()
-    g %>% dplyr::glimpse()
-    # r <- g %>% collect_keep_data() %>% collect_schema_data()
-    # current_corr <- evaluate_reduction_technique(d, r) %>% calculate_correlation()
+    k <- g %>% helper_flip()
+    r <- k %>% collect_keep_data()
+    current_corr <- evaluate_reduction_technique(d, r) %>% calculate_correlation()
+    df <- rbind(df, current_corr)
+    print(paste("CORRELATION: ", current_corr))
 
-    p <- g$position + g$step_size
-    print(p)
-    # if ((g$position + g$step_size) > nrow(g)) {
-    #   p <- (g$position + g$step_size) - nrow(g)
-    # } else {
-    #   p <- g$position + g$step_size
-    # }
+    if ((g$position + g$step_size) > g$mutant_count)  {
+      p <- (g$position + g$step_size) - g$mutant_count
+    } else {
+      p <- g$position + g$step_size
+    }
     g <- g %>% transform_update_position(p)
-    g %>% dplyr::glimpse()
-    # if (current_corr < previous_corr) {
-    if (g$position == g$start_position && frst != TRUE) {
-    # if (current_corr < previous_corr || steps > max_number_steps) {
+    if (g$position == g$start_position && frst == FALSE) {
       break
     }
-    # previous_corr <- current_corr
-    frst <- FALSE
   }
+  if (current_corr < previous_corr) {
+    break
+  }
+  previous_corr <- current_corr
+  frst <- FALSE
   return(g)
 }
 

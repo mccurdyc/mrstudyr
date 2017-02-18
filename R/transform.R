@@ -117,6 +117,16 @@ transform_original_total_count <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: transform_mutant_count
+#'
+#' Count the total number of mutants associated with a schema
+#' @export
+
+transform_mutant_count <- function(d) {
+  dt <- d %>% collect_schema_data() %>% dplyr::mutate(mutant_count = n())
+  return(dt)
+}
+
 #' FUNCTION: transform_cost_reduction
 #'
 #' Calculate the reduction in time for performing mutation analysis on the reduced set compared to the original set

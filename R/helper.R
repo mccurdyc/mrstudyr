@@ -134,14 +134,13 @@ helper_incremental_across_schemas <- function(d, s) {
   s <- 1
 
   while (TRUE) {
-    k <- g %>% helper_flip()
-    k %>% dplyr::glimpse()
+    k <- g %>% helper_flip() %>% transform_add_step(s)
     dk <- rbind(dk, k)
     r <- k %>% collect_keep_data()
     current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
       transform_add_correlation()
     df <- rbind(df, current_corr)
-    df %>% dplyr::glimpse()
+    # df %>% dplyr::glimpse()
 
     if ((g$position + g$step_size) > g$mutant_count)  {
       p <- (g$position + g$step_size) - g$mutant_count
@@ -159,8 +158,10 @@ helper_incremental_across_schemas <- function(d, s) {
     break
   }
   previous_corr <- current_corr
-  tt <- df %>% calculate_highest_correlation()
-  return(tt)
+  b <- df %>% calculate_highest_correlation() %>% collect_highest_correlation_data()
+  highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
+  ll <- collect_best_step_data(highest_correlation_data, dk)
+  return(ll)
 }
 
 #' FUNCTION: helper_flip

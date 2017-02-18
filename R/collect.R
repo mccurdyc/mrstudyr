@@ -112,6 +112,16 @@ collect_best_fit_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_highest_correlation_data
+#'
+#' Filter the data where correlation equals highest correlation
+#' @export
+
+collect_highest_correlation_data <- function(d) {
+  dt <- d %>% dplyr::filter(correlation == highest_correlation)
+  return(dt)
+}
+
 #' FUNCTION: collect_best_keep_data
 #'
 #' Filter the collected keep data from all positions and filter where position was best fit.
@@ -119,6 +129,16 @@ collect_best_fit_data <- function(d) {
 
 collect_best_keep_data <- function(b, k) {
   dt <- k %>% dplyr::filter(position == b$position)
+  return(dt)
+}
+
+#' FUNCTION: collect_best_step_data
+#'
+#' Filter the collected keep data from all steps and filter where step had highest correlation.
+#' @export
+
+collect_best_step_data <- function(b, k) {
+  dt <- k %>% dplyr::filter(step == b$step[[1]])
   return(dt)
 }
 

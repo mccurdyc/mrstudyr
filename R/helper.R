@@ -159,7 +159,8 @@ helper_incremental_across_schemas <- function(d, s) {
     break
   }
   previous_corr <- current_corr
-  return(df)
+  tt <- df %>% calculate_highest_correlation()
+  return(tt)
 }
 
 #' FUNCTION: helper_flip

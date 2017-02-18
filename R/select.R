@@ -83,7 +83,7 @@ select_start_position <- function(d, r) {
   if (dt == 0) {
     dt <- 1
   }
-  print(paste("position: ", dt))
+  # print(paste("position: ", dt))
   return(dt)
 }
 
@@ -97,7 +97,7 @@ select_step_size <- function(d, s) {
   if (dt == 0) {
     dt <- 1
   }
-  print(paste("step size: ", dt))
+  # print(paste("step size: ", dt))
   return(dt)
 }
 

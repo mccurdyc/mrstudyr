@@ -58,7 +58,7 @@ transform_add_start_and_step <- function(d, s) {
 #' @export
 
 transform_update_position <- function(d, p) {
-  dt <- d %>% do(dplyr::mutate(., position = p)) %>% dplyr::ungroup()
+  dt <- d %>% do(dplyr::mutate(., position = p))
   return(dt)
 }
 
@@ -221,5 +221,25 @@ transform_keep <- function(d, all=TRUE) {
 transform_fitness <- function(d, error_weight, cost_weight) {
   d <- d %>% collect_schema_data()
   dt <- d %>% dplyr::mutate(fitness = ((cost_weight * cost_reduction) - (error_weight * error)))
+  return(dt)
+}
+
+#' FUNCTION: transform_add_correlation
+#'
+#' Calculate the correlation of a step.
+#' @export
+
+transform_add_correlation <- function(d) {
+  dt <- d %>% dplyr::ungroup() %>% dplyr::mutate(correlation = calculate_correlation(d))
+  return(dt)
+}
+
+#' FUNCTION: transform_add_step
+#'
+#' Simply add the current step to the dataframe
+#' @export
+
+transform_add_step <- function(d, s) {
+  dt <- d %>% dplyr::ungroup() %>% dplyr::mutate(step = s)
   return(dt)
 }

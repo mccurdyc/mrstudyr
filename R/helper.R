@@ -128,15 +128,20 @@ helper_incremental_across_schemas <- function(d, s) {
 
   dt <- d %>% transform_add_start_and_step(s) %>% transform_mutant_count() %>% as.data.frame()
   g <- dt # initialize g to original set of mutants
+
   frst <- TRUE
   previous_corr <- 0
+  s <- 1
 
   while (TRUE) {
     k <- g %>% helper_flip()
+    k %>% dplyr::glimpse()
+    dk <- rbind(dk, k)
     r <- k %>% collect_keep_data()
-    current_corr <- evaluate_reduction_technique(d, r) %>% calculate_correlation()
+    current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
+      transform_add_correlation()
     df <- rbind(df, current_corr)
-    print(paste("CORRELATION: ", current_corr))
+    df %>% dplyr::glimpse()
 
     if ((g$position + g$step_size) > g$mutant_count)  {
       p <- (g$position + g$step_size) - g$mutant_count
@@ -147,13 +152,14 @@ helper_incremental_across_schemas <- function(d, s) {
     if (g$position == g$start_position && frst == FALSE) {
       break
     }
+    frst <- FALSE
+    s <- s + 1
   }
   if (current_corr < previous_corr) {
     break
   }
   previous_corr <- current_corr
-  frst <- FALSE
-  return(g)
+  return(df)
 }
 
 #' FUNCTION: helper_flip

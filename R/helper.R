@@ -123,8 +123,6 @@ helper_incremental <- function(d, partition_size=1) {
 #' @export
 
 helper_incremental_across_schemas <- function(d, s) {
-  dk <- data.frame()
-  df <- data.frame()
 
   dt <- d %>% transform_add_start_and_step(s) %>% transform_mutant_count() %>% as.data.frame()
   g <- dt # initialize g to original set of mutants
@@ -133,14 +131,19 @@ helper_incremental_across_schemas <- function(d, s) {
   previous_corr <- 0
   s <- 1
 
+  dk <- data.frame()
+  df <- data.frame()
+  dh <- data.frame()
+
   while (TRUE) {
     k <- g %>% helper_flip() %>% transform_add_step(s)
     dk <- rbind(dk, k)
+    dk %>% dplyr::glimpse()
     r <- k %>% collect_keep_data()
     current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
       transform_add_correlation()
     df <- rbind(df, current_corr)
-    # df %>% dplyr::glimpse()
+    df %>% dplyr::glimpse()
 
     if ((g$position + g$step_size) > g$mutant_count)  {
       p <- (g$position + g$step_size) - g$mutant_count
@@ -157,11 +160,12 @@ helper_incremental_across_schemas <- function(d, s) {
   if (current_corr < previous_corr) {
     break
   }
+
   previous_corr <- current_corr
   b <- df %>% calculate_highest_correlation() %>% collect_highest_correlation_data()
   highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-  ll <- collect_best_step_data(highest_correlation_data, dk)
-  return(ll)
+  dh <- collect_best_step_data(highest_correlation_data, dk)
+  return(dh)
 }
 
 #' FUNCTION: helper_flip

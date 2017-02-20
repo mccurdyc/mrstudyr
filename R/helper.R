@@ -126,46 +126,49 @@ helper_incremental_across_schemas <- function(d, s) {
 
   dt <- d %>% transform_add_start_and_step(s) %>% transform_mutant_count() %>% as.data.frame()
   g <- dt # initialize g to original set of mutants
-
-  frst <- TRUE
   previous_corr <- 0
-  s <- 1
-
-  dk <- data.frame()
-  df <- data.frame()
   dh <- data.frame()
 
+  st <- 1
   while (TRUE) {
-    k <- g %>% helper_flip() %>% transform_add_step(s)
-    dk <- rbind(dk, k)
-    dk %>% dplyr::glimpse()
-    r <- k %>% collect_keep_data()
-    current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
-      transform_add_correlation()
-    df <- rbind(df, current_corr)
-    df %>% dplyr::glimpse()
+    s <- 1
+    dk <- data.frame()
+    df <- data.frame()
+    frst <- TRUE
+    while (TRUE) {
+      k <- g %>% helper_flip() %>% transform_add_step(s)
+      k %>% dplyr::glimpse()
+      dk <- rbind(dk, k)
+      r <- k %>% collect_keep_data()
+      current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
+        transform_add_correlation()
+      df <- rbind(df, current_corr)
 
-    if ((g$position + g$step_size) > g$mutant_count)  {
-      p <- (g$position + g$step_size) - g$mutant_count
-    } else {
-      p <- g$position + g$step_size
+      if ((g$position + g$step_size) > g$mutant_count)  {
+        p <- (g$position + g$step_size) - g$mutant_count
+      } else {
+        p <- g$position + g$step_size
+      }
+      g <- g %>% transform_update_position(p)
+      if (g$position == g$start_position && frst == FALSE) {
+        break
+      }
+      frst <- FALSE
+      s <- s + 1
     }
-    g <- g %>% transform_update_position(p)
-    if (g$position == g$start_position && frst == FALSE) {
+    if (current_corr < previous_corr || st == 3) {
       break
     }
-    frst <- FALSE
-    s <- s + 1
+    previous_corr <- current_corr
+    b <- df %>% calculate_highest_correlation() %>% collect_highest_correlation_data()
+    highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
+    highest_correlation_data %>% dplyr::glimpse()
+    g <- collect_best_step_data(highest_correlation_data, dk)
+    g %>% dplyr::glimpse()
+    print(paste("STEP OUTSIDE", st))
+    st <- st + 1
   }
-  if (current_corr < previous_corr) {
-    break
-  }
-
-  previous_corr <- current_corr
-  b <- df %>% calculate_highest_correlation() %>% collect_highest_correlation_data()
-  highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-  dh <- collect_best_step_data(highest_correlation_data, dk)
-  return(dh)
+  return(g)
 }
 
 #' FUNCTION: helper_flip
@@ -206,8 +209,8 @@ helper_bitflip_keep_across <- function(d) {
       b <- d[1:rem, ]
       a <- d[(rem + 1):(p - 1), ]
       m <- d[p:rows, ]
-      bb <- b %>% dplyr::mutate(keep = !keep) # do the flip
-      u <- m %>% dplyr::mutate(keep = !keep) # do the flip
+      bb <- b %>% dplyr::mutate(keep = FALSE) # do the flip
+      u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
       # print("B")
       # b %>% dplyr::glimpse()
       # print("A")
@@ -222,7 +225,7 @@ helper_bitflip_keep_across <- function(d) {
   } else if ((p + s - 1) == rows) {
     b <- d[1:(p - 1), ]
     m <- d[p:rows, ]
-    u <- m %>% dplyr::mutate(keep = !keep) # do the flip
+    u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
     # print("B")
     # b %>% dplyr::glimpse()
     # print("U")
@@ -232,7 +235,7 @@ helper_bitflip_keep_across <- function(d) {
     if (p == 1) {
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
-      u <- m %>% dplyr::mutate(keep = !keep) # do the flip
+      u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
       # print("M")
       # m %>% dplyr::glimpse()
       # print("U")
@@ -244,7 +247,7 @@ helper_bitflip_keep_across <- function(d) {
       b <- d[1:(p - 1), ]
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
-      u <- m %>% dplyr::mutate(keep = !keep) # do the flip
+      u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
       # print("B")
       # b %>% dplyr::glimpse()
       # print("M")

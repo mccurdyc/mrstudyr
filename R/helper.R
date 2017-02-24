@@ -133,7 +133,7 @@ helper_incremental_across_schemas <- function(d, s) {
   # for (j in 1:30) {
     # dk <- data.frame()
     # df <- data.frame()
-    st <- 1
+    outside_step <- 1
     # print(paste("TRIAL: ", j))
     while (TRUE) {
       s <- 1
@@ -142,10 +142,12 @@ helper_incremental_across_schemas <- function(d, s) {
       frst <- TRUE
       while (TRUE) {
         k <- g %>% helper_flip() %>% transform_add_step(s)
+        # k %>% dplyr::glimpse()
         dk <- rbind(dk, k)
         r <- k %>% collect_keep_data()
         current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
           transform_add_correlation()
+        current_corr %>% dplyr::glimpse()
         df <- rbind(df, current_corr)
 
         if ((g$position + g$step_size) > g$mutant_count)  {
@@ -162,12 +164,13 @@ helper_incremental_across_schemas <- function(d, s) {
       }
       previous_corr <- current_corr
       b <- df %>% calculate_highest_correlation() %>% collect_highest_correlation_data()
+      df %>% calculate_highest_correlation() %>% dplyr::ungroup() %>% dplyr::select(correlation) %>% dplyr::distinct() %>% dplyr::glimpse()
       highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-      highest_correlation_data %>% dplyr::glimpse()
+      # highest_correlation_data %>% dplyr::glimpse()
       g <- collect_best_step_data(highest_correlation_data, dk)
-      print(paste("STEP OUTSIDE", st))
-      st <- st + 1
-      if (current_corr < previous_corr) {
+      print(paste("STEP OUTSIDE", outside_step))
+      outside_step <- outside_step + 1
+      if (current_corr <= previous_corr) {
         # if (current_corr < previous_corr || st == 3) {
         break
       }

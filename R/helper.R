@@ -142,7 +142,6 @@ helper_incremental_across_schemas <- function(d, s) {
       frst <- TRUE
       while (TRUE) {
         k <- g %>% helper_flip() %>% transform_add_step(s)
-        k %>% dplyr::glimpse()
         dk <- rbind(dk, k)
         r <- k %>% collect_keep_data()
         current_corr <- evaluate_reduction_technique_across(d, r, s) %>%
@@ -166,7 +165,6 @@ helper_incremental_across_schemas <- function(d, s) {
       highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
       highest_correlation_data %>% dplyr::glimpse()
       g <- collect_best_step_data(highest_correlation_data, dk)
-      g %>% dplyr::glimpse()
       print(paste("STEP OUTSIDE", st))
       st <- st + 1
       if (current_corr < previous_corr) {

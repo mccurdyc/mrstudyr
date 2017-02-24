@@ -167,7 +167,7 @@ helper_incremental_across_schemas <- function(d, s) {
       g %>% dplyr::glimpse()
       outside_step <- outside_step + 1
       # has to be '<=' for small subset; might not be the case for larger data set
-      if (current_best_corr <= previous_best_corr) {
+      if (current_best_corr < previous_best_corr) {
         break
       }
       previous_best_corr <- current_best_corr

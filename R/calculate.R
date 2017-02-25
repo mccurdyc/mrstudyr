@@ -63,7 +63,8 @@ calculate_best_fit <- function(d) {
 #' @export
 
 calculate_highest_correlation <- function(d) {
-  d %>% collect_schema_data() %>% dplyr::mutate(highest_correlation = max(correlation))
+  d %>% collect_schema_data() %>%
+    dplyr::mutate(highest_correlation = max(correlation))
 }
 
 #' FUNCTION: calculate_summary

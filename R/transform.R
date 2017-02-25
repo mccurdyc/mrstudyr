@@ -43,8 +43,7 @@ transform_add_start_position <- function(d, t) {
 #' Append the randomly-generated start position and appropriate step size
 #' @export
 
-transform_add_start_and_step <- function(d, s) {
-  f <- select_random_percent()
+transform_add_start_and_step <- function(d, s, f) {
   dt <- d %>% do(dplyr::mutate(., position = select_start_position(., f))) %>%
     do(dplyr::mutate(., start_position = select_start_position(., f))) %>%
     do(dplyr::mutate(., step_size = select_step_size(., s))) %>%

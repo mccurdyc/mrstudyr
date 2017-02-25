@@ -4,7 +4,7 @@
 \alias{transform_add_start_and_step}
 \title{FUNCTION: transform_add_start_and_step}
 \usage{
-transform_add_start_and_step(d, s)
+transform_add_start_and_step(d, s, f)
 }
 \description{
 Append the randomly-generated start position and appropriate step size

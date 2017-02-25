@@ -120,3 +120,15 @@ select_current_step_size <- function(d) {
   dt <- d %>% dplyr::select(step_size) %>% dplyr::distinct()
   return(dt)
 }
+
+#' FUNCTION: select_current_best_correlation
+#'
+#' Get the highest correlation from a list of correlation values and return a single value
+#' @export
+
+select_current_best_correlation <- function(d) {
+  dt <- d %>% dplyr::ungroup() %>%
+    dplyr::select(highest_correlation) %>%
+    dplyr::distinct()
+  return(dt)
+}

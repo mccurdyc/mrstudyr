@@ -124,6 +124,7 @@ helper_incremental <- function(d, partition_size=1) {
 
 helper_incremental_across_schemas <- function(d, s) {
   dbk <- data.frame()
+  bk <- data.frame()
 
   # for (j in 1:30) {
   # print(paste("TRIAL: ", j))
@@ -173,7 +174,9 @@ helper_incremental_across_schemas <- function(d, s) {
     current_best_corr <- b$highest_correlation[1]
     print(current_best_corr)
     highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-    bk <- collect_best_step_data(highest_correlation_data, neighborhood_keep_data)
+    previous_bk <- bk
+    bk <- neighborhood_keep_data %>% dplyr::filter(step == highest_correlation_data$step)
+    # bk <- collect_best_step_data(highest_correlation_data, neighborhood_keep_data)
     best_correlation_vector <- append(best_correlation_vector, bk$step[1])
     print(best_correlation_vector)
     print("+++++++++++++++++++++++ CHOSEN DATA +++++++++++++++++++++++")
@@ -185,7 +188,7 @@ helper_incremental_across_schemas <- function(d, s) {
     previous_best_corr <- current_best_corr
     # }
   }
-  return(dbk)
+  return(previous_bk)
 }
 
 #' FUNCTION: helper_flip
@@ -217,9 +220,6 @@ helper_bitflip_keep_across <- function(d) {
   rows <- d %>% nrow() %>% as.numeric()
   p <- d %>% select_current_position() %>% as.numeric()
   s <- d %>% select_current_step_size() %>% as.numeric()
-  # print(paste("current rows: ", rows))
-  # print(paste("current position: ", p))
-  # print(paste("current step size: ", s))
 
   if ((p + s - 1) > rows) {
     rem <- (p + s - 1) - rows
@@ -276,6 +276,5 @@ helper_bitflip_keep_across <- function(d) {
       df <- rbind(b, u, r)
     }
   }
-  # df %>% dplyr::glimpse()
   return(df)
 }

@@ -168,11 +168,12 @@ helper_incremental_across_schemas <- function(d, s) {
     # TODO: add function for neighborhood size calculation
     neighborhood_size <- neighborhood_corr_data %>% dplyr::select(step) %>% dplyr::distinct() %>% max()
     b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
-      calculate_highest_correlation() %>% collect_highest_correlation_data()
-    current_best_corr <- b %>% select_current_best_correlation()
+      transform_highest_correlation() %>% collect_highest_correlation_data()
+    print("+++++++++++++++++++++++")
+    current_best_corr <- b$highest_correlation[1]
+    print(current_best_corr)
     highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
     bk <- collect_best_step_data(highest_correlation_data, neighborhood_keep_data)
-    print("+++++++++++++++++++++++")
     best_correlation_vector <- append(best_correlation_vector, bk$step[1])
     print(best_correlation_vector)
     print("+++++++++++++++++++++++ CHOSEN DATA +++++++++++++++++++++++")

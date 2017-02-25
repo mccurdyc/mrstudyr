@@ -242,3 +242,14 @@ transform_add_step <- function(d, s) {
   dt <- d %>% dplyr::ungroup() %>% dplyr::mutate(step = s)
   return(dt)
 }
+
+#' FUNCTION: transform_highest_correlation
+#'
+#' Determine which step is has the highest correlation
+#' @export
+
+transform_highest_correlation <- function(d) {
+  d %>% collect_schema_data() %>%
+    dplyr::mutate(highest_correlation = max(correlation))
+}
+

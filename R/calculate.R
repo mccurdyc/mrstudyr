@@ -57,16 +57,6 @@ calculate_best_fit <- function(d) {
   d %>% collect_schema_data() %>% dplyr::mutate(best_fit = max(fitness))
 }
 
-#' FUNCTION: calculate_highest_correlation
-#'
-#' Determine which step is has the highest correlation
-#' @export
-
-calculate_highest_correlation <- function(d) {
-  d %>% collect_schema_data() %>%
-    dplyr::mutate(highest_correlation = max(correlation))
-}
-
 #' FUNCTION: calculate_summary
 #'
 #' Calculate the effectiveness of a reduction technique.

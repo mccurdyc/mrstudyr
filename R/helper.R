@@ -124,10 +124,11 @@ helper_incremental <- function(d, partition_size=1) {
 
 helper_incremental_across_schemas <- function(d, s) {
   dbk <- data.frame()
+  dbc <- data.frame()
   bk <- data.frame()
 
-  # for (j in 1:30) {
-  # print(paste("TRIAL: ", j))
+  for (j in 1:30) {
+  print(paste("TRIAL: ", j))
   best_correlation_vector <- vector()
   f <- select_random_percent()
   dt <- d %>% transform_add_start_and_step(s, f) %>% transform_mutant_count() %>% as.data.frame()
@@ -174,21 +175,23 @@ helper_incremental_across_schemas <- function(d, s) {
     current_best_corr <- b$highest_correlation[1]
     print(current_best_corr)
     highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-    previous_bk <- bk
+    previous_bk <- bk %>% transform_add_trial(j)
     bk <- neighborhood_keep_data %>% dplyr::filter(step == highest_correlation_data$step)
     # bk <- collect_best_step_data(highest_correlation_data, neighborhood_keep_data)
     best_correlation_vector <- append(best_correlation_vector, bk$step[1])
     print(best_correlation_vector)
     print("+++++++++++++++++++++++ CHOSEN DATA +++++++++++++++++++++++")
-    bk %>% dplyr::glimpse()
+    # bk %>% dplyr::glimpse()
     outside_step <- outside_step + 1
     if (current_best_corr < previous_best_corr || outside_step > neighborhood_size) {
       break
     }
     previous_best_corr <- current_best_corr
-    # }
+    }
+    dbk <- rbind(dbk, previous_bk)
+    # dbc <- rbind(dbc, previous_best_corr)
   }
-  return(previous_bk)
+  return(dbk)
 }
 
 #' FUNCTION: helper_flip

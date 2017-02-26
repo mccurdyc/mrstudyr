@@ -61,3 +61,17 @@ create_incremental_graphs <- function() {
   # b <- a %>% calculate_effectiveness()
   dplyr::glimpse(a)
 }
+
+#' FUNCTION: create_incremental_across_schema_graphs
+#'
+#' Create all of the visualizations associated with the incremental reduction technique using a model
+#' from across-schema reduction.
+#' @export
+
+create_incremental_across_schema_graphs <- function() {
+
+  d <- read_sqlite_avmdefaults() %>% collect_normal_data()
+  s <- d %>% analyze_incremental_across_schemas(step_size=0.1)
+  m <- d %>% analyze_incremental_across_schemas(step_size=0.2)
+  l <- d %>% analyze_incremental_across_schemas(step_size=0.4)
+}

@@ -75,3 +75,13 @@ calculate_summary <- function(d) {
   }
   return(df)
 }
+
+#' FUNCTION: calculate_neighborhood_size
+#'
+#' This function extracts the size of the neighborhood from the data.
+#' @export
+
+calculate_neighborhood_size <- function(d) {
+  dt <- d %>% dplyr::select(step) %>% dplyr::distinct() %>% max()
+  return(dt)
+}

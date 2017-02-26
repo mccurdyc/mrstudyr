@@ -70,7 +70,7 @@ analyze_incremental <- function(d, partition_size=1) {
 #' schemas
 #' @export
 
-analyze_incremental_across_schemas <- function(d, step_size=0.2) {
+analyze_incremental_across_schemas <- function(d, step_size=0.1) {
     o <- d %>% collect_schema_data() %>% transform_keep()
     o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator
     dt <- helper_incremental_across_schemas(o, step_size)

@@ -137,8 +137,8 @@ collect_best_keep_data <- function(b, k) {
 #' Filter the collected keep data from all steps and filter where step had highest correlation.
 #' @export
 
-collect_best_step_data <- function(b, k) {
-  dt <- k %>% dplyr::filter(step == b$step[[1]])
+collect_best_step_data <- function(d, h) {
+  dt <- d %>% dplyr::filter(step == h$step)
   return(dt)
 }
 

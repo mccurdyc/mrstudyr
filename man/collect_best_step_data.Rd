@@ -4,7 +4,7 @@
 \alias{collect_best_step_data}
 \title{FUNCTION: collect_best_step_data}
 \usage{
-collect_best_step_data(b, k)
+collect_best_step_data(d, h)
 }
 \description{
 Filter the collected keep data from all steps and filter where step had highest correlation.

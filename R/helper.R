@@ -128,68 +128,62 @@ helper_incremental_across_schemas <- function(d, s) {
   bk <- data.frame()
 
   for (j in 1:30) {
-  print(paste("TRIAL: ", j))
-  best_correlation_vector <- vector()
-  f <- select_random_percent()
-  dt <- d %>% transform_add_start_and_step(s, f) %>% transform_mutant_count() %>% as.data.frame()
-  g <- dt # initialize g to original set of mutants
-  previous_best_corr <- 0
-  neighborhood_size <- 0
-  outside_step <- 1
-  while (TRUE) {
-    print(paste("+++++++++++++++++++++++ OUTSIDE STEP: ", outside_step, " +++++++++++++++++++++++"))
-    if (outside_step > 1) {
-      g$keep <- bk$keep
-    }
-    stp <- 1
-    neighborhood_keep_data <- data.frame()
-    neighborhood_corr_data <- data.frame()
-    frst <- TRUE
+    print(paste("TRIAL: ", j))
+    best_correlation_vector <- vector()
+    f <- select_random_percent()
+    dt <- d %>% transform_add_start_and_step(s, f) %>% transform_mutant_count() %>% as.data.frame()
+    g <- dt # initialize g to original set of mutants
+    previous_best_corr <- 0
+    neighborhood_size <- 0
+    outside_step <- 1
     while (TRUE) {
-      k <- g %>% helper_flip() %>% transform_add_step(stp)
-      k %>% dplyr::glimpse()
-      neighborhood_keep_data <- rbind(neighborhood_keep_data, k)
-      r <- k %>% collect_keep_data()
-      current_corr <- evaluate_reduction_technique_across(d, r, stp) %>%
-        transform_add_correlation()
-      current_corr %>% dplyr::glimpse()
-      neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
-
-      if ((g$position + g$step_size) > g$mutant_count)  {
-        p <- (g$position + g$step_size) - g$mutant_count
-      } else {
-        p <- g$position + g$step_size
+      print(paste("+++++++++++++++++++++++ OUTSIDE STEP: ", outside_step, " +++++++++++++++++++++++"))
+      if (outside_step > 1) {
+        g$keep <- bk$keep
       }
-      g <- g %>% transform_update_position(p)
-      if (g$position == g$start_position && frst == FALSE) {
+      stp <- 1
+      neighborhood_keep_data <- data.frame()
+      neighborhood_corr_data <- data.frame()
+      frst <- TRUE
+      while (TRUE) {
+        k <- g %>% helper_flip() %>% transform_add_step(stp)
+        neighborhood_keep_data <- rbind(neighborhood_keep_data, k)
+        r <- k %>% collect_keep_data()
+        current_corr <- evaluate_reduction_technique_across(d, r, stp) %>%
+          transform_add_correlation()
+        neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
+
+        if ((g$position + g$step_size) > g$mutant_count)  {
+          p <- (g$position + g$step_size) - g$mutant_count
+        } else {
+          p <- g$position + g$step_size
+        }
+        g <- g %>% transform_update_position(p)
+        if (g$position == g$start_position && frst == FALSE) {
+          break
+        }
+        frst <- FALSE
+        stp <- stp + 1
+      }
+      neighborhood_size <- neighborhood_corr_data %>% calculate_neighborhood_size()
+      b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
+        transform_highest_correlation() %>% collect_highest_correlation_data()
+      print("+++++++++++++++++++++++ Current Best Correlation +++++++++++++++++++++++")
+      current_best_corr <- b$highest_correlation[1]
+      print(current_best_corr)
+      highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
+      previous_bk <- bk %>% transform_add_trial(j)
+      bk <- neighborhood_keep_data %>% collect_best_step_data(highest_correlation_data)
+      best_correlation_vector <- append(best_correlation_vector, bk$step[1])
+      print(best_correlation_vector)
+      outside_step <- outside_step + 1
+      if (current_best_corr < previous_best_corr || outside_step > neighborhood_size) {
         break
       }
-      frst <- FALSE
-      stp <- stp + 1
-    }
-    # TODO: add function for neighborhood size calculation
-    neighborhood_size <- neighborhood_corr_data %>% dplyr::select(step) %>% dplyr::distinct() %>% max()
-    b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
-      transform_highest_correlation() %>% collect_highest_correlation_data()
-    print("+++++++++++++++++++++++")
-    current_best_corr <- b$highest_correlation[1]
-    print(current_best_corr)
-    highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-    previous_bk <- bk %>% transform_add_trial(j)
-    bk <- neighborhood_keep_data %>% dplyr::filter(step == highest_correlation_data$step)
-    # bk <- collect_best_step_data(highest_correlation_data, neighborhood_keep_data)
-    best_correlation_vector <- append(best_correlation_vector, bk$step[1])
-    print(best_correlation_vector)
-    print("+++++++++++++++++++++++ CHOSEN DATA +++++++++++++++++++++++")
-    # bk %>% dplyr::glimpse()
-    outside_step <- outside_step + 1
-    if (current_best_corr < previous_best_corr || outside_step > neighborhood_size) {
-      break
-    }
-    previous_best_corr <- current_best_corr
+      previous_best_corr <- current_best_corr
     }
     dbk <- rbind(dbk, previous_bk)
-    # dbc <- rbind(dbc, previous_best_corr)
+    # dbc <- rbind(dbc, previous_best_corr) # collected correlation data
   }
   return(dbk)
 }

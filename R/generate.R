@@ -11,7 +11,7 @@ generate_operator_model <- function(d) {
   total_count <- d %>% dplyr::count() %>% transform_rename_count()
   dt <- join_total_keep_ignore_data(total_count, keep_count, ignore_count)
   dt[is.na(dt)] <- 0
-  dt %>% dplyr::glimpse()
+  dt <- dt %>% transform_add_percent_kept() %>% transform_add_percent_ignored()
   return(dt)
 }
 

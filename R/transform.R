@@ -279,3 +279,23 @@ transform_highest_correlation <- function(d) {
   d %>% collect_schema_data() %>%
     dplyr::mutate(highest_correlation = max(correlation))
 }
+
+#' FUNCTION: transform_add_percent_kept
+#'
+#' Add the percentage of kept mutants kept per-operator.
+#' @export
+
+transform_add_percent_kept <- function(d) {
+  dt <- d %>% dplyr::mutate(percent_kept = (keep_count / count))
+  return(dt)
+}
+
+#' FUNCTION: transform_add_percent_ignored
+#'
+#' Add the percentage of kept mutants ignored per-operator.
+#' @export
+
+transform_add_percent_ignored <- function(d) {
+  dt <- d %>% dplyr::mutate(percent_ignored = (ignore_count / count))
+  return(dt)
+}

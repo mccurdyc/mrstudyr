@@ -1,11 +1,38 @@
 #' FUNCTION: transform_replace_correlation
 #'
-#' DESCRIPTION: Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
+#' Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
 #' from 'estimate' to 'correlation'
 #' @export
 
 transform_replace_correlation <- function(d) {
   dt <- d %>% dplyr::rename(correlation = estimate)
+}
+
+#' FUNCTION: transform_rename_count
+#'
+#' Rename column from generic name of 'n' to count.
+#' @export
+
+transform_rename_count <- function(d) {
+  dt <- d %>% dplyr::rename(count = n)
+}
+
+#' FUNCTION: transform_rename_keep
+#'
+#' Rename column from generic name of 'n' to keep_count.
+#' @export
+
+transform_rename_keep <- function(d) {
+  dt <- d %>% dplyr::rename(keep_count = n)
+}
+
+#' FUNCTION: transform_rename_ignore
+#'
+#' Rename column from generic name of 'n' to ignore_count.
+#' @export
+
+transform_rename_ignore <- function(d) {
+  dt <- d %>% dplyr::rename(ignore_count = n)
 }
 
 #' FUNCTION: transform_add_trial
@@ -252,4 +279,3 @@ transform_highest_correlation <- function(d) {
   d %>% collect_schema_data() %>%
     dplyr::mutate(highest_correlation = max(correlation))
 }
-

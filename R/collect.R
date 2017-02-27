@@ -102,6 +102,16 @@ collect_keep_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_ignore_data
+#'
+#' Filter data to only include data that is 'ignored' i.e., a boolean value of 'FALSE' in the keep column.
+#' @export
+
+collect_ignore_data <- function(d) {
+  dt <- d %>% dplyr::filter(keep == FALSE)
+  return(dt)
+}
+
 #' FUNCTION: collect_best_fit_data
 #'
 #' Filter the data where fitness equals the best fitness for a given schema.
@@ -150,5 +160,15 @@ collect_best_step_data <- function(d, h) {
 
 collect_schema_position_data <- function(b, k) {
   dt <- k %>% dplyr::filter(schema == b$schema, position == b$position)
+  return(dt)
+}
+
+#' FUNCTION: collect_trial_operator_data
+#'
+#' Group data by dbms, trial and operator (not schema because this is across-schema) for generating a generalized model.
+#' @export
+
+collect_trial_operator_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, trial, operator)
   return(dt)
 }

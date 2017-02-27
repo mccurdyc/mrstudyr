@@ -7,7 +7,7 @@
 transform_replace_correlation(d)
 }
 \description{
-DESCRIPTION: Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
+Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
 from 'estimate' to 'correlation'
 }
 

@@ -22,3 +22,13 @@ join_total_keep_ignore_data <- function(tc, kc, ic) {
   dt <- dplyr::left_join(dt, ic, by = c("dbms" = "dbms", "trial" = "trial", "operator" = "operator"))
   return(dt)
 }
+
+#' FUNCTION: join_summarized_keep_ignore_data
+#'
+#' Join the summarized, model data for percentage of mutants kept and ignored per-operator.
+#' @export
+
+join_summarized_keep_ignore_data <- function(a, b) {
+  dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms",  "operator" = "operator"))
+  return(dt)
+}

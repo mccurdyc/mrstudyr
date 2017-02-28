@@ -7,6 +7,6 @@
 collect_operator_data(d)
 }
 \description{
-Group data by dbms, schema and operator
+Group data by dbms and operator
 }
 

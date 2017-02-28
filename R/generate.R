@@ -12,6 +12,9 @@ generate_operator_model <- function(d) {
   dt <- join_total_keep_ignore_data(total_count, keep_count, ignore_count)
   dt[is.na(dt)] <- 0
   dt <- dt %>% transform_add_percent_kept() %>% transform_add_percent_ignored()
-  return(dt)
+  ak <- dt %>% dplyr::ungroup() %>% collect_operator_data() %>% summarize_average_percent_kept()
+  ai <- dt %>% dplyr::ungroup() %>% collect_operator_data() %>% summarize_average_percent_ignored()
+  ds <- join_summarized_keep_ignore_data(ak, ai)
+  return(ds)
 }
 

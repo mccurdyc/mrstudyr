@@ -29,3 +29,23 @@ summarize_operator_percentage_kept <- function(d) {
   dt <- d %>% collect_trial_operator_data() %>% dplyr::summarise(percentage_kept = count(time))
   return(dt)
 }
+
+#' FUNCTION: summarize_average_percent_kept
+#'
+#' Calculate the average percent of mutants kept per-operator across 30 trials.
+# @export
+
+summarize_average_percent_kept <- function(d) {
+  dt <- d %>% dplyr::summarize(average_percent_kept = mean(percent_kept))
+  return(dt)
+}
+
+#' FUNCTION: summarize_average_percent_ignored
+#'
+#' Calculate the average percent of mutants kept per-operator across 30 trials.
+# @export
+
+summarize_average_percent_ignored <- function(d) {
+  dt <- d %>% dplyr::summarize(average_percent_ignored = mean(percent_ignored))
+  return(dt)
+}

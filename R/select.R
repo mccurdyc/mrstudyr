@@ -15,7 +15,7 @@ select_x_percent <- function(d, x) {
 #' @export
 
 select_x_percent_across_operators <- function(d, x) {
-  dt <- d %>% collect_operator_data() %>% select_x_percent(x)
+  dt <- d %>% collect_schema_operator_data() %>% select_x_percent(x)
   return(dt)
 }
 

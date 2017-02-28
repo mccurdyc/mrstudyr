@@ -41,12 +41,12 @@ collect_percent_data <- function(d) {
   return(dt)
 }
 
-#' FUNCTION: collect_operator_data
+#' FUNCTION: collect_schema_operator_data
 #'
 #' Group data by dbms, schema and operator
 #' @export
 
-collect_operator_data <- function(d) {
+collect_schema_operator_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, schema, operator)
   return(dt)
 }
@@ -170,5 +170,15 @@ collect_schema_position_data <- function(b, k) {
 
 collect_trial_operator_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, trial, operator)
+  return(dt)
+}
+
+#' FUNCTION: collect_operator_data
+#'
+#' Group data by dbms and operator
+#' @export
+
+collect_operator_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, operator)
   return(dt)
 }

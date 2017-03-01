@@ -69,9 +69,11 @@ create_incremental_graphs <- function() {
 #' @export
 
 create_incremental_across_schema_graphs <- function() {
-
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  s <- d %>% analyze_incremental_across_schemas(step_size=0.1)
-  m <- d %>% analyze_incremental_across_schemas(step_size=0.2)
-  l <- d %>% analyze_incremental_across_schemas(step_size=0.4)
+  # need to subset data, generate models excluding each schema, apply each model to the excluded schema
+  s <- d %>% analyze_incremental_across_schemas(step_size=0.1, corr_threshold=0.05, cost_threshold=0.09)
+  ms <- s %>% generate_operator_model()
+  dt <- d %>% apply_operator_model(ms)
+  # m <- d %>% analyze_incremental_across_schemas(step_size=0.2, corr_threshold=0.05, cost_threshold=0.09)
+  # l <- d %>% analyze_incremental_across_schemas(step_size=0.4, corr_threshold=0.05, cost_threshold=0.09)
 }

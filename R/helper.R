@@ -213,6 +213,31 @@ helper_flip <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: helper_apply_operator_model
+#'
+#' @export
+
+helper_apply_operator_model <- function(d, model) {
+  ds <- split(d, d$operator)
+  dt <- ds %>% parallel::mclapply(helper_select_operator_data, model=model) %>%
+    lapply(as.data.frame) %>%
+    dplyr::bind_rows()
+  return(dt)
+}
+
+#' FUNCTION: helper_select_operator_data
+#'
+#' This function is responsible for selecting the appropriate amount of mutants for an operator
+#' according to the generated model.
+#' @export
+
+helper_select_operator_data <- function(d, model) {
+  current_operator <- d$operator[1]
+  model_rec <- model %>% dplyr::filter(operator == current_operator)
+  dt <- d %>% dplyr::sample_frac(model_rec$average_percent_kept)
+  return(dt)
+}
+
 #' FUNCTION: helper_bitflip_keep_across
 #'
 #' This is a helper function for ANALYZE_INCREMENTAL

@@ -4,7 +4,8 @@
 \alias{helper_incremental_across_schemas}
 \title{FUNCTION: helper_incremental_across_schemas}
 \usage{
-helper_incremental_across_schemas(d, s)
+helper_incremental_across_schemas(d, s, corr_threshold = 1,
+  cost_threshold = 0.09)
 }
 \description{
 Helper analyze incremental across all schemas to provide a "more actionable" and generalized

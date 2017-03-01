@@ -122,15 +122,19 @@ helper_incremental <- function(d, partition_size=1) {
 #' approach to follow.
 #' @export
 
-helper_incremental_across_schemas <- function(d, s) {
+helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_threshold=0.09) {
   dbk <- data.frame()
   dbc <- data.frame()
   bk <- data.frame()
 
   for (j in 1:30) {
-    print(paste("TRIAL: ", j))
     best_correlation_vector <- vector()
     f <- select_random_percent()
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(paste("trial: ", j))
+    print(paste("random fractional start position: ", f))
+    print(paste("fractional step size: ", s))
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     dt <- d %>% transform_add_start_and_step(s, f) %>% transform_mutant_count() %>% as.data.frame()
     g <- dt # initialize g to original set of mutants
     previous_best_corr <- 0
@@ -168,19 +172,26 @@ helper_incremental_across_schemas <- function(d, s) {
       neighborhood_size <- neighborhood_corr_data %>% calculate_neighborhood_size()
       b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
         transform_highest_correlation() %>% collect_highest_correlation_data()
-      print("+++++++++++++++++++++++ Current Best Correlation +++++++++++++++++++++++")
       current_best_corr <- b$highest_correlation[1]
-      print(current_best_corr)
+      current_cost_reduction <- sum(b$original_time) - sum(b$reduced_time)
+      current_cost_reduction_percent <- current_cost_reduction / sum(b$original_time)
+      print(paste("current best correlation: ", current_best_corr))
+      print(paste("current cost reduction (ms): ", current_cost_reduction))
+      print(paste("current cost reduction (%): ", current_cost_reduction_percent))
       highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
       previous_bk <- bk %>% transform_add_trial(j)
       bk <- neighborhood_keep_data %>% collect_best_step_data(highest_correlation_data)
       best_correlation_vector <- append(best_correlation_vector, bk$step[1])
+      print("chosen best positions: ")
       print(best_correlation_vector)
       outside_step <- outside_step + 1
-      if (current_best_corr < previous_best_corr || outside_step > neighborhood_size) {
+      if ((current_best_corr < (previous_best_corr - corr_threshold) &&
+          current_cost_reduction_percent < (previous_cost_reduction_percent + cost_threshold)) ||
+          outside_step >= neighborhood_size) {
         break
       }
       previous_best_corr <- current_best_corr
+      previous_cost_reduction_percent <- current_cost_reduction_percent
     }
     dbk <- rbind(dbk, previous_bk)
     # dbc <- rbind(dbc, previous_best_corr) # collected correlation data

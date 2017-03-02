@@ -69,11 +69,25 @@ create_incremental_graphs <- function() {
 #' @export
 
 create_incremental_across_schema_graphs <- function() {
+  dcd <- data.frame()
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  # need to subset data, generate models excluding each schema, apply each model to the excluded schema
-  s <- d %>% analyze_incremental_across_schemas(step_size=0.1, corr_threshold=0.05, cost_threshold=0.09)
-  ms <- s %>% generate_operator_model()
-  dt <- d %>% apply_operator_model(ms)
-  # m <- d %>% analyze_incremental_across_schemas(step_size=0.2, corr_threshold=0.05, cost_threshold=0.09)
-  # l <- d %>% analyze_incremental_across_schemas(step_size=0.4, corr_threshold=0.05, cost_threshold=0.09)
+  schemas <- d %>% select_all_schemas()
+  for (s in schemas[[1]]) {
+    print(paste("current excluded schema: ", s))
+    ds <- d %>% exclude_schema(s)
+    excluded_schema <- d %>% select_schema_data(s)
+    # current best correlation in the hill-climbing algorithm cannot be worse than 5% lower than previous best
+    # while cost must be reduced by more than 9% than previous cost reduction
+    small <- ds %>% analyze_incremental_across_schemas(step_size=0.1, corr_threshold=0.05, cost_threshold=0.09)
+    # medium <- ds %>% analyze_incremental_across_schemas(step_size=0.2, corr_threshold=0.05, cost_threshold=0.09)
+    # large <- ds %>% analyze_incremental_across_schemas(step_size=0.4, corr_threshold=0.05, cost_threshold=0.09)
+    model <- small %>% generate_operator_model()
+    # 30 times to account for randomness
+    for (j in 1:30) {
+      dt <- excluded_schema %>% apply_operator_model(model) %>% transform_add_trial(j) %>% as.data.frame()
+      dcd <- rbind(dcd, dt)
+      dcd %>% dplyr::glimpse()
+    }
+  }
+  return(dcd)
 }

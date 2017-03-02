@@ -40,6 +40,16 @@ select_all_operators <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: select_schema_data
+#'
+#' Select the data for only a specified schema.
+#' @export
+
+select_schema_data <- function(d, s) {
+  dt <- d %>% dplyr::filter(schema %in% s)
+  return(dt)
+}
+
 #' FUNCTION: select_all_schemas
 #'
 #' This function returns all available schemas
@@ -68,7 +78,6 @@ select_random_start_position <- function(x) {
 
 select_random_percent <- function() {
   dt <- (sample(1:100[[1]], 1, TRUE)/100)
-  print(paste("random start position: ", dt))
   return(dt)
 }
 

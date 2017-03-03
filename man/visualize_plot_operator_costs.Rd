@@ -7,6 +7,6 @@
 visualize_plot_operator_costs(d)
 }
 \description{
-Produces a visualization of the costs of all mutants for an operator
+Produces a visualization of the costs of all mutants for an operator.
 }
 

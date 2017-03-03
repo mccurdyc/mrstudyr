@@ -98,6 +98,18 @@ visualize_selective_random_rmse <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_operator_mutant_costs_per_schema
+#'
+#' In a box-and-whisker plot, display the cost of all of the mutants for each operator facetted by schema.
+#' @export
+
+visualize_operator_mutant_costs_per_schema <- function(d) {
+  p <- d %>% visualize_plot_operator_costs_per_schema()
+  name <- "../graphics/from-data/operator_mutant_costs_per_schema.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
 #' FUNCTION: visualize_operator_mutant_costs
 #'
 #' In a box-and-whisker plot, display the cost of all of the mutants for each operator.
@@ -187,15 +199,32 @@ visualize_plot_rmse <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_plot_operator_costs_per_schema
+#'
+#' Produces a visualization of the costs of all mutants for an operator facetted by schema.
+#' @export
+
+visualize_plot_operator_costs_per_schema <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = operator, y = time)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::facet_wrap(~ schema, labeller = ggplot2::label_both) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Operator") +
+  ggplot2::ylab("Analysis Time (ms)")
+  return(p)
+}
+
 #' FUNCTION: visualize_plot_operator_costs
 #'
-#' Produces a visualization of the costs of all mutants for an operator
+#' Produces a visualization of the costs of all mutants for an operator.
 #' @export
 
 visualize_plot_operator_costs <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = operator, y = time)) +
   ggplot2::geom_boxplot() +
-  ggplot2::facet_wrap(~ schema, labeller = ggplot2::label_both) +
   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +

@@ -7,6 +7,6 @@
 calculate_effectiveness(d, p = FALSE)
 }
 \description{
-Calculate the effectiveness of a reduction technique on a per-schema (optionall, per-percentage) basis.
+Calculate the effectiveness of a reduction technique on a per-schema (optional, per-percentage) basis.
 }
 

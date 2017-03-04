@@ -261,51 +261,23 @@ helper_bitflip_keep_across <- function(d) {
     m <- d[p:rows, ]
     bb <- b %>% dplyr::mutate(keep = FALSE) # do the flip
     u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
-    # print("B")
-    # b %>% dplyr::glimpse()
-    # print("A")
-    # a %>% dplyr::glimpse()
-    # print("M")
-    # m %>% dplyr::glimpse()
-    # print("BB")
-    # bb %>% dplyr::glimpse()
-    # print("U")
-    # u %>% dplyr::glimpse()
     df <- rbind(bb, a, u)
   } else if ((p + s - 1) == rows) {
     b <- d[1:(p - 1), ]
     m <- d[p:rows, ]
     u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
-    # print("B")
-    # b %>% dplyr::glimpse()
-    # print("U")
-    # u %>% dplyr::glimpse()
     df <- rbind(b, u)
   } else {
     if (p == 1) {
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
       u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
-      # print("M")
-      # m %>% dplyr::glimpse()
-      # print("U")
-      # u %>% dplyr::glimpse()
-      # print("R")
-      # r %>% dplyr::glimpse()
       df <- rbind(u, r)
     } else {
       b <- d[1:(p - 1), ]
       m <- d[p:(p + s - 1), ]
       r <- d[(p + s):rows, ]
       u <- m %>% dplyr::mutate(keep = FALSE) # do the flip
-      # print("B")
-      # b %>% dplyr::glimpse()
-      # print("M")
-      # m %>% dplyr::glimpse()
-      # print("U")
-      # u %>% dplyr::glimpse()
-      # print("R")
-      # r %>% dplyr::glimpse()
       df <- rbind(b, u, r)
     }
   }

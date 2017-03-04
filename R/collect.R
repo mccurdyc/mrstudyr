@@ -62,6 +62,16 @@ collect_schema_percent_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_trial_data
+#'
+#' Group data by trial.
+#' @export
+
+collect_trial_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms, trial)
+  return(dt)
+}
+
 #' FUNCTION: collect_schema_trial_data
 #'
 #' Group data by dbms, schema and trial

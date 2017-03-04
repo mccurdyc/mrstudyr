@@ -71,8 +71,24 @@ analyze_incremental <- function(d, partition_size=1) {
 #' @export
 
 analyze_incremental_across_schemas <- function(d, step_size=0.1, corr_threshold=1, cost_threshold=0.09) {
-    o <- d %>% collect_schema_data() %>% transform_keep()
+  df <- data.frame()
+
+  schemas <- d %>% select_all_schemas()
+  for (s in schemas[[1]]) {
+    print(paste("current excluded schema: ", s))
+    ds <- d %>% exclude_schema(s)
+    excluded_schema_data <- d %>% select_schema_data(s)
+    # current best correlation in the hill-climbing algorithm cannot be worse than 5% lower than previous best
+    # while cost must be reduced by more than 9% than previous cost reduction
+    o <- ds %>% collect_schema_data() %>% transform_keep()
     o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator
-    dt <- helper_incremental_across_schemas(o, step_size, 0.05, 0.15)
-  return(dt)
+    dh <- helper_incremental_across_schemas(o, step_size, corr_threshold, cost_threshold)
+    model <- dh %>% generate_operator_model()
+    for (j in 1:30) {
+      dt <- excluded_schema_data %>% apply_operator_model(model) %>% transform_add_trial(j) %>% as.data.frame()
+      df <- rbind(df, dt)
+    }
+  }
+  df <- df %>% calculate_per_trial_effectiveness()
+  return(df)
 }

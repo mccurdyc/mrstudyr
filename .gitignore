@@ -3,6 +3,7 @@
 .RData
 *.swp
 *.tex
+*.feather
 
 # ...even if they are in subdirectories
 !*/

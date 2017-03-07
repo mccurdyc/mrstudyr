@@ -256,7 +256,7 @@ transform_fitness <- function(d, error_weight, cost_weight) {
 #' @export
 
 transform_add_correlation <- function(d) {
-  dt <- d %>% dplyr::ungroup() %>% dplyr::mutate(correlation = calculate_correlation(d))
+  dt <- d %>% dplyr::mutate(correlation = calculate_correlation(d))
   return(dt)
 }
 

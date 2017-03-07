@@ -47,22 +47,22 @@ analyze_selective_random <- function(d, operators) {
   return(df)
 }
 
-#' FUNCTION: analyze_incremental
-#'
-#' Analyze how reducing the set incrementally effects the error between MS and MS'
-#' @export
-
-analyze_incremental <- function(d, partition_size=1) {
-  df <- data.frame()
-  schemas <- d %>% dplyr::select(schema) %>% dplyr::distinct()
-  for(s in schemas[[1]]) {
-    print(paste("CURRENT SCHEMA: ", s))
-    o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
-    dt <- helper_incremental(o, partition_size)
-    df <- rbind(df, dt)
-  }
-  return(df)
-}
+# #' FUNCTION: analyze_incremental
+# #'
+# #' Analyze how reducing the set incrementally effects the error between MS and MS'
+# #' @export
+#
+# analyze_incremental <- function(d, partition_size=1) {
+#   df <- data.frame()
+#   schemas <- d %>% dplyr::select(schema) %>% dplyr::distinct()
+#   for(s in schemas[[1]]) {
+#     print(paste("CURRENT SCHEMA: ", s))
+#     o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
+#     dt <- helper_incremental(o, partition_size)
+#     df <- rbind(df, dt)
+#   }
+#   return(df)
+# }
 
 #' FUNCTION: analyze_incremental_across_schemas
 #'
@@ -74,6 +74,8 @@ analyze_incremental_across_schemas <- function(d, step_size=0.1, corr_threshold=
   df <- data.frame()
 
   schemas <- d %>% select_all_schemas()
+  # schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>%
+    # dplyr::select(schema) %>% dplyr::distinct()
   for (s in schemas[[1]]) {
     print(paste("current excluded schema: ", s))
     ds <- d %>% exclude_schema(s)
@@ -87,8 +89,8 @@ analyze_incremental_across_schemas <- function(d, step_size=0.1, corr_threshold=
     for (j in 1:30) {
       dt <- excluded_schema_data %>% apply_operator_model(model) %>% transform_add_trial(j) %>% as.data.frame()
       df <- rbind(df, dt)
+      df %>% dplyr::glimpse()
     }
   }
-  df <- df %>% calculate_per_trial_effectiveness()
   return(df)
 }

@@ -5,9 +5,9 @@
 
 calculate_effectiveness <- function(d, p=FALSE) {
   if ( p == TRUE) {
-    d <- d %>% collect_schema_percent_data() %>% collect_trial_data()
+    d <- d %>% collect_schema_percent_data()
   } else {
-    d <- d %>% collect_schema_data() %>% collect_trial_data()
+    d <- d %>% collect_schema_data()
   }
   dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_add_correlation()
   return(dt)
@@ -19,25 +19,14 @@ calculate_effectiveness <- function(d, p=FALSE) {
 #' @export
 
 calculate_per_trial_effectiveness <- function(d) {
-  dt <- d %>% collect_trial_data()
-  dt <- dt %>% transform_mae() %>% transform_rmse() %>% transform_add_correlation()
+  d <- d %>% collect_trial_data()
+  ds <- split(d, d$trial)
+  dt <- ds %>% parallel::mclapply(transform_add_correlation) %>%
+    lapply(as.data.frame) %>%
+    dplyr::bind_rows()
+  # dt <- dt %>% transform_mae() %>% transform_rmse()
   return(dt)
 }
-
-# #' FUNCTION: calculate_correlation
-# #'
-# #' This function will calculate the correlation between the reduced and the original
-# #' mutation score for a given percent. This is a helper function for the transform_correlation function
-# #' @export
-#
-# calculate_correlation <- function(d) {
-#   x <- d[['reduced_mutation_score']]
-#   y <- d[['original_mutation_score']]
-#
-#   model <- cor.test(x, y, method = "kendall", use = "pairwise")
-#   dt <- model %>% broom::tidy() %>% transform_replace_correlation()
-#   return(dt[['correlation']]) # return just correlation
-# }
 
 #' FUNCTION: calculate_correlation
 #'

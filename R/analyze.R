@@ -70,23 +70,25 @@ analyze_selective_random <- function(d, operators) {
 #' schemas
 #' @export
 
-analyze_incremental_across_schemas <- function(d, step_size=0.1, corr_threshold=1, cost_threshold=0.09) {
+analyze_incremental_across_schemas <- function(d, step_size, corr_threshold, cost_threshold) {
   df <- data.frame()
-
-  schemas <- d %>% select_all_schemas()
-  # schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>%
-    # dplyr::select(schema) %>% dplyr::distinct()
+  count <- 1 # only used for printing the current schema
+  # schemas <- d %>% select_all_schemas()
+  schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>% dplyr::select(schema) %>% dplyr::distinct()
+  d <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee'))
   for (s in schemas[[1]]) {
-    print(paste("current excluded schema: ", s))
-    ds <- d %>% exclude_schema(s)
-    excluded_schema_data <- d %>% select_schema_data(s)
+    print(paste("current excluded schema ", count, ": ", s))
+    ds <- d %>% exclude_schema(s) # exclude a single schema from the entire data set
+    excluded_schema_data <- d %>% select_schema_data(s) # select only the data for the excluded schema
     # current best correlation in the hill-climbing algorithm cannot be worse than 5% lower than previous best
     # while cost must be reduced by more than 9% than previous cost reduction
-    o <- ds %>% collect_schema_data() %>% transform_keep()
-    o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator
-    dh <- helper_incremental_across_schemas(o, step_size, corr_threshold, cost_threshold)
-    model <- dh %>% generate_operator_model()
+    o <- ds %>% collect_schema_data() %>% transform_keep() # add keep column to dataframe
+    o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator so that operator data is consistent across schemas
+    dh <- helper_incremental_across_schemas(o, step_size, corr_threshold, cost_threshold) # perform the hill climbing algorithm
+    model <- dh %>% generate_operator_model() # based on the hill climbing data, generate a genralized model to apply
+    # apply model 30 times to account for randomness (random percentages per operator)
     for (j in 1:30) {
+      # apply the model informing how many mutants to keep per operator from original data set
       dt <- excluded_schema_data %>% apply_operator_model(model) %>% transform_add_trial(j) %>% as.data.frame()
       df <- rbind(df, dt)
       df %>% dplyr::glimpse()

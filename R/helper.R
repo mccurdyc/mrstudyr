@@ -122,11 +122,12 @@ helper_incremental <- function(d, partition_size=1) {
 #' approach to follow.
 #' @export
 
-helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_threshold=0.09) {
+helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_threshold) {
   dbk <- data.frame()
   dbc <- data.frame()
   bk <- data.frame()
 
+  # 30 trials to account for random start position
   for (j in 1:30) {
     best_correlation_vector <- vector()
     f <- select_random_percent()
@@ -135,17 +136,18 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_thres
     print(paste("random fractional start position: ", f))
     print(paste("fractional step size: ", s))
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    # add random start position and per-schema mutant count
     dt <- d %>% transform_add_start_and_step(s, f) %>% transform_mutant_count() %>% as.data.frame()
     g <- dt # initialize g to original set of mutants
     previous_best_corr <- 0
     neighborhood_size <- 0
     outside_step <- 1
     while (TRUE) {
-      # print(paste("+++++++++++++++++++++++ OUTSIDE STEP: ", outside_step, " +++++++++++++++++++++++"))
+      print(paste("+++++++++++++++++++++++ OUTSIDE STEP: ", outside_step, " +++++++++++++++++++++++"))
       if (outside_step > 1) {
-        g$keep <- bk$keep
+        g$keep <- bk$keep # use previously "flipped" keep values as current keep column
       }
-      stp <- 1
+      stp <- 1 # current step
       neighborhood_keep_data <- data.frame()
       neighborhood_corr_data <- data.frame()
       frst <- TRUE
@@ -153,11 +155,14 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_thres
         k <- g %>% helper_flip() %>% transform_add_step(stp)
         neighborhood_keep_data <- rbind(neighborhood_keep_data, k)
         r <- k %>% collect_keep_data()
-        current_corr <- evaluate_reduction_technique_across(d, r, stp) %>% dplyr::ungroup() %>%
-          transform_add_correlation()
+        # compare the effectiveness of the reduced data (r) to the original data (d) across schemas
+        current_corr <- d %>% evaluate_reduction_technique_across(r, stp) %>% dplyr::ungroup() %>% transform_add_correlation()
         neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
 
-        if ((g$position + g$step_size) > g$mutant_count)  {
+        print(stp)
+        print(g %>% dplyr::select(schema) %>% dplyr::distinct())
+        print(g %>% dplyr::select(position) %>% dplyr::distinct())
+        if ((g$position + g$step_size) > g$mutant_count) {
           p <- (g$position + g$step_size) - g$mutant_count
         } else {
           p <- g$position + g$step_size
@@ -169,7 +174,9 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_thres
         frst <- FALSE
         stp <- stp + 1
       }
-      neighborhood_size <- neighborhood_corr_data %>% calculate_neighborhood_size()
+      neighborhood_size <- neighborhood_corr_data %>% calculate_neighborhood_size() # get max step
+
+      # select a step that hasn't already been chosen as the best position
       b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
         transform_highest_correlation() %>% collect_highest_correlation_data()
       current_best_corr <- b$highest_correlation[1]
@@ -208,51 +215,23 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold=1, cost_thres
 helper_flip <- function(d) {
   ds <- split(d, d$schema)
   dt <- ds %>% parallel::mclapply(helper_bitflip_keep_across) %>%
-    lapply(as.data.frame) %>%
-    dplyr::bind_rows()
-  return(dt)
-}
-
-#' FUNCTION: helper_apply_operator_model
-#'
-#' @export
-
-helper_apply_operator_model <- function(d, model) {
-  ds <- split(d, d$operator)
-  dt <- ds %>% parallel::mclapply(helper_select_operator_data, model=model) %>%
-    lapply(as.data.frame) %>%
-    dplyr::bind_rows()
-  return(dt)
-}
-
-#' FUNCTION: helper_select_operator_data
-#'
-#' This function is responsible for selecting the appropriate amount of mutants for an operator
-#' according to the generated model.
-#' @export
-
-helper_select_operator_data <- function(d, model) {
-  current_operator <- d$operator[1]
-  model_rec <- model %>% dplyr::filter(operator == current_operator)
-  dt <- d %>% dplyr::sample_frac(model_rec$average_percent_kept)
+    lapply(as.data.frame) %>% dplyr::bind_rows()
   return(dt)
 }
 
 #' FUNCTION: helper_bitflip_keep_across
 #'
-#' This is a helper function for ANALYZE_INCREMENTAL
 #' Currently, this function negates boolean values i.e., TRUE -> FALSE, FALSE -> TRUE. Position is
-#' used to idicate the current position to bitflip and partition_size is the number of subsequent
-#' positions to also flip --- this could be useful if we wanted to try different sizes to reduce time
-#' of HC by increasing step size. **We could add another parameter 'group_by' so that instead of just
-#' flipping consecutive values, we could flip based on some group (e.g., operators).
+#' used to idicate the current position to bitflip and step_size is the number of subsequent of mutants.
+#' **We could add another parameter 'group_by' so that instead of just
+#' flipping consecutive values, we could flip based on some group.
 #' @export
 
 helper_bitflip_keep_across <- function(d) {
   df <- data.frame()
   rows <- d %>% nrow() %>% as.numeric()
-  p <- d %>% select_current_position() %>% as.numeric()
-  s <- d %>% select_current_step_size() %>% as.numeric()
+  p <- d %>% select_current_position()
+  s <- d %>% select_current_step_size()
 
   if ((p + s - 1) > rows) {
     rem <- (p + s - 1) - rows
@@ -282,4 +261,29 @@ helper_bitflip_keep_across <- function(d) {
     }
   }
   return(df)
+}
+
+#' FUNCTION: helper_apply_operator_model
+#'
+#' @export
+
+helper_apply_operator_model <- function(d, model) {
+  ds <- split(d, d$operator)
+  dt <- ds %>% parallel::mclapply(helper_select_operator_data, model=model) %>%
+    lapply(as.data.frame) %>%
+    dplyr::bind_rows()
+  return(dt)
+}
+
+#' FUNCTION: helper_select_operator_data
+#'
+#' This function is responsible for selecting the appropriate amount of mutants for an operator
+#' according to the generated model.
+#' @export
+
+helper_select_operator_data <- function(d, model) {
+  current_operator <- d$operator[1]
+  model_rec <- model %>% dplyr::filter(operator == current_operator)
+  dt <- d %>% dplyr::sample_frac(model_rec$average_percent_kept)
+  return(dt)
 }

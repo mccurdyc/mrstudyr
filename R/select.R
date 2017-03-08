@@ -116,7 +116,7 @@ select_step_size <- function(d, s) {
 #' @export
 
 select_current_position <- function(d) {
-  dt <- d %>% dplyr::select(position) %>% dplyr::distinct()
+  dt <- d %>% dplyr::select(position) %>% dplyr::distinct() %>% as.numeric()
   return(dt)
 }
 
@@ -126,7 +126,7 @@ select_current_position <- function(d) {
 #' @export
 
 select_current_step_size <- function(d) {
-  dt <- d %>% dplyr::select(step_size) %>% dplyr::distinct()
+  dt <- d %>% dplyr::select(step_size) %>% dplyr::distinct() %>% as.numeric()
   return(dt)
 }
 

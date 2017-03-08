@@ -4,8 +4,7 @@
 \alias{analyze_incremental_across_schemas}
 \title{FUNCTION: analyze_incremental_across_schemas}
 \usage{
-analyze_incremental_across_schemas(d, step_size = 0.1, corr_threshold = 1,
-  cost_threshold = 0.09)
+analyze_incremental_across_schemas(d, step_size, corr_threshold, cost_threshold)
 }
 \description{
 Analyze how reducing the set incrementally effects the error between MS and MS' considering across

@@ -159,16 +159,17 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
         current_corr <- d %>% evaluate_reduction_technique_across(r, stp) %>% dplyr::ungroup() %>% transform_add_correlation()
         neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
 
-        print(stp)
-        print(g %>% dplyr::select(schema) %>% dplyr::distinct())
-        print(g %>% dplyr::select(position) %>% dplyr::distinct())
-        if ((g$position + g$step_size) > g$mutant_count) {
+        # print(stp)
+        # print(g %>% dplyr::select(schema) %>% dplyr::distinct())
+        # print(g %>% dplyr::select(position) %>% dplyr::distinct())
+        # only use first position for comparing
+        if ((g$position[[1]] + g$step_size[[1]]) > g$mutant_count[[1]]) {
           p <- (g$position + g$step_size) - g$mutant_count
         } else {
           p <- g$position + g$step_size
         }
         g <- g %>% transform_update_position(p)
-        if (g$position == g$start_position && frst == FALSE) {
+        if (g$position[[1]] == g$start_position[[1]] && frst == FALSE) {
           break
         }
         frst <- FALSE
@@ -182,15 +183,15 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
       current_best_corr <- b$highest_correlation[1]
       current_cost_reduction <- sum(b$original_time) - sum(b$reduced_time)
       current_cost_reduction_percent <- current_cost_reduction / sum(b$original_time)
-      # print(paste("current best correlation: ", current_best_corr))
-      # print(paste("current cost reduction (ms): ", current_cost_reduction))
-      # print(paste("current cost reduction (%): ", current_cost_reduction_percent))
+      print(paste("current best correlation: ", current_best_corr))
+      print(paste("current cost reduction (ms): ", current_cost_reduction))
+      print(paste("current cost reduction (%): ", current_cost_reduction_percent))
       highest_correlation_data <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
       previous_bk <- bk %>% transform_add_trial(j)
       bk <- neighborhood_keep_data %>% collect_best_step_data(highest_correlation_data)
       best_correlation_vector <- append(best_correlation_vector, bk$step[1])
-      # print("chosen best positions: ")
-      # print(best_correlation_vector)
+      print("chosen best positions: ")
+      print(best_correlation_vector)
       outside_step <- outside_step + 1
       if ((current_best_corr < (previous_best_corr - corr_threshold) &&
           current_cost_reduction_percent < (previous_cost_reduction_percent + cost_threshold)) ||

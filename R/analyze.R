@@ -73,9 +73,9 @@ analyze_selective_random <- function(d, operators) {
 analyze_incremental_across_schemas <- function(d, step_size, corr_threshold, cost_threshold) {
   df <- data.frame()
   count <- 1 # only used for printing the current schema
-  # schemas <- d %>% select_all_schemas()
-  schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>% dplyr::select(schema) %>% dplyr::distinct()
-  d <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee'))
+  schemas <- d %>% select_all_schemas()
+  # schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>% dplyr::select(schema) %>% dplyr::distinct()
+  # d <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee'))
   for (s in schemas[[1]]) {
     print(paste("current excluded schema ", count, ": ", s))
     ds <- d %>% exclude_schema(s) # exclude a single schema from the entire data set
@@ -91,8 +91,8 @@ analyze_incremental_across_schemas <- function(d, step_size, corr_threshold, cos
       # apply the model informing how many mutants to keep per operator from original data set
       dt <- excluded_schema_data %>% apply_operator_model(model) %>% transform_add_trial(j) %>% as.data.frame()
       df <- rbind(df, dt)
-      df %>% dplyr::glimpse()
     }
+    count <- count + 1
   }
   return(df)
 }

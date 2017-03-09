@@ -142,15 +142,19 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
     previous_best_corr <- 0
     neighborhood_size <- 0
     outside_step <- 1
+
     while (TRUE) {
-      print(paste("+++++++++++++++++++++++ OUTSIDE STEP: ", outside_step, " +++++++++++++++++++++++"))
+      print(paste("+++++++++++++++++++++++ NEIGHBORHOOD GENERATION: ", outside_step, " +++++++++++++++++++++++"))
       if (outside_step > 1) {
+        g <- dt # initialize g to original set of mutants
         g$keep <- bk$keep # use previously "flipped" keep values as current keep column
       }
       stp <- 1 # current step
       neighborhood_keep_data <- data.frame()
       neighborhood_corr_data <- data.frame()
       frst <- TRUE
+      wrap <- FALSE
+
       while (TRUE) {
         k <- g %>% helper_flip() %>% transform_add_step(stp)
         neighborhood_keep_data <- rbind(neighborhood_keep_data, k)
@@ -159,28 +163,30 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
         current_corr <- d %>% evaluate_reduction_technique_across(r, stp) %>% dplyr::ungroup() %>% transform_add_correlation()
         neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
 
-        # print(stp)
-        # print(g %>% dplyr::select(schema) %>% dplyr::distinct())
-        # print(g %>% dplyr::select(position) %>% dplyr::distinct())
         # only use first position for comparing
+        k %>% dplyr::glimpse()
+        current_corr %>% dplyr::glimpse()
         if ((g$position[[1]] + g$step_size[[1]]) > g$mutant_count[[1]]) {
           p <- (g$position + g$step_size) - g$mutant_count
+          wrap <- TRUE
         } else {
           p <- g$position + g$step_size
         }
         g <- g %>% transform_update_position(p)
-        if (g$position[[1]] == g$start_position[[1]] && frst == FALSE) {
+        if (g$position[[1]] == g$start_position[[1]] && frst == FALSE ||
+            g$position[[1]] >= g$start_position[[1]] && wrap == TRUE) {
           break
         }
         frst <- FALSE
         stp <- stp + 1
       }
-      neighborhood_size <- neighborhood_corr_data %>% calculate_neighborhood_size() # get max step
+      neighborhood_size <- g %>% calculate_neighborhood_size() # get max step
+      print(paste("neighborhood size: ", neighborhood_size))
 
       # select a step that hasn't already been chosen as the best position
       b <- neighborhood_corr_data %>% dplyr::filter(!(step %in% best_correlation_vector)) %>%
         transform_highest_correlation() %>% collect_highest_correlation_data()
-      current_best_corr <- b$highest_correlation[1]
+      current_best_corr <- b$highest_correlation[1] # get the highest correlation value
       current_cost_reduction <- sum(b$original_time) - sum(b$reduced_time)
       current_cost_reduction_percent <- current_cost_reduction / sum(b$original_time)
       print(paste("current best correlation: ", current_best_corr))
@@ -192,12 +198,12 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
       best_correlation_vector <- append(best_correlation_vector, bk$step[1])
       print("chosen best positions: ")
       print(best_correlation_vector)
-      outside_step <- outside_step + 1
       if ((current_best_corr < (previous_best_corr - corr_threshold) &&
           current_cost_reduction_percent < (previous_cost_reduction_percent + cost_threshold)) ||
           outside_step >= neighborhood_size) {
         break
       }
+      outside_step <- outside_step + 1
       previous_best_corr <- current_best_corr
       previous_cost_reduction_percent <- current_cost_reduction_percent
     }

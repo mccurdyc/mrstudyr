@@ -98,6 +98,6 @@ calculate_correlation <- function(d) {
 #' @export
 
 calculate_neighborhood_size <- function(d) {
-  dt <- d %>% dplyr::select(step) %>% dplyr::distinct() %>% max()
+  dt <- (d$mutant_count[[1]] / d$step_size[[1]]) %>% round()
   return(dt)
 }

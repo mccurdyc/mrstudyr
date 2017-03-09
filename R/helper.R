@@ -163,9 +163,9 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
         current_corr <- d %>% evaluate_reduction_technique_across(r, stp) %>% dplyr::ungroup() %>% transform_add_correlation()
         neighborhood_corr_data <- rbind(neighborhood_corr_data, current_corr)
 
+        # k %>% dplyr::glimpse()
+        # current_corr %>% dplyr::glimpse()
         # only use first position for comparing
-        k %>% dplyr::glimpse()
-        current_corr %>% dplyr::glimpse()
         if ((g$position[[1]] + g$step_size[[1]]) > g$mutant_count[[1]]) {
           p <- (g$position + g$step_size) - g$mutant_count
           wrap <- TRUE

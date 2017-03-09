@@ -70,7 +70,7 @@ create_selective_random_graphs <- function() {
 
 create_incremental_across_schema_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  dt <- d %>% analyze_incremental_across_schemas(0.1, 0.05, 0.15)
+  dt <- d %>% analyze_incremental_across_schemas(0.2, 0.05, 0.19)
   # df <- dt %>% calculate_per_trial_effectiveness()
   return(dt)
 }

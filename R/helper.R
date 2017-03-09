@@ -198,12 +198,12 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
       best_correlation_vector <- append(best_correlation_vector, bk$step[1])
       print("chosen best positions: ")
       print(best_correlation_vector)
+      outside_step <- outside_step + 1
       if ((current_best_corr < (previous_best_corr - corr_threshold) &&
           current_cost_reduction_percent < (previous_cost_reduction_percent + cost_threshold)) ||
           outside_step >= neighborhood_size) {
         break
       }
-      outside_step <- outside_step + 1
       previous_best_corr <- current_best_corr
       previous_cost_reduction_percent <- current_cost_reduction_percent
     }

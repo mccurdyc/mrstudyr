@@ -8,13 +8,13 @@ create_random_sampling_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   a <- d %>% analyze_random_sampling()
   # will probably need to rename this (it currently only adds error calculations)
-  b <- a %>% calculate_effectiveness(p=TRUE)
+  # b <- a %>% calculate_effectiveness(p=TRUE)
 
   # visualize_random_sampling_mutation_scores(a)
   # visualize_random_sampling_error(a)
   # visualize_random_sampling_mae(b)
   # visualize_random_sampling_rmse(b)
-  return(b)
+  return(a)
 }
 
 #' FUNCTION: create_selective_random_graphs
@@ -70,7 +70,7 @@ create_selective_random_graphs <- function() {
 
 create_incremental_across_schema_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  dt <- d %>% analyze_incremental_across_schemas(0.2, 0.05, 0.19)
+  dt <- d %>% analyze_incremental_across_schemas(0.3, 0.05, 0.29)
   # df <- dt %>% calculate_per_trial_effectiveness()
   return(dt)
 }

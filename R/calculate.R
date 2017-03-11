@@ -13,6 +13,21 @@ calculate_effectiveness <- function(d, p=FALSE) {
   return(dt)
 }
 
+#' FUNCTION: calculate_per_trial_percentage_effectiveness
+#'
+#' Calculate the effectiveness of a reduction technique on a per-trial, per-percentage basis.
+#' @export
+
+calculate_per_trial_percentage_effectiveness <- function(d) {
+  d <- d %>% dplyr::ungroup() %>% collect_trial_data()
+  ds <- split(d, list(d$trial, d$percentage))
+  dt <- ds %>% parallel::mclapply(transform_add_correlation) %>%
+    lapply(as.data.frame) %>%
+    dplyr::bind_rows()
+  # dt <- dt %>% transform_mae() %>% transform_rmse()
+  return(dt)
+}
+
 #' FUNCTION: calculate_per_trial_effectiveness
 #'
 #' Calculate the effectiveness of a reduction technique on a per-trial basis.

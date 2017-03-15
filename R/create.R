@@ -21,7 +21,6 @@ create_data_overview_graphs <- function() {
 #' @export
 
 create_random_sampling_graphs <- function() {
-
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   da <- d %>% analyze_random_sampling()
   db <- da %>% calculate_per_trial_percentage_effectiveness()
@@ -36,7 +35,6 @@ create_random_sampling_graphs <- function() {
 #' @export
 
 create_selective_random_graphs <- function() {
-
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   o <- c("FKCColumnPairE",
          # "NNCA",
@@ -89,5 +87,4 @@ create_incremental_across_schema_graphs <- function() {
   tm <- d %>% analyze_incremental_across_schemas(step_size_medium, 0.05, 0.19) %>% calculate_per_trial_effectiveness()
   tl <- d %>% analyze_incremental_across_schemas(step_size_large, 0.05, 0.29) %>% calculate_per_trial_effectiveness()
   dt <- join_hill_climbing_size_data(ts, tm, tl, (step_size_small*100), (step_size_medium*100), (step_size_large*100))
-  return(dt)
 }

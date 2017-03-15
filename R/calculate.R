@@ -49,7 +49,8 @@ calculate_per_trial_effectiveness <- function(d) {
 calculate_per_schema_fractional_operator_costs <- function(d) {
   da <- d %>% summarize_schema_operator_time()
   db <- d %>% summarize_original_time()
-  dt <- join_operator_time(da, db)
+  dc <- join_operator_time(da, db)
+  dt <- dc %>% transform_fractional_operator_cost()
   return(dt)
 }
 

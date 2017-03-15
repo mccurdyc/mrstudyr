@@ -156,10 +156,21 @@ transform_mutant_count <- function(d) {
 #' FUNCTION: transform_cost_reduction
 #'
 #' Calculate the reduction in time for performing mutation analysis on the reduced set compared to the original set
+#' @export
 
 transform_cost_reduction <- function(d) {
-    dt <- d %>% dplyr::mutate(cost_reduction = ((original_time - reduced_time) / (original_time)))
-    return(dt)
+  dt <- d %>% dplyr::mutate(cost_reduction = ((original_time - reduced_time) / (original_time)))
+  return(dt)
+}
+
+#' FUNCTION: transform_fractional_operator_cost
+#'
+#' Calculate the fractional cost of each operator per schema.
+#' @export
+
+transform_fractional_operator_cost <- function(d) {
+  dt <- d %>% dplyr::mutate(fractional_cost = (operator_time / original_time))
+  return(dt)
 }
 
 #' FUNCTION: transform_reduced_mutation_score

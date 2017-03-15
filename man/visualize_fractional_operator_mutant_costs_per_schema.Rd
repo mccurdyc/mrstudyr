@@ -7,6 +7,6 @@
 visualize_fractional_operator_mutant_costs_per_schema(d)
 }
 \description{
-In a box-and-whisker plot, display the fractional cost of all of the mutants for each operator facetted by schema.
+In a bar chart, display the fractional cost of all of the mutants for each operator facetted by schema.
 }
 

@@ -49,7 +49,7 @@ calculate_per_trial_effectiveness <- function(d) {
 calculate_fractional_operator_costs <- function(d) {
   da <- d %>% summarize_operator_time()
   db <- d %>% summarize_time()
-  dc <- join_operator_time(da, db)
+  dc <- join_operator(da, db)
   dt <- dc %>% transform_fractional_operator_cost()
   return(dt)
 }
@@ -62,8 +62,34 @@ calculate_fractional_operator_costs <- function(d) {
 calculate_per_schema_fractional_operator_costs <- function(d) {
   da <- d %>% summarize_schema_operator_time()
   db <- d %>% summarize_original_time()
-  dc <- join_schema_operator_time(da, db)
+  dc <- join_schema_operator(da, db)
   dt <- dc %>% transform_fractional_operator_cost()
+  return(dt)
+}
+
+#' FUNCTION: calculate_fractional_operator_frequencies
+#'
+#' Calculate the fractional frequencies of mutants per operator.
+#' @export
+
+calculate_fractional_operator_frequencies <- function(d) {
+  da <- d %>% summarize_operator_frequencies()
+  db <- d %>% summarize_count()
+  dc <- join_operator(da, db)
+  dt <- dc %>% transform_fractional_operator_frequencies()
+  return(dt)
+}
+
+#' FUNCTION: calculate_per_schema_fractional_operator_frequencies
+#'
+#' Calculate the fractional frequencies of mutants per operator on a per-schema basis.
+#' @export
+
+calculate_per_schema_fractional_operator_frequencies <- function(d) {
+  da <- d %>% summarize_schema_operator_frequencies()
+  db <- d %>% summarize_schema_count()
+  dc <- join_schema_operator(da, db)
+  dt <- dc %>% transform_fractional_operator_frequencies()
   return(dt)
 }
 

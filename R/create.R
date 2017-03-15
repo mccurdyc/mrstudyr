@@ -5,10 +5,14 @@
 
 create_data_overview_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  da <- d %>% calculate_fractional_operator_costs()
-  db <- d %>% calculate_per_schema_fractional_operator_costs()
-  visualize_fractional_operator_mutant_costs(da)
-  visualize_fractional_operator_mutant_costs_per_schema(db)
+  dca <- d %>% calculate_fractional_operator_costs()
+  dcb <- d %>% calculate_per_schema_fractional_operator_costs()
+  dfa <- d %>% calculate_fractional_operator_frequencies()
+  dfb <- d %>% calculate_per_schema_fractional_operator_frequencies()
+  visualize_fractional_operator_mutant_costs(dca)
+  visualize_fractional_operator_mutant_costs_per_schema(dcb)
+  visualize_fractional_operator_mutant_frequencies(dfa)
+  visualize_fractional_operator_mutant_frequencies_per_schema(dfb)
 }
 
 #' FUNCTION: create_random_sampling_graphs

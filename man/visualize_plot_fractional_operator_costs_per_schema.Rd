@@ -7,6 +7,6 @@
 visualize_plot_fractional_operator_costs_per_schema(d)
 }
 \description{
-Produces a visualization of the time to evaluate the mutants per-operator, per-schema
+Produces a visualization of the time to evaluate the mutants per-operator, per-schema.
 }
 

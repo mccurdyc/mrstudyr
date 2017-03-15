@@ -173,6 +173,16 @@ transform_fractional_operator_cost <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: transform_fractional_operator_frequencies
+#'
+#' Calculate the fractional frequencies of each operator per schema.
+#' @export
+
+transform_fractional_operator_frequencies <- function(d) {
+  dt <- d %>% dplyr::mutate(fractional_frequency = (operator_frequencies / count))
+  return(dt)
+}
+
 #' FUNCTION: transform_reduced_mutation_score
 #'
 #' Calculate the mutation score for a given set (number of killed mutants / total number of mutants)

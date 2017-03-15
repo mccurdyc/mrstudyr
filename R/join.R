@@ -46,12 +46,22 @@ join_hill_climbing_size_data <- function(s, m, l, step_size_small, step_size_med
   return(dt)
 }
 
+#' FUNCTION: join_schema_operator_time
+#'
+#' Join summarized data containing per-schema original time and per-operator times.
+#' @export
+
+join_schema_operator_time <- function(a, b) {
+  dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms",  "schema" = "schema"))
+  return(dt)
+}
+
 #' FUNCTION: join_operator_time
 #'
-#' Join summarized data containing per-schema original time and per-operator times per schema.
+#' Join summarized data containing original time and per-operator times.
 #' @export
 
 join_operator_time <- function(a, b) {
-  dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms",  "schema" = "schema"))
+  dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms"))
   return(dt)
 }

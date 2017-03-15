@@ -7,6 +7,6 @@
 join_operator_time(a, b)
 }
 \description{
-Join summarized data containing per-schema original time and per-operator times per schema.
+Join summarized data containing original time and per-operator times.
 }
 

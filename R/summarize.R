@@ -18,6 +18,16 @@ summarize_original_time <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: summarize_time
+#'
+#' Calculate the total time (in ms) of performing mutation analysis with the given set of mutants.
+#' @export
+
+summarize_time <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms) %>% dplyr::summarize(original_time = sum(time))
+  return(dt)
+}
+
 #' FUNCTION: summarize_operator_time
 #'
 #' Calculate the total time (in ms) of performing mutation analysis with the given set of mutants

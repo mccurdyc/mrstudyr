@@ -5,8 +5,10 @@
 
 create_data_overview_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  da <- d %>% calculate_per_schema_fractional_operator_costs()
-  visualize_fractional_operator_mutant_costs_per_schema(dc)
+  da <- d %>% calculate_fractional_operator_costs()
+  db <- d %>% calculate_per_schema_fractional_operator_costs()
+  visualize_fractional_operator_mutant_costs(da)
+  visualize_fractional_operator_mutant_costs_per_schema(db)
 }
 
 #' FUNCTION: create_random_sampling_graphs
@@ -21,7 +23,6 @@ create_random_sampling_graphs <- function() {
   db <- da %>% calculate_per_trial_percentage_effectiveness()
   visualize_random_sampling_correlation(db)
   visualize_random_sampling_cost_reduction(db)
-  return(a)
 }
 
 #' FUNCTION: create_selective_random_graphs

@@ -41,6 +41,19 @@ calculate_per_trial_effectiveness <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: calculate_fractional_operator_costs
+#'
+#' Calculate the fractional costs of mutants per operator.
+#' @export
+
+calculate_fractional_operator_costs <- function(d) {
+  da <- d %>% summarize_operator_time()
+  db <- d %>% summarize_time()
+  dc <- join_operator_time(da, db)
+  dt <- dc %>% transform_fractional_operator_cost()
+  return(dt)
+}
+
 #' FUNCTION: calculate_per_schema_fractional_operator_costs
 #'
 #' Calculate the fractional costs of mutants per operator on a per-schema basis.
@@ -49,7 +62,7 @@ calculate_per_trial_effectiveness <- function(d) {
 calculate_per_schema_fractional_operator_costs <- function(d) {
   da <- d %>% summarize_schema_operator_time()
   db <- d %>% summarize_original_time()
-  dc <- join_operator_time(da, db)
+  dc <- join_schema_operator_time(da, db)
   dt <- dc %>% transform_fractional_operator_cost()
   return(dt)
 }

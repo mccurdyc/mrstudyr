@@ -4,7 +4,7 @@
 #' @export
 
 summarize_reduced_time <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::summarise(reduced_time = sum(time))
+  dt <- d %>% collect_schema_data() %>% dplyr::summarize(reduced_time = sum(time))
   return(dt)
 }
 
@@ -14,7 +14,29 @@ summarize_reduced_time <- function(d) {
 #' @export
 
 summarize_original_time <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::summarise(original_time = sum(time))
+  dt <- d %>% collect_schema_data() %>% dplyr::summarize(original_time = sum(time))
+  return(dt)
+}
+
+#' FUNCTION: summarize_operator_time
+#'
+#' Calculate the total time (in ms) of performing mutation analysis with the given set of mutants
+#' on a per-operator basis.
+#' @export
+
+summarize_operator_time <- function(d) {
+  dt <- d %>% collect_operator_data() %>% dplyr::summarize(operator_time = sum(time))
+  return(dt)
+}
+
+#' FUNCTION: summarize_schema_operator_time
+#'
+#' Calculate the total time (in ms) of performing mutation analysis with the given set of mutants
+#' on a per-schema, per-operator basis.
+#' @export
+
+summarize_schema_operator_time <- function(d) {
+  dt <- d %>% collect_schema_operator_data() %>% dplyr::summarize(operator_time = sum(time))
   return(dt)
 }
 
@@ -24,9 +46,9 @@ summarize_original_time <- function(d) {
 #' @export
 
 summarize_operator_percentage_kept <- function(d) {
-  dt <- d %>% dplyr::summarise(operator_count = n()) %>%
-    dplyr::summarise(keep_count = collect_ignore_data(d))
-  dt <- d %>% collect_trial_operator_data() %>% dplyr::summarise(percentage_kept = count(time))
+  dt <- d %>% dplyr::summarize(operator_count = n()) %>%
+    dplyr::summarize(keep_count = collect_ignore_data(d))
+  dt <- d %>% collect_trial_operator_data() %>% dplyr::summarize(percentage_kept = count(time))
   return(dt)
 }
 

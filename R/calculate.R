@@ -1,17 +1,17 @@
-#' FUNCTION: calculate_effectiveness
-#'
-#' Calculate the effectiveness of a reduction technique on a per-schema (optional, per-percentage) basis.
-#' @export
-
-calculate_effectiveness <- function(d, p=FALSE) {
-  if ( p == TRUE) {
-    d <- d %>% collect_schema_percent_data()
-  } else {
-    d <- d %>% collect_schema_data()
-  }
-  dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_add_correlation()
-  return(dt)
-}
+# #' FUNCTION: calculate_effectiveness
+# #'
+# #' Calculate the effectiveness of a reduction technique on a per-schema (optional, per-percentage) basis.
+# #' @export
+#
+# calculate_effectiveness <- function(d, p=FALSE) {
+#   if ( p == TRUE) {
+#     d <- d %>% collect_schema_percent_data()
+#   } else {
+#     d <- d %>% collect_schema_data()
+#   }
+#   dt <- d %>% transform_mae() %>% transform_rmse() %>% transform_add_correlation()
+#   return(dt)
+# }
 
 #' FUNCTION: calculate_per_trial_percentage_effectiveness
 #'
@@ -24,7 +24,6 @@ calculate_per_trial_percentage_effectiveness <- function(d) {
   dt <- ds %>% parallel::mclapply(transform_add_correlation) %>%
     lapply(as.data.frame) %>%
     dplyr::bind_rows()
-  # dt <- dt %>% transform_mae() %>% transform_rmse()
   return(dt)
 }
 
@@ -39,7 +38,18 @@ calculate_per_trial_effectiveness <- function(d) {
   dt <- ds %>% parallel::mclapply(transform_add_correlation) %>%
     lapply(as.data.frame) %>%
     dplyr::bind_rows()
-  # dt <- dt %>% transform_mae() %>% transform_rmse()
+  return(dt)
+}
+
+#' FUNCTION: calculate_per_schema_fractional_operator_costs
+#'
+#' Calculate the fractional costs of mutants per operator on a per-schema basis.
+#' @export
+
+calculate_per_schema_fractional_operator_costs <- function(d) {
+  da <- d %>% summarize_schema_operator_time()
+  db <- d %>% summarize_original_time()
+  dt <- join_operator_time(da, db)
   return(dt)
 }
 

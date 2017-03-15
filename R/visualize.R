@@ -1,102 +1,180 @@
-#' FUNCTION: visualize_random_sampling_mutation_scores
+# #' FUNCTION: visualize_random_sampling_mutation_scores
+# #'
+# #' Visualize mutation scores for the random sampling reduction technique
+# #' @export
+#
+# visualize_random_sampling_mutation_scores <- function(d) {
+#   p <- d %>% visualize_plot_mutation_score()
+#   name <- "../graphics/from-data/mutation_score_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_selective_random_mutation_scores
+# #'
+# #' Visualize mutation scores for the selective random reduction technique
+# #' @export
+#
+# visualize_selective_random_mutation_scores <- function(d) {
+#   p <- d %>% visualize_plot_mutation_score()
+#   name <- "../graphics/from-data/mutation_score_selective_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_random_sampling_error
+# #'
+# #' Visualize error between original and reduced mutation scores for the random sampling reduction technique
+# #' @export
+#
+# visualize_random_sampling_error <- function(d) {
+#   p <- d %>% visualize_plot_error()
+#   name <- "../graphics/from-data/error_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_selective_random_error
+# #'
+# #' Visualize error between original and reduced mutation scores for the selective random reduction technique
+# #' @export
+#
+# visualize_selective_random_error <- function(d) {
+#   p <- d %>% visualize_plot_error()
+#   name <- "../graphics/from-data/error_selective_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_random_sampling_mae
+# #'
+# #' Visualize mean absolute error between original and reduced mutation scores for the random sampling reduction technique
+# #' across thirty trials
+# #' @export
+#
+# visualize_random_sampling_mae <- function(d) {
+#   p <- d %>% visualize_plot_mae()
+#   name <- "../graphics/from-data/mae_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_selective_random_mae
+# #'
+# #' Visualize the mean absolute error between original and reduced mutation scores for the selective random reduction technique
+# #' across thirty trials
+# #' @export
+#
+# visualize_selective_random_mae <- function(d) {
+#   p <- d %>% visualize_plot_mae()
+#   name <- "../graphics/from-data/mae_selective_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_random_sampling_rmse
+# #'
+# #' Visualize root mean squared error between original and reduced mutation scores for the random sampling reduction technique
+# #' across thirty trials
+# #' @export
+#
+# visualize_random_sampling_rmse <- function(d) {
+#   p <- d %>% visualize_plot_rmse()
+#   name <- "../graphics/from-data/rmse_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_selective_random_rmse
+# #'
+# #' Visualize the root mean squared error between original and reduced mutation scores for the selective random reduction technique
+# #' across thirty trials
+# #' @export
+#
+# visualize_selective_random_rmse <- function(d) {
+#   p <- d %>% visualize_plot_rmse()
+#   name <- "../graphics/from-data/rmse_selective_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+#
+#' FUNCTION: visualize_random_sampling_correlation
 #'
-#' Visualize mutation scores for the random sampling reduction technique
+#' Visualize correlation between original and reduced mutation scores for the random sampling reduction technique
+#' across schemas across thirty trials.
 #' @export
 
-visualize_random_sampling_mutation_scores <- function(d) {
-  p <- d %>% visualize_plot_mutation_score()
-  name <- "../graphics/from-data/mutation_score_random_plot.pdf"
+visualize_random_sampling_correlation <- function(d) {
+  p <- d %>% visualize_plot_percentage_correlation()
+  name <- "../graphics/from-data/correlation_random_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
 
-#' FUNCTION: visualize_selective_random_mutation_scores
+#' FUNCTION: visualize_random_sampling_cost_reduction
 #'
-#' Visualize mutation scores for the selective random reduction technique
+#' Visualize cost reduction for the random sampling reduction technique at each percentage
+#' across schemas across thirty trials.
 #' @export
 
-visualize_selective_random_mutation_scores <- function(d) {
-  p <- d %>% visualize_plot_mutation_score()
-  name <- "../graphics/from-data/mutation_score_selective_random_plot.pdf"
+visualize_random_sampling_cost_reduction <- function(d) {
+  p <- d %>% visualize_plot_percentage_cost_reduction()
+  name <- "../graphics/from-data/cost_reduction_random_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
 
-#' FUNCTION: visualize_random_sampling_error
+# #' FUNCTION: visualize_random_sampling_cost
+# #'
+# #' Visualize cost for the hill climbing reduction technique at each percentage
+# #' across schemas across thirty trials.
+# #' @export
+#
+# visualize_random_sampling_cost <- function(d) {
+#   p <- d %>% visualize_plot_percentage_cost()
+#   name <- "../graphics/from-data/cost_random_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
+#' FUNCTION: visualize_hill_climbing_correlation
 #'
-#' Visualize error between original and reduced mutation scores for the random sampling reduction technique
+#' Visualize correlation between original and reduced mutation scores for the hill climbing reduction technique
+#' across schemas across thirty trials.
 #' @export
 
-visualize_random_sampling_error <- function(d) {
-  p <- d %>% visualize_plot_error()
-  name <- "../graphics/from-data/error_random_plot.pdf"
+visualize_hill_climbing_correlation <- function(d) {
+  p <- d %>% visualize_plot_correlation()
+  name <- "../graphics/from-data/correlation_hill_climbing_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
 
-#' FUNCTION: visualize_selective_random_error
+#' FUNCTION: visualize_hill_climbing_cost_reduction
 #'
-#' Visualize error between original and reduced mutation scores for the selective random reduction technique
+#' Visualize cost reduction for the hill climbing reduction technique at each percentage
+#' across schemas across thirty trials.
 #' @export
 
-visualize_selective_random_error <- function(d) {
-  p <- d %>% visualize_plot_error()
-  name <- "../graphics/from-data/error_selective_random_plot.pdf"
+visualize_hill_climbing_cost_reduction <- function(d) {
+  p <- d %>% visualize_plot_cost_reduction()
+  name <- "../graphics/from-data/cost_reduction_hill_climbing_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
 
-#' FUNCTION: visualize_random_sampling_mae
-#'
-#' Visualize mean absolute error between original and reduced mutation scores for the random sampling reduction technique
-#' across thirty trials
-#' @export
-
-visualize_random_sampling_mae <- function(d) {
-  p <- d %>% visualize_plot_mae()
-  name <- "../graphics/from-data/mae_random_plot.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
-
-#' FUNCTION: visualize_selective_random_mae
-#'
-#' Visualize the mean absolute error between original and reduced mutation scores for the selective random reduction technique
-#' across thirty trials
-#' @export
-
-visualize_selective_random_mae <- function(d) {
-  p <- d %>% visualize_plot_mae()
-  name <- "../graphics/from-data/mae_selective_random_plot.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
-
-#' FUNCTION: visualize_random_sampling_rmse
-#'
-#' Visualize root mean squared error between original and reduced mutation scores for the random sampling reduction technique
-#' across thirty trials
-#' @export
-
-visualize_random_sampling_rmse <- function(d) {
-  p <- d %>% visualize_plot_rmse()
-  name <- "../graphics/from-data/rmse_random_plot.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
-
-#' FUNCTION: visualize_selective_random_rmse
-#'
-#' Visualize the root mean squared error between original and reduced mutation scores for the selective random reduction technique
-#' across thirty trials
-#' @export
-
-visualize_selective_random_rmse <- function(d) {
-  p <- d %>% visualize_plot_rmse()
-  name <- "../graphics/from-data/rmse_selective_random_plot.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
+# #' FUNCTION: visualize_hill_climbing_cost
+# #'
+# #' Visualize cost for the hill climbing reduction technique at each percentage
+# #' across schemas across thirty trials.
+# #' @export
+#
+# visualize_hill_climbing_cost <- function(d) {
+#   p <- d %>% visualize_plot_cost()
+#   name <- "../graphics/from-data/cost_hill_climbing_plot.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
 
 #' FUNCTION: visualize_operator_mutant_costs_per_schema
 #'
@@ -106,6 +184,18 @@ visualize_selective_random_rmse <- function(d) {
 visualize_operator_mutant_costs_per_schema <- function(d) {
   p <- d %>% visualize_plot_operator_costs_per_schema()
   name <- "../graphics/from-data/operator_mutant_costs_per_schema.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_fractional_operator_mutant_costs_per_schema
+#'
+#' In a box-and-whisker plot, display the fractional cost of all of the mutants for each operator facetted by schema.
+#' @export
+
+visualize_fractional_operator_mutant_costs_per_schema <- function(d) {
+  p <- d %>% visualize_plot_fractional_operator_costs_per_schema()
+  name <- "../graphics/from-data/operator_mutant_fractional_costs_per_schema.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
@@ -196,6 +286,118 @@ visualize_plot_rmse <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Schema") +
   ggplot2::ylab("Root Mean Squared Error (RMSE)")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation
+#'
+#' Produces a visualization of the correlation between the original and reduced mutation score across
+#' schemas for thirty trials.
+#' @export
+
+visualize_plot_correlation <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = correlation, group = step_size)) +
+  ggplot2::geom_boxplot() +
+  # ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_percentage_correlation
+#'
+#' Produces a visualization of the correlation between the original and reduced mutation score across
+#' schemas for thirty trials.
+#' @export
+
+visualize_plot_percentage_correlation <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = correlation, group = percentage)) +
+  ggplot2::geom_boxplot(width=5) +
+  ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
+  ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Sampling Ratio (%)") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_cost_reduction
+#'
+#' Produces a visualization of the cost reduction from the original and reduced mutant sets across
+#' schemas for thirty trials.
+#' @export
+
+visualize_plot_cost_reduction <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = cost_reduction, group = step_size)) +
+  ggplot2::geom_boxplot() +
+  # ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+  ggplot2::ylab("Fractional Cost Reduction")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_cost
+#'
+#' Produces a visualization of the time to evaluate the mutants chosen for the reduced set.
+#' @export
+
+visualize_plot_cost <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = reduced_time, group = step_size)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+  ggplot2::ylab("Time (ms)")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_percentage_cost
+#'
+#' Produces a visualization of the time to evaluate the mutants chosen for the reduced set.
+#' @export
+
+visualize_plot_percentage_cost <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = reduced_time, group = percentage)) +
+  ggplot2::geom_boxplot(width=5) +
+  ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Evaluated") +
+  ggplot2::ylab("Time (ms)")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_percentage_cost_reduction
+#'
+#' Produces a visualization of the amount by which a random sample percentage decreases the cost of
+#' performing mutation analysis.
+#' @export
+
+visualize_plot_percentage_cost_reduction <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = cost_reduction, group = percentage)) +
+  ggplot2::geom_boxplot(width=5) +
+  ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Evaluated") +
+  ggplot2::ylab("Cost Reduction")
   return(p)
 }
 

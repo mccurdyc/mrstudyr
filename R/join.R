@@ -32,3 +32,26 @@ join_summarized_keep_ignore_data <- function(a, b) {
   dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms",  "operator" = "operator"))
   return(dt)
 }
+
+#' FUNCTION: join_hill_climbing_size_data
+#'
+#' Join the data collected from different step sizes of the hill climbing reduction technique.
+#' @export
+
+join_hill_climbing_size_data <- function(s, m, l, step_size_small, step_size_medium, step_size_large) {
+  s <- s %>% dplyr::mutate(step_size = step_size_small)
+  m <- m %>% dplyr::mutate(step_size = step_size_medium)
+  l <- l %>% dplyr::mutate(step_size = step_size_large)
+  dt <- rbind(s, m, l)
+  return(dt)
+}
+
+#' FUNCTION: join_operator_time
+#'
+#' Join summarized data containing per-schema original time and per-operator times per schema.
+#' @export
+
+join_operator_time <- function(a, b) {
+  dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms",  "schema" = "schema"))
+  return(dt)
+}

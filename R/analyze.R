@@ -74,8 +74,6 @@ analyze_incremental_across_schemas <- function(d, step_size, corr_threshold, cos
   df <- data.frame()
   count <- 1 # only used for printing the current schema
   schemas <- d %>% select_all_schemas()
-  # schemas <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee')) %>% dplyr::select(schema) %>% dplyr::distinct()
-  # d <- d %>% dplyr::filter(schema %in% c('Cloc', 'CoffeeOrders', 'BankAccount', 'iTrust', 'StackOverflow', 'RiskIt', 'Employee'))
   for (s in schemas[[1]]) {
     print(paste("current excluded schema ", count, ": ", s))
     ds <- d %>% exclude_schema(s) # exclude a single schema from the entire data set

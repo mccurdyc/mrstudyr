@@ -1,3 +1,14 @@
+#' FUNCTION: create_data_overview_graphs
+#'
+#' Create visualizations associated just with the original data prior to reduction techniques.
+#' @export
+
+create_data_overview_graphs <- function() {
+  d <- read_sqlite_avmdefaults() %>% collect_normal_data()
+  da <- d %>% calculate_per_schema_fractional_operator_costs()
+  visualize_fractional_operator_mutant_costs_per_schema(dc)
+}
+
 #' FUNCTION: create_random_sampling_graphs
 #'
 #' Create all of the visualizations associated with the random sampling reduction technique
@@ -8,10 +19,8 @@ create_random_sampling_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   da <- d %>% analyze_random_sampling()
   db <- da %>% calculate_per_trial_percentage_effectiveness()
-  dc <- d %>% calculate_per_schema_fractional_operator_costs()
   visualize_random_sampling_correlation(db)
   visualize_random_sampling_cost_reduction(db)
-  visualize_fractional_operator_mutant_costs_per_schema(dc)
   return(a)
 }
 

@@ -8,9 +8,10 @@ create_random_sampling_graphs <- function() {
   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
   da <- d %>% analyze_random_sampling()
   db <- da %>% calculate_per_trial_percentage_effectiveness()
+  dc <- d %>% calculate_per_schema_fractional_operator_costs()
   visualize_random_sampling_correlation(db)
   visualize_random_sampling_cost_reduction(db)
-  dc <- 
+  visualize_fractional_operator_mutant_costs_per_schema(dc)
   return(a)
 }
 

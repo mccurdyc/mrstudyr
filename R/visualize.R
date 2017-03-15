@@ -251,43 +251,43 @@ visualize_plot_error <- function(d) {
   return(p)
 }
 
-#' FUNCTION: visualize_plot_mae
-#'
-#' Produces a visualization of the MAE --- the mean absolute error --- between the original and reduced mutation
-#' scores across thirty trials
-#' @export
-
-visualize_plot_mae <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = mae)) +
-  ggplot2::geom_point() +
-  ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
-  # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Schema") +
-  ggplot2::ylab("Mean Absolute Error (MAE)")
-  return(p)
-}
-
-#' FUNCTION: visualize_plot_rmse
-#'
-#' Produces a visualization of the RMSE --- the root mean squared error --- between the original and reduced mutation
-#' scores across thirty trials
-#' @export
-
-visualize_plot_rmse <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = rmse)) +
-  ggplot2::geom_point() +
-  ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
-  # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Schema") +
-  ggplot2::ylab("Root Mean Squared Error (RMSE)")
-  return(p)
-}
+# #' FUNCTION: visualize_plot_mae
+# #'
+# #' Produces a visualization of the MAE --- the mean absolute error --- between the original and reduced mutation
+# #' scores across thirty trials
+# #' @export
+#
+# visualize_plot_mae <- function(d) {
+#   p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = mae)) +
+#   ggplot2::geom_point() +
+#   ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
+#   # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+#   ggplot2::theme_bw(base_size = 10) +
+#   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::xlab("Schema") +
+#   ggplot2::ylab("Mean Absolute Error (MAE)")
+#   return(p)
+# }
+#
+# #' FUNCTION: visualize_plot_rmse
+# #'
+# #' Produces a visualization of the RMSE --- the root mean squared error --- between the original and reduced mutation
+# #' scores across thirty trials
+# #' @export
+#
+# visualize_plot_rmse <- function(d) {
+#   p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = rmse)) +
+#   ggplot2::geom_point() +
+#   ggplot2::facet_wrap(~ percentage, labeller = ggplot2::label_both) +
+#   # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+#   ggplot2::theme_bw(base_size = 10) +
+#   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::xlab("Schema") +
+#   ggplot2::ylab("Root Mean Squared Error (RMSE)")
+#   return(p)
+# }
 
 #' FUNCTION: visualize_plot_correlation
 #'
@@ -361,6 +361,23 @@ visualize_plot_cost <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
   ggplot2::ylab("Time (ms)")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_fractional_operator_costs_per_schema
+#'
+#' Produces a visualization of the time to evaluate the mutants per-operator, per-schema
+#' @export
+
+visualize_plot_fractional_operator_costs_per_schema <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = operator, y = fractional_cost)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::facet_wrap(~ schema, labeller = ggplot2::label_both) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::xlab("Schema") +
+  ggplot2::ylab("Fractional Cost of Operator")
   return(p)
 }
 

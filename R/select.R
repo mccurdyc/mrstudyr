@@ -30,6 +30,16 @@ select_operators <- function(d, o) {
   return(dt)
 }
 
+#' FUNCTION: remove_operators
+#'
+#' Remove the specified operators from the data.
+#' @export
+
+remove_operators <- function(d, o) {
+  dt <- d %>% collect_schema_data() %>% dplyr::filter(!(operator %in% o))
+  return(dt)
+}
+
 #' FUNCTION: select_all_operators
 #'
 #' This function returns all available operators

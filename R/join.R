@@ -65,3 +65,13 @@ join_operator <- function(a, b) {
   dt <- dplyr::left_join(a, b, by = c("dbms" = "dbms"))
   return(dt)
 }
+
+#' FUNCTION: join_technique_data
+#'
+#' Join together the data collected from each experiment campaign for each reduction technique.
+#' @export
+
+join_technique_data <- function(da, db, dc) {
+  dt <- dplyr::bind_rows(da, db, dc)
+  return(dt)
+}

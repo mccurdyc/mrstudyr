@@ -45,6 +45,16 @@ transform_add_trial <- function(d, t) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_technique
+#'
+#' Add the techniques used
+#' @export
+
+transform_add_technique <- function(d, t) {
+  dt <- d %>% dplyr::mutate(technique = t)
+  return(dt)
+}
+
 #' FUNCTION: transform_add_position
 #'
 #' Add the position column
@@ -75,6 +85,22 @@ transform_add_start_and_step <- function(d, s, f) {
     do(dplyr::mutate(., start_position = select_start_position(., f))) %>%
     do(dplyr::mutate(., step_size = select_step_size(., s))) %>%
     dplyr::ungroup() # has to be separate from first mutate; causes errors otherwise
+  return(dt)
+}
+
+#' FUNCTION: transform_add_omitted_operators
+#'
+#' Add the operators that were omitted from selective random sampling
+#' @export
+
+transform_add_omitted_operators <- function(d, o, oo) {
+  if (o == oo) {
+    dt <- d %>% dplyr::mutate(omitted_operators = o)
+  }
+  else {
+    s <- paste(o, oo)
+    dt <- d %>% dplyr::mutate(omitted_operators = s)
+  }
   return(dt)
 }
 

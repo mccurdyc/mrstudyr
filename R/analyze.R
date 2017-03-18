@@ -28,18 +28,16 @@ analyze_random_sampling <- function(d) {
 #' reduced set of operators by choosing a select set and analyzing at 100%.
 #' @export
 
-analyze_selective_random <- function(d, operators) {
-  o <- d %>% collect_schema_data()
+analyze_selective_random <- function(d, ops) {
+  o <- d %>% collect_schema_operator_data()
 
   percentages <- c(0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
   df <- data.frame()
 
-  print("OPERATORS SELECTED:")
-  print(operators)
   for(i in percentages) {
     print(paste("SELECTIVE RANDOM: Currently analyzing x =", (i * 100), "percent ..."))
     for(j in 1:30) {
-      r <- o %>% select_operators(operators) %>% select_x_percent_across_operators(i)
+      r <- o %>% select_x_percent_across_operators(i)
       dt <- evaluate_reduction_technique(o, r) %>% transform_add_percentage_trial((i * 100), j) %>% as.data.frame()
       df <- rbind(df, dt)
     }

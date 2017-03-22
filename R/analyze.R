@@ -45,23 +45,6 @@ analyze_selective_random <- function(d, ops) {
   return(df)
 }
 
-# #' FUNCTION: analyze_incremental
-# #'
-# #' Analyze how reducing the set incrementally effects the error between MS and MS'
-# #' @export
-#
-# analyze_incremental <- function(d, partition_size=1) {
-#   df <- data.frame()
-#   schemas <- d %>% dplyr::select(schema) %>% dplyr::distinct()
-#   for(s in schemas[[1]]) {
-#     print(paste("CURRENT SCHEMA: ", s))
-#     o <- d %>% dplyr::filter(schema == s) %>% transform_keep()
-#     dt <- helper_incremental(o, partition_size)
-#     df <- rbind(df, dt)
-#   }
-#   return(df)
-# }
-
 #' FUNCTION: analyze_incremental_across_schemas
 #'
 #' Analyze how reducing the set incrementally effects the error between MS and MS' considering across

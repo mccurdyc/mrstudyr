@@ -72,19 +72,6 @@ create_selective_random_graphs <- function() {
   return(df)
 }
 
-# #' FUNCTION: create_incremental_graphs
-# #'
-# #' Create all of the visualizations associated with the incremental reduction technique
-# #' @export
-#
-# create_incremental_graphs <- function() {
-#
-#   d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-#   a <- d %>% analyze_incremental()
-#   # b <- a %>% calculate_effectiveness()
-#   dplyr::glimpse(a)
-# }
-
 #' FUNCTION: create_incremental_across_schema_graphs
 #'
 #' Create all of the visualizations associated with the incremental reduction technique using a model

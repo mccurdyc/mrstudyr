@@ -8,7 +8,5 @@ analyze_selective_random(d, ops)
 }
 \description{
 This function will analyze a select set of operators over percentages
-This function can also be used to perform traditional selective mutation, i.e. mutation using a
-reduced set of operators by choosing a select set and analyzing at 100%.
 }
 

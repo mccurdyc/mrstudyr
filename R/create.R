@@ -72,6 +72,51 @@ create_selective_random_graphs <- function() {
   return(df)
 }
 
+#' FUNCTION: create_selective_mutation_graphs
+#'
+#' Create all of the visualizations associated with performing selective mutation
+#' (selecting a set of operators).
+#' @export
+
+create_selective_mutation_graphs <- function() {
+  df <- data.frame()
+  d <- read_sqlite_avmdefaults() %>% collect_normal_data()
+  o <- c("FKCColumnPairE",
+         "NNCA",
+         "UCColumnA",
+         "FKCColumnPairR",
+         "PKCColumnA",
+         "PKCColumnR",
+         "PKCColumnE",
+         "NNCR",
+         "CCNullifier",
+         "CCRelationalExpressionOperatorE",
+         "UCColumnR",
+         "UCColumnE",
+         "CCInExpressionRHSListExpressionElementR")
+  # remove groups of one of two operators
+  for (i in 1:length(o)) {
+    for (j in 1:length(o)) {
+      # data after removing the operator(s)
+      print(paste("Removed: ", o[i], " ", o[j]))
+      r <- d %>% remove_operators(o[i]) %>% remove_operators(o[j])
+      # operator list after removing chosen operators
+        # ro <- r %>% dplyr::ungroup() %>% select_all_operators() %>% as.vector()
+        # print(ro) # debugging
+      # perform the random sampling, per operator, per schema
+      da <- evaluate_reduction_technique(d, r) %>%
+        transform_add_percentage_trial(100, 1) %>% as.data.frame()
+      db <- da %>% calculate_per_trial_percentage_effectiveness() %>% transform_add_omitted_operators(o[i], o[j]) %>%
+        transform_add_technique("selective mutation")
+      db %>% dplyr::glimpse()
+      df <- rbind(df, db)
+    }
+  }
+  path <- ("selectivemutation.feather")
+  feather::write_feather(df, path)
+  return(df)
+}
+
 #' FUNCTION: create_incremental_across_schema_graphs
 #'
 #' Create all of the visualizations associated with the incremental reduction technique using a model

@@ -24,8 +24,6 @@ analyze_random_sampling <- function(d) {
 #' FUNCTION: analyze_selective_random
 #'
 #' This function will analyze a select set of operators over percentages
-#' This function can also be used to perform traditional selective mutation, i.e. mutation using a
-#' reduced set of operators by choosing a select set and analyzing at 100%.
 #' @export
 
 analyze_selective_random <- function(d, ops) {

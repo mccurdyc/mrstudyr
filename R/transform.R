@@ -8,6 +8,29 @@ transform_replace_correlation <- function(d) {
   dt <- d %>% dplyr::rename(correlation = estimate)
 }
 
+#' FUNCTION: transform_replace_technique
+#'
+#' Update the technique column to include the configuration of the technique also.
+#' This makes comparing all techniques and configurations easier.
+#' @export
+
+transform_replace_technique <- function(d) {
+  technique <- d$technique[[1]]
+  if (technique == "RS") {
+    dt <- d %>% dplyr::mutate(technique = paste(d$technique, d$percentage))
+  }
+  else if (technique == "SRS") {
+    dt <- d %>% dplyr::mutate(technique = paste(d$technique, d$omitted_operators, d$percentage))
+  }
+  else if (technique == "SM") {
+    dt <- d %>% dplyr::mutate(technique = paste(d$technique, d$omitted_operators))
+  }
+  else if (technique == "HC") {
+    dt <- d %>% dplyr::mutate(technique = paste(d$technique, d$step_size))
+  }
+  return(dt)
+}
+
 #' FUNCTION: transform_rename_count
 #'
 #' Rename column from generic name of 'n' to count.

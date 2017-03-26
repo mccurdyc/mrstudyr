@@ -134,3 +134,14 @@ create_incremental_across_schema_graphs <- function() {
   dt <- join_hill_climbing_size_data(ts, tm, tl, (step_size_small*100), (step_size_medium*100), (step_size_large*100)) %>%
     transform_add_technique("hill climbing")
 }
+
+#' FUNCTION: create_pairwise_wilcoxon_rank_sum_test
+#'
+#' Create the graphs associated with the pairwise Wilcoxon ranked-sum test.
+#' The input to this function is the combined technique data.
+#' @export
+
+create_pairwise_wilcoxon_rank_sum_test <- function(d) {
+  dt <- d %>% perform_pairwise_wilcoxon_rank_sum_test()
+}
+

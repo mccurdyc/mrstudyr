@@ -1,3 +1,26 @@
+#' FUNCTION: perform_effectsize_accurate
+#'
+#' Calculate the pairwise effect size by comparing each technique.
+#' @export
+
+perform_effectsize_accurate <- function(d) {
+  df <- data.frame()
+  ds <- split(d, list(d$technique))
+  len <- length(ds)
+
+  for (i in 1:3) {
+    for (j in 1:3) {
+      t1 <- ds[[i]]$technique %>% unique()
+      t2 <- ds[[j]]$technique %>% unique()
+
+      dt <- effectsize_accurate(ds[[i]]$correlation, ds[[j]]$correlation)
+      dt <- dt %>% dplyr::mutate(group1 = t1, group2 = t2)
+      df <- rbind(df, dt)
+    }
+  }
+  return(df)
+}
+
 #' FUNCTION: effectsize_interpret
 #'
 #' Interpret the Vargha-Delaney Effect Size using the approach proposed by Chris Wright.
@@ -64,7 +87,7 @@ effectsize_default <- function(d, f, ac) {
   # interpret the effect size and give it a human-readable meaning
   size <- effectsize_interpret(a)
 
-  return(list(value = a,
+  return(data.frame(value = a,
               size = size,
               rank.sum = r1))
 }

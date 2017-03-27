@@ -3,12 +3,12 @@
 #' Interpret the Wilcoxon Ranked-Sum Test using.
 #' @export
 
-ranked_sum_interpret <- function(d) {
-  if (a < 0.44 || a > 0.56) {
-    size <- "small"
+ranked_sum_interpret <- function(v) {
+  if (v < 0.05) {
+    dt <- TRUE
   }
-  if (a < 0.36 || a > 0.64) {
-    size <- "medium"
+  else {
+    dt <- FALSE
   }
   return(dt)
 }

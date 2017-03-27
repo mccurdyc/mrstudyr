@@ -151,7 +151,10 @@ create_pairwise_wilcoxon_rank_sum_test <- function(d) {
 #' @export
 
 create_effect_size_test <- function(d) {
+  dt <- d %>% perform_effectsize_accurate()
+  return(dt)
 }
+
 #'
 #' Create the graphs associated with the pairwise Wilcoxon ranked-sum test.
 #' The input to this function is the combined technique data.
@@ -159,4 +162,5 @@ create_effect_size_test <- function(d) {
 
 create_pairwise_wilcoxon_rank_sum_test <- function(d) {
   dt <- d %>% perform_pairwise_wilcoxon_rank_sum_test()
+  return(dt)
 }

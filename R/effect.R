@@ -8,8 +8,8 @@ perform_effectsize_accurate <- function(d) {
   ds <- split(d, list(d$technique))
   len <- length(ds)
 
-  for (i in 1:3) {
-    for (j in 1:3) {
+  for (i in 1:len) {
+    for (j in 1:len) {
       t1 <- ds[[i]]$technique %>% unique()
       t2 <- ds[[j]]$technique %>% unique()
 

@@ -4,7 +4,7 @@
 \alias{ranked_sum_interpret}
 \title{FUNCTION: ranked_sum_interpret}
 \usage{
-ranked_sum_interpret(d)
+ranked_sum_interpret(v)
 }
 \description{
 Interpret the Wilcoxon Ranked-Sum Test using.

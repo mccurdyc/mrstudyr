@@ -369,3 +369,13 @@ transform_add_percent_ignored <- function(d) {
   dt <- d %>% dplyr::mutate(percent_ignored = (ignore_count / count))
   return(dt)
 }
+
+#' FUNCTION: transform_add_significance
+#'
+#' Append column with the boolean of whether the result found was significant or not.
+#' @export
+
+transform_add_significance <- function(d) {
+  dt <- d %>% rowwise() %>% dplyr::mutate(significant = ranked_sum_interpret(p.value))
+  return(dt)
+}

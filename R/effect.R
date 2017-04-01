@@ -12,6 +12,7 @@ perform_effectsize_accurate <- function(d) {
     for (j in 1:len) {
       t1 <- ds[[i]]$technique %>% unique()
       t2 <- ds[[j]]$technique %>% unique()
+      print(paste("comparing ", t1, " to ", t2))
 
       dt <- effectsize_accurate(ds[[i]]$correlation, ds[[j]]$correlation)
       dt <- dt %>% dplyr::mutate(group1 = t1, group2 = t2)

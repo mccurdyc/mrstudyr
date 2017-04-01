@@ -39,6 +39,7 @@ perform_wilcoxon_accurate <- function(d) {
     for (j in 1:len) {
       t1 <- ds[[i]]$technique %>% unique()
       t2 <- ds[[j]]$technique %>% unique()
+      print(paste("comparing ", t1, " to ", t2))
 
       model <- wilcox.test(ds[[i]]$correlation, ds[[j]]$correlation)
       tidy_model <- model %>% broom::tidy()

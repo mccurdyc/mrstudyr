@@ -1,3 +1,15 @@
+#' FUNCTION: visualize_original_mutation_score_per_schema
+#'
+#' Summary graphic showing the original mutation scores per schema.
+#' @export
+
+visualize_original_mutation_score_per_schema <- function(d) {
+  p <- d %>% visualize_plot_original_mutation_score()
+  name <- "../graphics/from-data/mutation_score_per_schema.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
 #' FUNCTION: visualize_random_sampling_correlation
 #'
 #' Visualize correlation between original and reduced mutation scores for the random sampling reduction technique
@@ -107,6 +119,34 @@ visualize_fractional_operator_mutant_frequencies_per_schema <- function(d) {
   p <- d %>% visualize_plot_fractional_operator_frequencies_per_schema()
   name <- "../graphics/from-data/operator_mutant_fractional_frequencies_per_schema.pdf"
   visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_effectsize
+#'
+#' Effect size graph comparing all reduction techniques' correlation.
+#' @export
+
+visualize_effectsize <- function(d) {
+  p <- d %>% visualize_plot_effectsize()
+  name <- "../graphics/from-data/effectsize.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_original_mutation_score
+#'
+#' Produces the visualization of the original mutation scores.
+#' @export
+
+visualize_plot_original_mutation_score <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::xlab("Schema") +
+  ggplot2::ylab("Original Mutation Score")
   return(p)
 }
 
@@ -324,6 +364,22 @@ visualize_plot_percentage_cost_reduction <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Percentage of Mutants Evaluated") +
   ggplot2::ylab("Cost Reduction")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_effectsize
+#'
+#' Plot effect size of all pairs of reduction techniques.
+#' @export
+
+visualize_plot_effectsize <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = group1, y = group2)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = size)) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Group 1") +
+  ggplot2::ylab("Group 2")
   return(p)
 }
 

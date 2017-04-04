@@ -3,14 +3,14 @@
 #' Interpret the Wilcoxon Ranked-Sum Test using.
 #' @export
 
-ranked_sum_interpret <- function(v) {
-  if (v >= 0.05) {
-    dt <- FALSE
+ranked_sum_interpret <- function(d) {
+  significant <- "none"
+  if (p.value >= 0.5) {
+    significant <- TRUE
+  } else {
+    significant <- FALSE
   }
-  else {
-    dt <- TRUE
-  }
-  return(dt)
+  return(significant)
 }
 
 #' FUNCTION: perform_pairwise_wilcoxon_rank_sum_test
@@ -19,9 +19,8 @@ ranked_sum_interpret <- function(v) {
 #' @export
 
 perform_pairwise_wilcoxon_rank_sum_test <- function(d) {
-  model <- pairwise.wilcox.test(d$correlation, d$technique, paired=TRUE)
-  tidy_model <- model %>% broom::tidy()
-  dt <- tidy_model %>% transform_add_significance()
+  model <- perform_wilcoxon_accurate(d)
+  dt <- model %>% transform_add_significance()
   return(dt)
 }
 

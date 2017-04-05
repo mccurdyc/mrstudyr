@@ -31,6 +31,17 @@ transform_replace_technique <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_technique_group
+#'
+#' Add a column to the combined technique data to include the abstract group.
+#' @export
+
+transform_add_technique_group <- function(d) {
+  dt <- d %>% rowwise() %>% dplyr::mutate(technique_group = strsplit(technique, " ")[[1]][1])
+  return(dt)
+}
+
+
 #' FUNCTION: transform_rename_count
 #'
 #' Rename column from generic name of 'n' to count.

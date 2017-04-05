@@ -10,6 +10,90 @@ visualize_original_mutation_score_per_schema <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_correlation_all
+#'
+#' Summary graphic showing the correlation for all techniques
+#' @export
+
+visualize_correlation_all <- function(d) {
+  p <- d %>% visualize_plot_correlation_all_box()
+  name <- "../graphics/from-data/correlation_all.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_correlation_selective_random_sampling
+#'
+#' Summary graphic showing the correlation for selective random sampling
+#' @export
+
+visualize_correlation_selective_random_sampling <- function(d) {
+  p <- d %>% visualize_plot_correlation_all_box()
+  name <- "../graphics/from-data/correlation_srs.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_correlation_selective
+#'
+#' Summary graphic showing the correlation for selective.
+#' @export
+
+visualize_correlation_selective <- function(d) {
+  p <- d %>% visualize_plot_correlation_all_box()
+  name <- "../graphics/from-data/correlation_selective.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_cost_reduction_selective_random_sampling
+#'
+#' Summary graphic showing the cost reduction for selective random sampling
+#' @export
+
+visualize_cost_reduction_selective_random_sampling <- function(d) {
+  p <- d %>% visualize_plot_cost_reduction_all()
+  name <- "../graphics/from-data/cost_reduction_srs.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_cost_reduction_selective_random_sampling
+#'
+#' Summary graphic showing the cost reduction for selective mutation
+#' @export
+
+visualize_cost_reduction_selective <- function(d) {
+  p <- d %>% visualize_plot_cost_reduction_all()
+  name <- "../graphics/from-data/cost_reduction_selective.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_correlation_all_groups
+#'
+#' Summary graphic comapring the aggregated techniques.
+#' @export
+
+visualize_correlation_all_groups <- function(d) {
+  p <- d %>% visualize_plot_correlation_all_groups()
+  name <- "../graphics/from-data/correlation_all_groups.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_cost_reduction_all_groups
+#'
+#' Summary graphic comapring the aggregated techniques.
+#' @export
+
+visualize_cost_reduction_all_groups <- function(d) {
+  p <- d %>% visualize_plot_cost_reduction_all_groups()
+  name <- "../graphics/from-data/cost_reduction_all_groups.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
 #' FUNCTION: visualize_random_sampling_correlation
 #'
 #' Visualize correlation between original and reduced mutation scores for the random sampling reduction technique
@@ -208,6 +292,69 @@ visualize_plot_correlation <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_plot_correlation_all_box
+#'
+#' @export
+
+visualize_plot_correlation_all_box <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Reduction Technique") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation_all_groups
+#'
+#' @export
+
+visualize_plot_correlation_all_groups <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Reduction Technique") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_cost_reduction_all_groups
+#'
+#' @export
+
+visualize_plot_cost_reduction_all_groups <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = cost_reduction, group = technique_group)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Reduction Technique") +
+  ggplot2::ylab("Fractional Cost Reduction")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation_all_bar
+#'
+#' @export
+
+visualize_plot_correlation_all_bar <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Reduction Technique") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
 #' FUNCTION: visualize_plot_percentage_correlation
 #'
 #' Produces a visualization of the correlation between the original and reduced mutation score across
@@ -272,9 +419,9 @@ visualize_plot_cost <- function(d) {
 visualize_plot_fractional_operator_costs <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = operator, y = fractional_cost)) +
   ggplot2::geom_bar(stat="identity") +
-  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme_bw(base_size = 5) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Operator") +
   ggplot2::ylab("Fractional Cost")
   return(p)
@@ -291,7 +438,7 @@ visualize_plot_fractional_operator_costs_per_schema <- function(d) {
   ggplot2::facet_wrap(~ schema, labeller = ggplot2::label_both) +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Schema") +
   ggplot2::ylab("Fractional Cost of Operator")
   return(p)
@@ -307,7 +454,7 @@ visualize_plot_fractional_operator_frequencies <- function(d) {
   ggplot2::geom_bar(stat="identity") +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Operator") +
   ggplot2::ylab("Fractional Frequency")
   return(p)
@@ -324,7 +471,7 @@ visualize_plot_fractional_operator_frequencies_per_schema <- function(d) {
   ggplot2::facet_wrap(~ schema, labeller = ggplot2::label_both) +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Operator") +
   ggplot2::ylab("Fractional Frequency")
   return(p)
@@ -364,6 +511,23 @@ visualize_plot_percentage_cost_reduction <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Percentage of Mutants Evaluated") +
   ggplot2::ylab("Cost Reduction")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_cost_reduction_all
+#'
+#' Plot fractional cost reduction for each technique.
+#' @export
+
+visualize_plot_cost_reduction_all <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = cost_reduction, group = technique)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Reduction Technique") +
+  ggplot2::ylab("Fractional Cost Reduction")
   return(p)
 }
 

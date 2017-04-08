@@ -192,3 +192,13 @@ collect_operator_data <- function(d) {
   dt <- d %>% dplyr::group_by(dbms, operator)
   return(dt)
 }
+
+#' FUNCTION: collect_technique_data
+#'
+#' Group by technique for summarization.
+#' @export
+
+collect_technique_data <- function(d) {
+  dt <- d %>% dplyr::group_by(technique)
+  return(dt)
+}

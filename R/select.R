@@ -151,3 +151,13 @@ select_current_best_correlation <- function(d) {
     dplyr::distinct()
   return(dt)
 }
+
+#' FUNCTION: select_head_to_head_technique_groups
+#'
+#' Get only the data for two technique groups (e.g., HC and RS)
+#' @export
+
+select_head_to_head_technique_groups <- function(d, a, b) {
+  dt <- d %>% dplyr::filter(technique_group %in% c(a,b))
+  return(dt)
+}

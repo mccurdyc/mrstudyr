@@ -75,3 +75,14 @@ join_technique_data <- function(da, db, dc) {
   dt <- dplyr::bind_rows(da, db, dc)
   return(dt)
 }
+
+#' FUNCTION: join_by_technique
+#'
+#' Join two dataframes by the technique.
+#' @export
+
+join_by_technique <- function(a, b) {
+  dt <- dplyr::left_join(a, b, by = c("technique"))
+  return(dt)
+}
+

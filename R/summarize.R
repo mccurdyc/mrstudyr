@@ -121,3 +121,23 @@ summarize_average_percent_ignored <- function(d) {
   dt <- d %>% dplyr::summarize(average_percent_ignored = mean(percent_ignored))
   return(dt)
 }
+
+#' FUNCTION: summarize_mean_correlation
+#'
+#' Calculate the mean correlation over 30 trials for a given technique.
+#' @export
+
+summarize_mean_correlation <- function(d) {
+  dt <- d %>% dplyr::summarize(mean_correlation = mean(correlation))
+  return(dt)
+}
+
+#' FUNCTION: summarize_mean_cost_reduction
+#'
+#' Calculate the mean cost reduction over 30 trials for a given technique.
+#' @export
+
+summarize_mean_cost_reduction <- function(d) {
+  dt <- d %>% dplyr::summarize(mean_cost_reduction = mean(cost_reduction))
+  return(dt)
+}

@@ -8,6 +8,8 @@ compare_technique_group_head_to_head <- function(d, a, b) {
   mean_corr <- sub %>% summarize_mean_correlation()
   mean_cost_reduction <- sub %>% summarize_mean_cost_reduction()
   joined_mean_corr_cost_reduction <- join_by_technique(mean_corr, mean_cost_reduction)
-  return(joined_mean_corr_cost_reduction)
+
+  visualize_mean_corr_cost_reduction_head_to_head(joined_mean_corr_cost_reduction)
+  visualize_corr_cost_reduction_head_to_head(sub)
 }
 

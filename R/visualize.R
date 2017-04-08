@@ -218,6 +218,30 @@ visualize_effectsize <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_mean_corr_cost_reduction_head_to_head
+#'
+#' Dot plot comparing the mean correlation and cost reduction for two techniques.
+#' @export
+
+visualize_mean_corr_cost_reduction_head_to_head <- function(d) {
+  p <- d %>% visualize_plot_mean_corr_cost_reduction()
+  name <- "../graphics/from-data/mean_correlation_cost_reduction_rs_to_hc.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+# #' FUNCTION: visualize_corr_cost_reduction_head_to_head
+# #'
+# #' Box plot comparing the correlation and cost reduction for two techniques.
+# #' @export
+#
+# visualize_corr_cost_reduction_head_to_head <- function(d) {
+#   p <- d %>% visualize_plot_corr_cost_reduction()
+#   name <- "../graphics/from-data/correlation_cost_reduction_rs_to_hc.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
 #' FUNCTION: visualize_plot_original_mutation_score
 #'
 #' Produces the visualization of the original mutation scores.
@@ -546,6 +570,43 @@ visualize_plot_effectsize <- function(d) {
   ggplot2::ylab("Group 2")
   return(p)
 }
+
+#' FUNCTION: visualize_plot_mean_corr_cost_reduction
+#'
+#' Produces a dot plot comparing the mean correlation and cost reduction for techniques.
+#' @export
+
+visualize_plot_mean_corr_cost_reduction <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = mean_correlation, y = mean_cost_reduction, label = technique)) +
+  ggplot2::geom_point() +
+  ggplot2::scale_shape(solid = FALSE) +
+  ggplot2::geom_text(vjust = -1) +
+  ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+  ggplot2::scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Mean Kendall") +
+  ggplot2::ylab("Mean Fractional Cost Reduction")
+  return(p)
+}
+
+# #' FUNCTION: visualize_plot_corr_cost_reduction
+# #'
+# #' Produces a box plot comparing correlation to fractional cost reduction
+# #' @export
+#
+# visualize_plot_corr_cost_reduction <- function(d) {
+#   p <- ggplot2::ggplot(d, ggplot2::aes(x = correlation, y = cost_reduction, group = technique)) +
+#   ggplot2::geom_boxplot() +
+#   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+#   ggplot2::theme_bw(base_size = 10) +
+#   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+#   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::xlab("Correlation") +
+#   ggplot2::ylab("Fractional Cost Reduction")
+#   return(p)
+# }
 
 #' FUNCTION: visualize_save_graphic
 #'

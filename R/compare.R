@@ -10,6 +10,6 @@ compare_technique_group_head_to_head <- function(d, a, b) {
   joined_mean_corr_cost_reduction <- join_by_technique(mean_corr, mean_cost_reduction)
 
   visualize_mean_corr_cost_reduction_head_to_head(joined_mean_corr_cost_reduction)
-  visualize_corr_cost_reduction_head_to_head(sub)
+  # visualize_corr_cost_reduction_head_to_head(sub) # needs work!
 }
 

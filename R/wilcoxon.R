@@ -3,9 +3,9 @@
 #' Interpret the Wilcoxon Ranked-Sum Test using.
 #' @export
 
-ranked_sum_interpret <- function(d) {
+ranked_sum_interpret <- function(v) {
   significant <- "none"
-  if (p.value >= 0.5) {
+  if (v < 0.05) {
     significant <- TRUE
   } else {
     significant <- FALSE
@@ -20,8 +20,8 @@ ranked_sum_interpret <- function(d) {
 
 perform_pairwise_wilcoxon_rank_sum_test <- function(d) {
   model <- perform_wilcoxon_accurate(d)
-  dt <- model %>% transform_add_significance()
-  return(dt)
+  # dt <- model %>% transform_add_significance()
+  return(model)
 }
 
 #' FUNCTION: perform_wilcoxon_accurate

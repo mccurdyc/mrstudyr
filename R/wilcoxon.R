@@ -18,8 +18,8 @@ ranked_sum_interpret <- function(v) {
 #' Perform a statistical analysis of the correlation for each mutant reduction technique.
 #' @export
 
-perform_pairwise_wilcoxon_rank_sum_test <- function(d) {
-  model <- perform_wilcoxon_accurate(d)
+perform_pairwise_wilcoxon_rank_sum_test <- function(d, m) {
+  model <- perform_wilcoxon_accurate(d, m)
   dt <- model %>% transform_add_significance()
   return(dt)
 }
@@ -29,7 +29,7 @@ perform_pairwise_wilcoxon_rank_sum_test <- function(d) {
 #' Calculate the wilcoxon ranked sum for all pairs of techniques
 #' @export
 
-perform_wilcoxon_accurate <- function(d) {
+perform_wilcoxon_accurate <- function(d, m) {
   df <- data.frame()
   ds <- split(d, list(d$technique))
   len <- length(ds)
@@ -40,7 +40,14 @@ perform_wilcoxon_accurate <- function(d) {
       t2 <- ds[[j]]$technique %>% unique()
       print(paste("comparing ", t1, " to ", t2))
 
-      model <- wilcox.test(ds[[i]]$correlation, ds[[j]]$correlation)
+      if (m == 'correlation') {
+        print("comparing correlation")
+        model <- wilcox.test(ds[[i]]$correlation, ds[[j]]$correlation)
+      }
+      if (m == 'cost reduction') {
+        print("comparing cost reduction")
+        model <- wilcox.test(ds[[i]]$cost_reduction, ds[[j]]$cost_reduction)
+      }
       tidy_model <- model %>% broom::tidy()
       dt <- tidy_model %>% dplyr::mutate(group1 = t1, group2 = t2)
       df <- rbind(df, dt)

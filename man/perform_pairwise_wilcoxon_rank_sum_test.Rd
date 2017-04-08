@@ -4,7 +4,7 @@
 \alias{perform_pairwise_wilcoxon_rank_sum_test}
 \title{FUNCTION: perform_pairwise_wilcoxon_rank_sum_test}
 \usage{
-perform_pairwise_wilcoxon_rank_sum_test(d)
+perform_pairwise_wilcoxon_rank_sum_test(d, m)
 }
 \description{
 Perform a statistical analysis of the correlation for each mutant reduction technique.

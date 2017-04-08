@@ -4,7 +4,7 @@
 \alias{perform_wilcoxon_accurate}
 \title{FUNCTION: perform_wilcoxon_accurate}
 \usage{
-perform_wilcoxon_accurate(d)
+perform_wilcoxon_accurate(d, m)
 }
 \description{
 Calculate the wilcoxon ranked sum for all pairs of techniques

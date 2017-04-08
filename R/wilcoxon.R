@@ -20,8 +20,8 @@ ranked_sum_interpret <- function(v) {
 
 perform_pairwise_wilcoxon_rank_sum_test <- function(d) {
   model <- perform_wilcoxon_accurate(d)
-  # dt <- model %>% transform_add_significance()
-  return(model)
+  dt <- model %>% transform_add_significance()
+  return(dt)
 }
 
 #' FUNCTION: perform_wilcoxon_accurate

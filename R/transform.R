@@ -387,6 +387,6 @@ transform_add_percent_ignored <- function(d) {
 #' @export
 
 transform_add_significance <- function(d) {
-  dt <- d %>% rowwise() %>% dplyr::mutate(significant = ranked_sum_interpret(d$p.value))
+  dt <- d %>% rowwise() %>% dplyr::mutate(significant = ranked_sum_interpret(p.value))
   return(dt)
 }

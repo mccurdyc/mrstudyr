@@ -390,3 +390,13 @@ transform_add_significance <- function(d) {
   dt <- d %>% rowwise() %>% dplyr::mutate(significant = ranked_sum_interpret(p.value))
   return(dt)
 }
+
+#' FUNCTION: transform_add_mean_correlation_cost_reduction_ratio
+#'
+#' Calculate the correlation, cost reduction ratio (HIB / LIB) metric.
+#' @export
+
+transform_add_mean_correlation_cost_reduction_ratio <- function(d) {
+  dt <- d %>% rowwise() %>% dplyr::mutate(ratio = (mean_correlation / (1 - mean_cost_reduction)))
+  return(dt)
+}

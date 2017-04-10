@@ -202,3 +202,13 @@ collect_technique_data <- function(d) {
   dt <- d %>% dplyr::group_by(technique)
   return(dt)
 }
+
+#' FUNCTION: collect_technique_trial_data
+#'
+#' Group by technique and trial for summarization across schemas.
+#' @export
+
+collect_technique_trial_data <- function(d) {
+  dt <- d %>% dplyr::group_by(technique, trial)
+  return(dt)
+}

@@ -230,17 +230,17 @@ visualize_mean_corr_cost_reduction_head_to_head <- function(d) {
   return(p)
 }
 
-# #' FUNCTION: visualize_corr_cost_reduction_head_to_head
-# #'
-# #' Box plot comparing the correlation and cost reduction for two techniques.
-# #' @export
-#
-# visualize_corr_cost_reduction_head_to_head <- function(d) {
-#   p <- d %>% visualize_plot_corr_cost_reduction()
-#   name <- "../graphics/from-data/correlation_cost_reduction_rs_to_hc.pdf"
-#   visualize_save_graphic(name, p, 8, 8)
-#   return(p)
-# }
+#' FUNCTION: visualize_corr_cost_reduction_head_to_head
+#'
+#' Box plot comparing the correlation and cost reduction for two techniques.
+#' @export
+
+visualize_ratio_head_to_head <- function(d) {
+  p <- d %>% visualize_plot_ratio()
+  name <- "../graphics/from-data/ratio_rs_to_hc.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
 
 #' FUNCTION: visualize_plot_original_mutation_score
 #'
@@ -591,22 +591,22 @@ visualize_plot_mean_corr_cost_reduction <- function(d) {
   return(p)
 }
 
-# #' FUNCTION: visualize_plot_corr_cost_reduction
-# #'
-# #' Produces a box plot comparing correlation to fractional cost reduction
-# #' @export
-#
-# visualize_plot_corr_cost_reduction <- function(d) {
-#   p <- ggplot2::ggplot(d, ggplot2::aes(x = correlation, y = cost_reduction, group = technique)) +
-#   ggplot2::geom_boxplot() +
-#   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-#   ggplot2::theme_bw(base_size = 10) +
-#   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-#   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-#   ggplot2::xlab("Correlation") +
-#   ggplot2::ylab("Fractional Cost Reduction")
-#   return(p)
-# }
+#' FUNCTION: visualize_plot_ratio
+#'
+#' Produces a box plot comparing ratio values
+#' @export
+
+visualize_plot_ratio <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Technique") +
+  ggplot2::ylab("Mean Kendall / (1 - Mean Cost Reduction)")
+  return(p)
+}
 
 #' FUNCTION: visualize_save_graphic
 #'

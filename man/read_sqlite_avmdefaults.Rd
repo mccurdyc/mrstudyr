@@ -7,8 +7,8 @@
 read_sqlite_avmdefaults(dat)
 }
 \description{
-Read in a data file containing all of the mutation analysis data for sqlite avm defaults. This is
+Read in a data file containing all of the mutation analysis data for sqlite avmdefaults. This is
 the file containing all of the mutation scores and timings for all schemas
-and databases. THIS IS JUST SAMPLE DATA AND A SAMPLE READ FUNCTION.
+and databases.
 }
 

@@ -63,6 +63,7 @@ analyze_incremental_across_schemas <- function(d, step_size, corr_threshold, cos
     o <- o[with(o, order(schema, operator)),] # order rows by schema, then operator so that operator data is consistent across schemas
     dh <- helper_incremental_across_schemas(o, step_size, corr_threshold, cost_threshold) # perform the hill climbing algorithm
     model <- dh %>% generate_operator_model() # based on the hill climbing data, generate a genralized model to apply
+    feather::write_feather(model, paste("../feathers/", step_size, "_model.feather"))
     # apply model 30 times to account for randomness (random percentages per operator)
     for (j in 1:30) {
       # apply the model informing how many mutants to keep per operator from original data set

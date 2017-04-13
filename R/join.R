@@ -38,12 +38,13 @@ join_summarized_keep_ignore_data <- function(a, b) {
 #' Join the data collected from different step sizes of the hill climbing reduction technique.
 #' @export
 
-join_hill_climbing_size_data <- function(v, s, m, l, step_size_very_small, step_size_small, step_size_medium, step_size_large) {
-  v <- v %>% dplyr::mutate(step_size = step_size_very_small)
+join_hill_climbing_size_data <- function(s, m, l, step_size_small, step_size_medium, step_size_large) {
+  # v <- v %>% dplyr::mutate(step_size = step_size_very_small)
   s <- s %>% dplyr::mutate(step_size = step_size_small)
   m <- m %>% dplyr::mutate(step_size = step_size_medium)
   l <- l %>% dplyr::mutate(step_size = step_size_large)
-  dt <- rbind(v, s, m, l)
+  dt <- rbind(s, m, l)
+  # dt <- rbind(v, s, m, l)
   return(dt)
 }
 

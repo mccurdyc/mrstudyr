@@ -38,11 +38,12 @@ join_summarized_keep_ignore_data <- function(a, b) {
 #' Join the data collected from different step sizes of the hill climbing reduction technique.
 #' @export
 
-join_hill_climbing_size_data <- function(s, m, l, step_size_small, step_size_medium, step_size_large) {
+join_hill_climbing_size_data <- function(v, s, m, l, step_size_very_small, step_size_small, step_size_medium, step_size_large) {
+  v <- v %>% dplyr::mutate(step_size = step_size_very_small)
   s <- s %>% dplyr::mutate(step_size = step_size_small)
   m <- m %>% dplyr::mutate(step_size = step_size_medium)
   l <- l %>% dplyr::mutate(step_size = step_size_large)
-  dt <- rbind(s, m, l)
+  dt <- rbind(v, s, m, l)
   return(dt)
 }
 
@@ -82,7 +83,7 @@ join_technique_data <- function(da, db, dc) {
 #' @export
 
 join_by_technique <- function(a, b) {
-  dt <- dplyr::left_join(a, b, by = c("technique"))
+  dt <- dplyr::left_join(a, b, by = c("dbms", "technique"))
   return(dt)
 }
 
@@ -92,6 +93,6 @@ join_by_technique <- function(a, b) {
 #' @export
 
 join_by_technique_trial <- function(a, b) {
-  dt <- dplyr::left_join(a, b, by = c("technique", "trial"))
+  dt <- dplyr::left_join(a, b, by = c("dbms", "technique", "trial"))
   return(dt)
 }

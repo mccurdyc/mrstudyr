@@ -21,6 +21,16 @@ collect_normal_data <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: collect_dbms_data
+#'
+#' Group data by dbms.
+#' @export
+
+collect_dbms_data <- function(d) {
+  dt <- d %>% dplyr::group_by(dbms)
+  return(dt)
+}
+
 #' FUNCTION: collect_schema_data
 #'
 #' Group data by dbms and schema
@@ -199,7 +209,7 @@ collect_operator_data <- function(d) {
 #' @export
 
 collect_technique_data <- function(d) {
-  dt <- d %>% dplyr::group_by(technique)
+  dt <- d %>% dplyr::group_by(dbms, technique)
   return(dt)
 }
 
@@ -209,6 +219,6 @@ collect_technique_data <- function(d) {
 #' @export
 
 collect_technique_trial_data <- function(d) {
-  dt <- d %>% dplyr::group_by(technique, trial)
+  dt <- d %>% dplyr::group_by(dbms, technique, trial)
   return(dt)
 }

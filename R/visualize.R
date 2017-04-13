@@ -102,7 +102,7 @@ visualize_cost_reduction_all_groups <- function(d) {
 
 visualize_random_sampling_correlation <- function(d) {
   p <- d %>% visualize_plot_percentage_correlation()
-  name <- "../graphics/from-data/correlation_random_plot.pdf"
+  name <- "../graphics/from-data/all_dbms_correlation_random_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
@@ -129,6 +129,31 @@ visualize_random_sampling_cost_reduction <- function(d) {
 visualize_hill_climbing_correlation <- function(d) {
   p <- d %>% visualize_plot_correlation()
   name <- "../graphics/from-data/correlation_hill_climbing_plot.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_hill_climbing_correlation_all_dbms
+#'
+#' Visualize correlation between original and reduced mutation scores for the hill climbing reduction technique
+#' across schemas across thirty trials for all DBMSs.
+#' @export
+
+visualize_hill_climbing_correlation_all_dbms <- function(d) {
+  p <- d %>% visualize_plot_correlation_multiple_dbms()
+  name <- "../graphics/from-data/all_dbms_correlation_hill_climbing_plot.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_hill_climbing_cost_reduction_all_dbms
+#'
+#' Visualize the cost reduction for all of the DBMSs when comparing the operator models.
+#' @export
+
+visualize_hill_climbing_cost_reduction_all_dbms <- function(d) {
+  p <- d %>% visualize_plot_cost_reduction_multiple_dbms()
+  name <- "../graphics/from-data/all_dbms_cost_reduction_hill_climbing_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
@@ -225,7 +250,7 @@ visualize_effectsize <- function(d) {
 
 visualize_mean_corr_cost_reduction_head_to_head <- function(d) {
   p <- d %>% visualize_plot_mean_corr_cost_reduction()
-  name <- "../graphics/from-data/mean_correlation_cost_reduction_rs_to_hc.pdf"
+  name <- "../graphics/from-data/all_dbms_mean_correlation_cost_reduction_rs_to_hc.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
@@ -316,6 +341,43 @@ visualize_plot_correlation <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_plot_correlation_mulitple_dbms
+#'
+#' Produces a visualization of the correlation between the original and reduced mutation score across
+#' schemas for thirty trials.
+#' @export
+
+visualize_plot_correlation_multiple_dbms <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = correlation, group = interaction(dbms, step_size))) +
+  ggplot2::geom_boxplot(ggplot2::aes(colour = dbms)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
+  ggplot2::scale_shape(solid = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+  ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_cost_reduction_mulitple_dbms
+#'
+#' Produces a visualization of the cost reduction values of the operator model applied to multiple DBMSs.
+#' @export
+
+visualize_plot_cost_reduction_multiple_dbms <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = cost_reduction, group = interaction(dbms, step_size))) +
+  ggplot2::geom_boxplot(ggplot2::aes(colour = dbms)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
+  ggplot2::scale_shape(solid = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+  ggplot2::ylab("Fractional Cost Reduction")
+  return(p)
+}
+
 #' FUNCTION: visualize_plot_correlation_all_box
 #'
 #' @export
@@ -386,11 +448,12 @@ visualize_plot_correlation_all_bar <- function(d) {
 #' @export
 
 visualize_plot_percentage_correlation <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = correlation, group = percentage)) +
-  ggplot2::geom_boxplot(width=5) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = correlation, group = interaction(dbms, percentage))) +
+  ggplot2::geom_boxplot(width=5, ggplot2::aes(colour = dbms)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
+  ggplot2::scale_shape(solid = FALSE) +
   ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
   ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
@@ -577,10 +640,11 @@ visualize_plot_effectsize <- function(d) {
 #' @export
 
 visualize_plot_mean_corr_cost_reduction <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = mean_correlation, y = mean_cost_reduction, label = technique)) +
-  ggplot2::geom_point() +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = mean_correlation, y = mean_cost_reduction, color)) +
+  # p <- ggplot2::ggplot(d, ggplot2::aes(x = mean_correlation, y = mean_cost_reduction, label = technique)) +
+  ggplot2::geom_point(ggplot2::aes(shape = factor(dbms), colour = factor(technique))) +
   ggplot2::scale_shape(solid = FALSE) +
-  ggplot2::geom_text(vjust = -1) +
+  # ggplot2::geom_text(vjust = -1) +
   ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
   ggplot2::scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
   ggplot2::theme_bw(base_size = 10) +

@@ -41,6 +41,15 @@ transform_add_technique_group <- function(d) {
   return(dt)
 }
 
+#' FUNCTION: transform_add_step_size
+#'
+#' Append the step size for the hill climbing technique.
+#' @export
+
+transform_add_step_size <- function(d, s) {
+  dt <- d %>% dplyr::mutate(step_size = s)
+  return(dt)
+}
 
 #' FUNCTION: transform_rename_count
 #'
@@ -398,5 +407,18 @@ transform_add_significance <- function(d) {
 
 transform_add_mean_correlation_cost_reduction_ratio <- function(d) {
   dt <- d %>% rowwise() %>% dplyr::mutate(ratio = (mean_correlation / (1 - mean_cost_reduction)))
+  return(dt)
+}
+
+#' FUNCTION: transform_update_hill_climbing_applied_operator_data
+#'
+#' This function will append the necessary columns to make it match the data from actually performing
+#' the hill climbing technique versus the model.
+#' @export
+
+transform_update_hill_climbing_applied_operator_data <- function(d, s) {
+  dt <- d %>% transform_add_technique(paste("HC", s)) %>%
+              transform_add_technique_group() %>%
+              transform_add_step_size(s)
   return(dt)
 }

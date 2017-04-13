@@ -4,7 +4,7 @@
 #' @export
 
 summarize_reduced_time <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::summarize(reduced_time = sum(time))
+  dt <- d %>% collect_schema_data() %>% dplyr::summarize(reduced_time = sum(as.numeric(time)))
   return(dt)
 }
 
@@ -14,7 +14,7 @@ summarize_reduced_time <- function(d) {
 #' @export
 
 summarize_original_time <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::summarize(original_time = sum(time))
+  dt <- d %>% collect_schema_data() %>% dplyr::summarize(original_time = sum(as.numeric(time)))
   return(dt)
 }
 
@@ -24,7 +24,7 @@ summarize_original_time <- function(d) {
 #' @export
 
 summarize_time <- function(d) {
-  dt <- d %>% dplyr::group_by(dbms) %>% dplyr::summarize(original_time = sum(time))
+  dt <- d %>% dplyr::group_by(dbms) %>% dplyr::summarize(original_time = sum(as.numeric(time)))
   return(dt)
 }
 

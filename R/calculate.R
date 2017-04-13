@@ -5,7 +5,7 @@
 
 calculate_per_trial_percentage_effectiveness <- function(d) {
   d <- d %>% dplyr::ungroup() %>% collect_trial_data()
-  ds <- split(d, list(d$trial, d$percentage))
+  ds <- split(d, list(d$dbms, d$trial, d$percentage))
   dt <- ds %>% parallel::mclapply(transform_add_correlation) %>%
     lapply(as.data.frame) %>%
     dplyr::bind_rows()

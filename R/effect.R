@@ -3,7 +3,7 @@
 #' Calculate the pairwise effect size by comparing each technique.
 #' @export
 
-perform_effectsize_accurate <- function(d) {
+perform_effectsize_accurate <- function(d, m) {
   df <- data.frame()
   ds <- split(d, list(d$technique))
   len <- length(ds)
@@ -14,9 +14,21 @@ perform_effectsize_accurate <- function(d) {
       t2 <- ds[[j]]$technique %>% unique()
       print(paste("comparing ", t1, " to ", t2))
 
-      dt <- effectsize_accurate(ds[[i]]$correlation, ds[[j]]$correlation)
-      dt <- dt %>% dplyr::mutate(group1 = t1, group2 = t2)
-      df <- rbind(df, dt)
+      if (m == "correlation") {
+        dt <- effectsize_accurate(ds[[i]]$correlation, ds[[j]]$correlation)
+        dt <- dt %>% dplyr::mutate(group1 = t1, group2 = t2)
+        df <- rbind(df, dt)
+      }
+
+      else if (m == "cost reduction") {
+        dt <- effectsize_accurate(ds[[i]]$cost_reduction, ds[[j]]$cost_reduction)
+        dt <- dt %>% dplyr::mutate(group1 = t1, group2 = t2)
+        df <- rbind(df, dt)
+      }
+
+      else {
+        print("WARNING: Please choose a metric for which to perform the effectsize calculation")
+      }
     }
   }
   return(df)

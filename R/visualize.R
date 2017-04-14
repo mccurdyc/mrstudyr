@@ -238,7 +238,19 @@ visualize_fractional_operator_mutant_frequencies_per_schema <- function(d) {
 
 visualize_effectsize <- function(d) {
   p <- d %>% visualize_plot_effectsize()
-  name <- "../graphics/from-data/effectsize.pdf"
+  name <- "../graphics/from-data/14_costreduction_effectsize.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_wilcoxon
+#'
+#' Wilcoxon ranked sum graph comparing all reduction techniques' correlation or cost reduction.
+#' @export
+
+visualize_wilcoxon <- function(d) {
+  p <- d %>% visualize_plot_wilcoxon()
+  name <- "../graphics/from-data/14_correlation_wilcoxon.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
 }
@@ -629,8 +641,24 @@ visualize_plot_effectsize <- function(d) {
   ggplot2::theme_bw(base_size = 10) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Group 1") +
-  ggplot2::ylab("Group 2")
+  ggplot2::xlab("Technique 1") +
+  ggplot2::ylab("Technique 2")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_wilcoxon
+#'
+#' Plot ranked sum of all pairs of reduction techniques.
+#' @export
+
+visualize_plot_wilcoxon <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = group1, y = group2)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = significant)) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Technique 1") +
+  ggplot2::ylab("Technique 2")
   return(p)
 }
 

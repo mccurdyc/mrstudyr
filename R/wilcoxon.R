@@ -4,24 +4,20 @@
 #' @export
 
 ranked_sum_interpret <- function(v) {
-  significant <- "none"
-  if (v < 0.05) {
-    significant <- TRUE
-  } else {
-    significant <- FALSE
+
+  if (is.nan(v)) {
+    significant <- "none"
   }
+
+  else if (v < 0.05) {
+    significant <- "true"
+  }
+
+  else if (v >= 0.05) {
+    significant <- "false"
+  }
+
   return(significant)
-}
-
-#' FUNCTION: perform_pairwise_wilcoxon_rank_sum_test
-#'
-#' Perform a statistical analysis of the correlation for each mutant reduction technique.
-#' @export
-
-perform_pairwise_wilcoxon_rank_sum_test <- function(d, m) {
-  model <- perform_wilcoxon_accurate(d, m)
-  dt <- model %>% transform_add_significance()
-  return(dt)
 }
 
 #' FUNCTION: perform_wilcoxon_accurate
@@ -40,17 +36,25 @@ perform_wilcoxon_accurate <- function(d, m) {
       t2 <- ds[[j]]$technique %>% unique()
       print(paste("comparing ", t1, " to ", t2))
 
-      if (m == 'correlation') {
-        print("comparing correlation")
+      if (m == "correlation") {
+        print("correlation")
         model <- wilcox.test(ds[[i]]$correlation, ds[[j]]$correlation)
+        tidy_model <- model %>% broom::tidy() %>% transform_add_significance()
+        dt <- tidy_model %>% dplyr::mutate(group1 = t1, group2 = t2)
+        df <- rbind(df, dt)
       }
-      if (m == 'cost reduction') {
-        print("comparing cost reduction")
+
+      else if (m == "cost reduction") {
+        print("cost reduction")
         model <- wilcox.test(ds[[i]]$cost_reduction, ds[[j]]$cost_reduction)
+        tidy_model <- model %>% broom::tidy() %>% transform_add_significance()
+        dt <- tidy_model %>% dplyr::mutate(group1 = t1, group2 = t2)
+        df <- rbind(df, dt)
       }
-      tidy_model <- model %>% broom::tidy()
-      dt <- tidy_model %>% dplyr::mutate(group1 = t1, group2 = t2)
-      df <- rbind(df, dt)
+
+      else {
+        print("WARNING: Please provide a metric")
+      }
     }
   }
   return(df)

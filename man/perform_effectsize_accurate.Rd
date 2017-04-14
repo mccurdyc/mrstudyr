@@ -4,7 +4,7 @@
 \alias{perform_effectsize_accurate}
 \title{FUNCTION: perform_effectsize_accurate}
 \usage{
-perform_effectsize_accurate(d)
+perform_effectsize_accurate(d, m)
 }
 \description{
 Calculate the pairwise effect size by comparing each technique.

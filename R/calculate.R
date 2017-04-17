@@ -102,3 +102,13 @@ calculate_neighborhood_size <- function(d) {
   dt <- (d$mutant_count[[1]] / d$step_size[[1]]) %>% round()
   return(dt)
 }
+
+#' FUNCTION: calculate_per_dbms_mutation_scores
+#'
+#' In an attempt to explain why RS is so effective, calculate the mutation scores of data for each dbms.
+#' @export
+
+calculate_per_dbms_mutation_scores <- function(d) {
+  dt <- d %>% evaluate_original_data()
+  return(dt)
+}

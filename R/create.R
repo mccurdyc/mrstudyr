@@ -9,10 +9,12 @@ create_data_overview_graphs <- function() {
   dcb <- d %>% calculate_per_schema_fractional_operator_costs()
   dfa <- d %>% calculate_fractional_operator_frequencies()
   dfb <- d %>% calculate_per_schema_fractional_operator_frequencies()
+  dms <- d %>% calculate_per_dbms_mutation_scores()
   visualize_fractional_operator_mutant_costs(dca)
   visualize_fractional_operator_mutant_costs_per_schema(dcb)
   visualize_fractional_operator_mutant_frequencies(dfa)
   visualize_fractional_operator_mutant_frequencies_per_schema(dfb)
+  visualize_original_mutation_score_per_dbms(dms)
 }
 
 #' FUNCTION: create_random_sampling_graphs

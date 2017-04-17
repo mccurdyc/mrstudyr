@@ -1,3 +1,24 @@
+#' FUNCTION: transform_killed_count
+#'
+#' Count the number of killed mutants
+#' @export
+
+transform_killed_count <- function(d) {
+  dt <- d %>% dplyr::filter(killed %in% c("true")) %>% dplyr::count()
+  dt <- dt %>% dplyr::rename(original_numerator = n)
+  return(dt)
+}
+
+#' FUNCTION: transform_total_count
+#'
+#' Count the total number of mutants for a set
+#' @export
+
+transform_total_count <- function(d) {
+  dt <- d %>% dplyr::filter(killed %in% c("true", "false")) %>% dplyr::count()
+  dt <- dt %>% dplyr::rename(original_denominator = n)
+  return(dt)
+}
 #' FUNCTION: transform_replace_correlation
 #'
 #' Make sure that the correlation coeffient calculated by the 'Kendall' R package is renamed
@@ -278,7 +299,7 @@ transform_original_mutation_score <- function(d) {
 #' @export
 
 transform_mutation_score <- function(d) {
-  dt <- d %>% collect_schema_data() %>% dplyr::mutate(mutation_score = ((original_numerator / original_denominator)))
+  dt <- d %>% dplyr::mutate(original_mutation_score = ((original_numerator / original_denominator)))
   return(dt)
 }
 

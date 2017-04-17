@@ -1,3 +1,17 @@
+#' FUNCTION: evaluate_original_data
+#'
+#' Evaluate the data prior to performing a reduction technique.
+#' @export
+
+evaluate_original_data <- function(d) {
+  d <- d %>% collect_dbms_data()
+  original_numerator <- d %>% transform_killed_count()
+  original_denominator <- d %>% transform_total_count()
+  dt <- dplyr::left_join(original_numerator, original_denominator, by = c("dbms" = "dbms"))
+  dt <- dt %>% transform_mutation_score()
+  return(dt)
+}
+
 #' FUNCTION: evaluate_reduction_technique
 #'
 #' Evaluate the effectiveness of a reduction technique given the original (pre-reduction data) and the reduced data 

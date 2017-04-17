@@ -10,6 +10,18 @@ visualize_original_mutation_score_per_schema <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_original_mutation_score_per_dbms
+#'
+#' Summary graphic showing the original mutation scores per dbms.
+#' @export
+
+visualize_original_mutation_score_per_dbms <- function(d) {
+  p <- d %>% visualize_plot_original_mutation_score_per_dbms()
+  name <- "../graphics/from-data/mutation_score_per_dbms.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
 #' FUNCTION: visualize_correlation_all
 #'
 #' Summary graphic showing the correlation for all techniques
@@ -291,6 +303,22 @@ visualize_plot_original_mutation_score <- function(d) {
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
   ggplot2::xlab("Schema") +
+  ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_original_mutation_score_per_dbms
+#'
+#' Produces the visualization of the original mutation scores per dbms.
+#' @export
+
+visualize_plot_original_mutation_score_per_dbms <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = dbms, y = original_mutation_score)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::xlab("DBMS") +
   ggplot2::ylab("Original Mutation Score")
   return(p)
 }

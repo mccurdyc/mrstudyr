@@ -22,6 +22,21 @@ visualize_original_mutation_score_per_dbms <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_mutant_counts_per_schema
+#'
+#' Summary graphic showing the mutant counts per schema.
+#' @export
+
+visualize_mutant_counts_per_schema <- function(d) {
+  p1 <- d %>% visualize_plot_mutant_counts_per_schema()
+  name1 <- "../graphics/from-data/mutant_counts_per_schema.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
+
+  p2 <- d %>% visualize_plot_mutant_counts_per_schema_pres()
+  name2 <- "../graphics/from-data/mutant_counts_per_schema_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
+}
+
 #' FUNCTION: visualize_correlation_all
 #'
 #' Summary graphic showing the correlation for all techniques
@@ -297,11 +312,11 @@ visualize_ratio_head_to_head <- function(d) {
 #' @export
 
 visualize_plot_original_mutation_score <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score)) +
-  ggplot2::geom_bar(stat="identity") +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score, group = interaction(dbms, schema))) +
+  ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill = dbms)) +
   ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Schema") +
   ggplot2::ylab("Original Mutation Score")
   return(p)
@@ -725,6 +740,47 @@ visualize_plot_ratio <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Technique") +
   ggplot2::ylab("Mean Kendall / (1 - Mean Cost Reduction)")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_mutant_counts_per_schema
+#'
+#' Produces a visualization for the presentation of the mutant counts, per-schema.
+#' @export
+
+visualize_plot_mutant_counts_per_schema <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_denominator, interaction(dbms, schema))) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::theme_bw(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::xlab("Database Schema") +
+    ggplot2::ylab("Total Number of Mutants")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_mutant_counts_per_schema_pres
+#'
+#' Produces a visualization of the mutant counts, per-schema.
+#' @export
+
+visualize_plot_mutant_counts_per_schema_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_denominator, interaction(dbms, schema))) +
+  ggplot2::geom_bar(stat="identity", fill = "#268BD2") +
+  # ggplot2::geom_bar(stat="identity", ggplot2::aes(fill=(d$schema == 'iTrust'))) +
+  # ggplot2::scale_fill_manual(values = c('#268BD2', '#FFA500')) +
+  # ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
+  ggplot2::theme_bw(base_size = 8) +
+  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+  ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+  ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+  ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+  ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+  ggplot2::xlab("Database Schema") +
+  ggplot2::ylab("Total Number of Mutants")
   return(p)
 }
 

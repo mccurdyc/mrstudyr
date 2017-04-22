@@ -1,13 +1,27 @@
-#' FUNCTION: evaluate_original_data
+#' FUNCTION: evaluate_original_data_per_dbms
 #'
 #' Evaluate the data prior to performing a reduction technique.
 #' @export
 
-evaluate_original_data <- function(d) {
+evaluate_original_data_per_dbms <- function(d) {
   d <- d %>% collect_dbms_data()
   original_numerator <- d %>% transform_killed_count()
   original_denominator <- d %>% transform_total_count()
   dt <- dplyr::left_join(original_numerator, original_denominator, by = c("dbms" = "dbms"))
+  dt <- dt %>% transform_mutation_score()
+  return(dt)
+}
+
+#' FUNCTION: evaluate_original_data_per_schema
+#'
+#' Evaluate the data prior to performing a reduction technique on a per schema basis.
+#' @export
+
+evaluate_original_data_per_schema <- function(d) {
+  d <- d %>% collect_schema_data()
+  original_numerator <- d %>% transform_killed_count()
+  original_denominator <- d %>% transform_total_count()
+  dt <- join_schema_operator(original_numerator, original_denominator)
   dt <- dt %>% transform_mutation_score()
   return(dt)
 }

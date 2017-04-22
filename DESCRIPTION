@@ -16,7 +16,8 @@ Depends:
     ggplot2,
     broom,
     xtable,
-    parallel
+    parallel,
+    ggthemes
 Imports:
     readr,
     dplyr,
@@ -24,7 +25,8 @@ Imports:
     ggplot2,
     broom,
     xtable,
-    parallel
+    parallel,
+    ggthemes
 License: GNU GENERAL PUBLIC LICENSE v3.0
 Encoding: UTF-8
 LazyData: true

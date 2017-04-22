@@ -109,6 +109,16 @@ calculate_neighborhood_size <- function(d) {
 #' @export
 
 calculate_per_dbms_mutation_scores <- function(d) {
-  dt <- d %>% evaluate_original_data()
+  dt <- d %>% evaluate_original_data_per_dbms()
+  return(dt)
+}
+
+#' FUNCTION: calculate_per_schema_mutation_scores
+#'
+#' In an attempt to explain why RS is so effective, calculate the mutation scores of data for each schema for each dbms.
+#' @export
+
+calculate_per_schema_mutation_scores <- function(d) {
+  dt <- d %>% evaluate_original_data_per_schema()
   return(dt)
 }

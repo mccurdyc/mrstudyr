@@ -126,11 +126,11 @@ visualize_mean_corr_cost_reduction_head_to_head <- function(d) {
 
 visualize_ratio_head_to_head <- function(d) {
   p1 <- d %>% visualize_plot_ratio()
-  name1 <- "../graphics/from-data/all_dbms_ratio_rs_to_hc_minus_rs1.pdf"
+  name1 <- "../graphics/from-data/ratio_rs_to_hc.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_ratio_pres()
-  name2 <- "../graphics/from-data/all_dbms_ratio_rs_to_hc_minus_rs1_pres.pdf"
+  name2 <- "../graphics/from-data/ratio_rs_to_hc_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -951,13 +951,13 @@ visualize_plot_ratio <- function(d) {
 #' @export
 
 visualize_plot_ratio_pres <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = interaction(dbms, technique), fill=dbms)) +
-  # p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique, fill=dbms)) +
-    ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
-    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900')) +
+  # p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = interaction(dbms, technique), fill=dbms)) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique_group, fill=technique_group)) +
+    # ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
+    # ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900')) +
     # ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900'), guide=FALSE) +
-    # ggplot2::geom_bar(stat="identity") +
-    # ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682'), guide=FALSE) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682'), guide=FALSE) +
     ggplot2::theme_bw(base_size = 8) +
     ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
     ggplot2::theme(legend.position="top", legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
@@ -968,7 +968,7 @@ visualize_plot_ratio_pres <- function(d) {
     ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
     ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
     ggplot2::xlab("Mutant Reduction Technique") +
-    ggplot2::ylab("Ratio")
+    ggplot2::ylab("Ratio * 100")
   return(p)
 }
 

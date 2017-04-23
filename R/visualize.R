@@ -140,10 +140,13 @@ visualize_ratio_head_to_head <- function(d) {
 #' @export
 
 visualize_effectsize <- function(d) {
-  p <- d %>% visualize_plot_effectsize()
-  name <- "../graphics/from-data/14_costreduction_effectsize.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
+  p1 <- d %>% visualize_plot_effectsize()
+  name1 <- "../graphics/from-data/14_costreduction_effectsize.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
+
+  p2 <- d %>% visualize_plot_effectsize_pres()
+  name2 <- "../graphics/from-data/14_costreduction_effectsize_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
 }
 
 #' FUNCTION: visualize_wilcoxon
@@ -949,7 +952,7 @@ visualize_plot_ratio_pres <- function(d) {
     ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
     ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
     ggplot2::xlab("Mutant Reduction Technique") +
-    ggplot2::ylab("Mean Kendall / (1 - Mean Cost Reduction)")
+    ggplot2::ylab("Ratio")
   return(p)
 }
 
@@ -962,8 +965,32 @@ visualize_plot_effectsize <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = group1, y = group2)) +
   ggplot2::geom_tile(ggplot2::aes(fill = size)) +
   ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Technique 1") +
+  ggplot2::ylab("Technique 2")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_effectsize_pres
+#'
+#' Plot effect size of all pairs of reduction techniques.
+#' @export
+
+visualize_plot_effectsize_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = group1, y = group2)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = size)) +
+  ggplot2::scale_fill_manual(values = c('#DC322F', '#268BD2', '#859900', '#FFA500'), name = " Vargha-Delaney A Effect Size") +
+  ggplot2::theme_bw(base_size = 8) +
+  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="top") +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+  ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+  ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+  ggplot2::theme(legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
+  ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+  ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
   ggplot2::xlab("Technique 1") +
   ggplot2::ylab("Technique 2")
   return(p)

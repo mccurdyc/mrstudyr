@@ -66,11 +66,11 @@ visualize_correlation_all_reduction_technique_configurations <- function(d) {
 
 visualize_correlation_all_reduction_technique_groups <- function(d) {
   p1 <- d %>% visualize_plot_correlation_all_groups()
-  name1 <- "../graphics/from-data/correlation_all_reduction_technique_groups.pdf"
+  name1 <- "../graphics/from-data/all_dbms_correlation_all_reduction_technique_groups.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_correlation_all_groups_pres()
-  name2 <- "../graphics/from-data/correlation_all_reduction_technique_groups_pres.pdf"
+  name2 <- "../graphics/from-data/all_dbms_correlation_all_reduction_technique_groups_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -96,11 +96,11 @@ visualize_cost_reduction_all_reduction_technique_configurations <- function(d) {
 
 visualize_cost_reduction_all_reduction_technique_groups <- function(d) {
   p1 <- d %>% visualize_plot_cost_reduction_all_groups()
-  name1 <- "../graphics/from-data/cost_reduction_all_reduction_technique_groups.pdf"
+  name1 <- "../graphics/from-data/all_dbms_cost_reduction_all_reduction_technique_groups.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_cost_reduction_all_groups_pres()
-  name2 <- "../graphics/from-data/cost_reduction_all_reduction_technique_groups_pres.pdf"
+  name2 <- "../graphics/from-data/all_dbms_cost_reduction_all_reduction_technique_groups_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -126,11 +126,11 @@ visualize_mean_corr_cost_reduction_head_to_head <- function(d) {
 
 visualize_ratio_head_to_head <- function(d) {
   p1 <- d %>% visualize_plot_ratio()
-  name1 <- "../graphics/from-data/ratio_rs_to_hc_minus_rs1.pdf"
+  name1 <- "../graphics/from-data/all_dbms_ratio_rs_to_hc_minus_rs1.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_ratio_pres()
-  name2 <- "../graphics/from-data/ratio_rs_to_hc_minus_rs1_pres.pdf"
+  name2 <- "../graphics/from-data/all_dbms_ratio_rs_to_hc_minus_rs1_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -777,11 +777,15 @@ visualize_plot_correlation_all_groups <- function(d) {
 #' @export
 
 visualize_plot_correlation_all_groups_pres <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
-    ggplot2::geom_boxplot(fill = "#268BD2") +
-    ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
+  # p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = interaction(dbms, technique_group), fill=dbms)) +
+    ggplot2::geom_boxplot(position="dodge", ggplot2::aes(fill=dbms)) +
+    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900')) +
+    # ggplot2::geom_boxplot(fill = "#268BD2") +
+    # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
     ggplot2::theme_bw(base_size = 8) +
-    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::theme(legend.position="top", legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
@@ -855,11 +859,15 @@ visualize_plot_cost_reduction_all_groups <- function(d) {
 #' @export
 
 visualize_plot_cost_reduction_all_groups_pres <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = cost_reduction, group = technique_group)) +
-    ggplot2::geom_boxplot(fill = "#268BD2") +
-    ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = cost_reduction, group = interaction(dbms, technique_group), fill=dbms)) +
+  # p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = cost_reduction, group = technique_group)) +
+    ggplot2::geom_boxplot(position="dodge", ggplot2::aes(fill=dbms)) +
+    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900')) +
+    # ggplot2::geom_boxplot(fill = "#268BD2") +
+    # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
     ggplot2::theme_bw(base_size = 8) +
-    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::theme(legend.position="top", legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
@@ -943,11 +951,16 @@ visualize_plot_ratio <- function(d) {
 #' @export
 
 visualize_plot_ratio_pres <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique, fill=technique_group)) +
-    ggplot2::geom_bar(stat="identity") +
-    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682'), guide=FALSE) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = interaction(dbms, technique), fill=dbms)) +
+  # p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique, fill=dbms)) +
+    ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
+    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900')) +
+    # ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682', '#859900'), guide=FALSE) +
+    # ggplot2::geom_bar(stat="identity") +
+    # ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682'), guide=FALSE) +
     ggplot2::theme_bw(base_size = 8) +
-    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::theme(legend.position="top", legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
     ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
@@ -1025,12 +1038,12 @@ visualize_plot_wilcoxon_pres <- function(d) {
   ggplot2::geom_tile(ggplot2::aes(fill = significant)) +
   ggplot2::scale_fill_manual(values = c('#DC322F', '#268BD2', '#859900', '#FFA500'), name = "Wilcoxon Rank-Sum Test Significance") +
   ggplot2::theme_bw(base_size = 8) +
-  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="top") +
+  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
   ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
   ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
-  ggplot2::theme(legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
+  ggplot2::theme(legend.position="top", legend.text=element_text(size=15), legend.background = element_rect(fill = "transparent", colour = NA), legend.title=element_text(size=20)) +
   ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
   ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
   ggplot2::xlab("Technique 1") +

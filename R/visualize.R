@@ -1,26 +1,3 @@
-#' FUNCTION: visualize_original_mutation_score_per_schema
-#'
-#' Summary graphic showing the original mutation scores per schema.
-#' @export
-
-visualize_original_mutation_score_per_schema <- function(d) {
-  p <- d %>% visualize_plot_original_mutation_score()
-  name <- "../graphics/from-data/mutation_score_per_schema.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
-
-#' FUNCTION: visualize_original_mutation_score_per_dbms
-#'
-#' Summary graphic showing the original mutation scores per dbms.
-#' @export
-
-visualize_original_mutation_score_per_dbms <- function(d) {
-  p <- d %>% visualize_plot_original_mutation_score_per_dbms()
-  name <- "../graphics/from-data/mutation_score_per_dbms.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
 
 #' FUNCTION: visualize_mutant_counts_per_schema
 #'
@@ -37,76 +14,112 @@ visualize_mutant_counts_per_schema <- function(d) {
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
-#' FUNCTION: visualize_correlation_all
+#' FUNCTION: visualize_original_mutation_score_per_schema
 #'
-#' Summary graphic showing the correlation for all techniques
+#' Summary graphic showing the original mutation scores per schema.
 #' @export
 
-visualize_correlation_all <- function(d) {
-  p <- d %>% visualize_plot_correlation_all_box()
-  name <- "../graphics/from-data/correlation_all.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
+visualize_original_mutation_score_per_schema <- function(d) {
+  p1 <- d %>% visualize_plot_original_mutation_score()
+  name1 <- "../graphics/from-data/mutation_score_per_schema.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
+
+  p2 <- d %>% visualize_plot_original_mutation_score_pres()
+  name2 <- "../graphics/from-data/mutation_score_per_schema_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
 }
 
-#' FUNCTION: visualize_correlation_selective_random_sampling
+#' FUNCTION: visualize_original_mutation_score_per_dbms
 #'
-#' Summary graphic showing the correlation for selective random sampling
+#' Summary graphic showing the original mutation scores per dbms.
 #' @export
 
-visualize_correlation_selective_random_sampling <- function(d) {
-  p <- d %>% visualize_plot_correlation_all_box()
-  name <- "../graphics/from-data/correlation_srs.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
+visualize_original_mutation_score_per_dbms <- function(d) {
+  p1 <- d %>% visualize_plot_original_mutation_score_per_dbms()
+  name1 <- "../graphics/from-data/mutation_score_per_dbms.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
+
+  p2 <- d %>% visualize_plot_original_mutation_score_per_dbms_pres()
+  name2 <- "../graphics/from-data/mutation_score_per_dbms_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
 }
 
-#' FUNCTION: visualize_correlation_selective
+#' FUNCTION: visualize_correlation_all_reduction_technique_configurations
 #'
-#' Summary graphic showing the correlation for selective.
+#' Summary graphic showing the correlation for all techniques and configurations of each technique
 #' @export
 
-visualize_correlation_selective <- function(d) {
-  p <- d %>% visualize_plot_correlation_all_box()
-  name <- "../graphics/from-data/correlation_selective.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
+visualize_correlation_all_reduction_technique_configurations <- function(d) {
+  p1 <- d %>% visualize_plot_correlation_all_reduction_techniques_box()
+  name1 <- "../graphics/from-data/correlation_all_reduction_technique_configurations.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
+
+  p2 <- d %>% visualize_plot_correlation_all_reduction_techniques_box_pres()
+  name2 <- "../graphics/from-data/correlation_all_reduction_technique_configurations_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
 }
 
-#' FUNCTION: visualize_cost_reduction_selective_random_sampling
+# #' FUNCTION: visualize_correlation_selective_random_sampling
+# #'
+# #' Summary graphic showing the correlation for selective random sampling
+# #' @export
+#
+# visualize_correlation_selective_random_sampling <- function(d) {
+#   p <- d %>% visualize_plot_correlation_all_box()
+#   name <- "../graphics/from-data/correlation_srs.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
+# #' FUNCTION: visualize_correlation_selective
+# #'
+# #' Summary graphic showing the correlation for selective.
+# #' @export
+#
+# visualize_correlation_selective <- function(d) {
+#   p <- d %>% visualize_plot_correlation_all_box()
+#   name <- "../graphics/from-data/correlation_selective.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
+# #' FUNCTION: visualize_cost_reduction_selective_random_sampling
+# #'
+# #' Summary graphic showing the cost reduction for selective random sampling
+# #' @export
+#
+# visualize_cost_reduction_selective_random_sampling <- function(d) {
+#   p <- d %>% visualize_plot_cost_reduction_all()
+#   name <- "../graphics/from-data/cost_reduction_srs.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
+# #' FUNCTION: visualize_cost_reduction_selective_random_sampling
+# #'
+# #' Summary graphic showing the cost reduction for selective mutation
+# #' @export
+#
+# visualize_cost_reduction_selective <- function(d) {
+#   p <- d %>% visualize_plot_cost_reduction_all()
+#   name <- "../graphics/from-data/cost_reduction_selective.pdf"
+#   visualize_save_graphic(name, p, 8, 8)
+#   return(p)
+# }
+
+#' FUNCTION: visualize_correlation_all_reduction_technique_groups
 #'
-#' Summary graphic showing the cost reduction for selective random sampling
+#' Summary graphic comparing the aggregated technique data.
 #' @export
 
-visualize_cost_reduction_selective_random_sampling <- function(d) {
-  p <- d %>% visualize_plot_cost_reduction_all()
-  name <- "../graphics/from-data/cost_reduction_srs.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
+visualize_correlation_all_reduction_technique_groups <- function(d) {
+  p1 <- d %>% visualize_plot_correlation_all_groups()
+  name1 <- "../graphics/from-data/correlation_all_reduction_technique_groups.pdf"
+  visualize_save_graphic(name1, p1, 8, 8)
 
-#' FUNCTION: visualize_cost_reduction_selective_random_sampling
-#'
-#' Summary graphic showing the cost reduction for selective mutation
-#' @export
-
-visualize_cost_reduction_selective <- function(d) {
-  p <- d %>% visualize_plot_cost_reduction_all()
-  name <- "../graphics/from-data/cost_reduction_selective.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
-}
-
-#' FUNCTION: visualize_correlation_all_groups
-#'
-#' Summary graphic comapring the aggregated techniques.
-#' @export
-
-visualize_correlation_all_groups <- function(d) {
-  p <- d %>% visualize_plot_correlation_all_groups()
-  name <- "../graphics/from-data/correlation_all_groups.pdf"
-  visualize_save_graphic(name, p, 8, 8)
-  return(p)
+  p2 <- d %>% visualize_plot_correlation_all_groups_pres()
+  name2 <- "../graphics/from-data/correlation_all_reduction_technique_groups_pres.pdf"
+  visualize_save_graphic(name2, p2, 12, 6)
 }
 
 #' FUNCTION: visualize_cost_reduction_all_groups
@@ -306,38 +319,6 @@ visualize_ratio_head_to_head <- function(d) {
   return(p)
 }
 
-#' FUNCTION: visualize_plot_original_mutation_score
-#'
-#' Produces the visualization of the original mutation scores.
-#' @export
-
-visualize_plot_original_mutation_score <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score, group = interaction(dbms, schema))) +
-  ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill = dbms)) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Schema") +
-  ggplot2::ylab("Original Mutation Score")
-  return(p)
-}
-
-#' FUNCTION: visualize_plot_original_mutation_score_per_dbms
-#'
-#' Produces the visualization of the original mutation scores per dbms.
-#' @export
-
-visualize_plot_original_mutation_score_per_dbms <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = dbms, y = original_mutation_score)) +
-  ggplot2::geom_bar(stat="identity") +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::xlab("DBMS") +
-  ggplot2::ylab("Original Mutation Score")
-  return(p)
-}
-
 #' FUNCTION: visualize_plot_mutation_score
 #'
 #' Produces a visualization of the reduced mutation
@@ -430,38 +411,6 @@ visualize_plot_cost_reduction_multiple_dbms <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
   ggplot2::ylab("Fractional Cost Reduction")
-  return(p)
-}
-
-#' FUNCTION: visualize_plot_correlation_all_box
-#'
-#' @export
-
-visualize_plot_correlation_all_box <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation)) +
-  ggplot2::geom_boxplot() +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Reduction Technique") +
-  ggplot2::ylab("Kendall")
-  return(p)
-}
-
-#' FUNCTION: visualize_plot_correlation_all_groups
-#'
-#' @export
-
-visualize_plot_correlation_all_groups <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
-  ggplot2::geom_boxplot() +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Reduction Technique") +
-  ggplot2::ylab("Kendall")
   return(p)
 }
 
@@ -743,6 +692,24 @@ visualize_plot_ratio <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_plot_original_mutation_score_per_schema
+#'
+#' Produces the visualization of the original mutation scores.
+#' @export
+
+visualize_plot_original_mutation_score_per_schema <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score, group = interaction(dbms, schema))) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill = dbms)) +
+    ggplot2::theme_bw(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::xlab("Database Schema") +
+    ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
+
 #' FUNCTION: visualize_plot_mutant_counts_per_schema
 #'
 #' Produces a visualization for the presentation of the mutant counts, per-schema.
@@ -767,20 +734,133 @@ visualize_plot_mutant_counts_per_schema <- function(d) {
 
 visualize_plot_mutant_counts_per_schema_pres <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_denominator, interaction(dbms, schema))) +
-  ggplot2::geom_bar(stat="identity", fill = "#268BD2") +
-  # ggplot2::geom_bar(stat="identity", ggplot2::aes(fill=(d$schema == 'iTrust'))) +
-  # ggplot2::scale_fill_manual(values = c('#268BD2', '#FFA500')) +
-  # ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
-  ggplot2::theme_bw(base_size = 8) +
-  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
-  ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
-  ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
-  ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
-  ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
-  ggplot2::xlab("Database Schema") +
-  ggplot2::ylab("Total Number of Mutants")
+    ggplot2::geom_bar(stat="identity", fill = "#268BD2") +
+    # ggplot2::geom_bar(stat="identity", ggplot2::aes(fill=(d$schema == 'iTrust'))) +
+    # ggplot2::scale_fill_manual(values = c('#268BD2', '#FFA500')) +
+    # ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill=dbms)) +
+    ggplot2::theme_bw(base_size = 8) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::xlab("Database Schema") +
+    ggplot2::ylab("Total Number of Mutants")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_original_mutation_score_per_dbms
+#'
+#' Produces the visualization of the original mutation scores per dbms.
+#' @export
+
+visualize_plot_original_mutation_score_per_dbms <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = dbms, y = original_mutation_score)) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::theme_bw(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::xlab("DBMS") +
+    ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_original_mutation_score_per_dbms_pres
+#'
+#' Produces the visualization of the original mutation scores for each dbms for the presentation.
+#' @export
+
+visualize_plot_original_mutation_score_per_dbms_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = dbms, y = original_mutation_score)) +
+    ggplot2::geom_bar(stat="identity", fill = "#268BD2") +
+    ggplot2::theme_bw(base_size = 8) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::xlab("DBMS") +
+    ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
+
+#' FUNCTION: visualize_plot_correlation_all_reduction_techniques_box
+#'
+#' @export
+
+visualize_plot_correlation_all_reduction_techniques_box <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Mutant Reduction Technique") +
+  ggplot2::ylab("Kendall Correlation Coefficient")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation_all_reduction_techniques_box_pres
+#'
+#' @export
+
+visualize_plot_correlation_all_reduction_techniques_box_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation, fill = technique_group)) +
+    ggplot2::geom_boxplot() +
+    ggplot2::scale_fill_manual(values = c('#268BD2', '#D33682'), guide=FALSE) +
+    ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme_bw(base_size = 8) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::xlab("Mutant Reduction Technique") +
+    ggplot2::ylab("Kendall Correlation Coefficient")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation_all_groups
+#'
+#' @export
+
+visualize_plot_correlation_all_groups <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Mutant Reduction Technique") +
+  ggplot2::ylab("Kendall Correlation Coefficient")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_correlation_all_groups_pres
+#'
+#' @export
+
+visualize_plot_correlation_all_groups_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
+    ggplot2::geom_boxplot(fill = "#268BD2") +
+    ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 3, show.legend = FALSE) +
+    ggplot2::theme_bw(base_size = 8) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::xlab("Mutant Reduction Technique") +
+    ggplot2::ylab("Kendall Correlation Coefficient")
   return(p)
 }
 

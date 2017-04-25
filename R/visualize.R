@@ -66,11 +66,11 @@ visualize_correlation_all_reduction_technique_configurations <- function(d) {
 
 visualize_correlation_all_reduction_technique_groups <- function(d) {
   p1 <- d %>% visualize_plot_correlation_all_groups()
-  name1 <- "../graphics/from-data/all_dbms_correlation_all_reduction_technique_groups.pdf"
+  name1 <- "../graphics/from-data/correlation_all_reduction_technique_groups.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_correlation_all_groups_pres()
-  name2 <- "../graphics/from-data/all_dbms_correlation_all_reduction_technique_groups_pres.pdf"
+  name2 <- "../graphics/from-data/correlation_all_reduction_technique_groups_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -141,11 +141,11 @@ visualize_ratio_head_to_head <- function(d) {
 
 visualize_effectsize <- function(d) {
   p1 <- d %>% visualize_plot_effectsize()
-  name1 <- "../graphics/from-data/14_costreduction_effectsize.pdf"
+  name1 <- "../graphics/from-data/14_correlation_effectsize.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
   p2 <- d %>% visualize_plot_effectsize_pres()
-  name2 <- "../graphics/from-data/14_costreduction_effectsize_pres.pdf"
+  name2 <- "../graphics/from-data/14_correlation_effectsize_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
 
@@ -934,14 +934,13 @@ visualize_plot_mean_corr_cost_reduction_pres <- function(d) {
 
 visualize_plot_ratio <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = ratio, group = technique)) +
-    ggplot2::geom_boxplot() +
-    ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+    ggplot2::geom_bar(stat="identity") +
     ggplot2::theme_bw(base_size = 10) +
     ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
     ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
     ggplot2::xlab("Mutant Reduction Technique") +
-    ggplot2::ylab("Mean Kendall / (1 - Mean Cost Reduction)")
+    ggplot2::ylab("Ratio * 100")
   return(p)
 }
 
@@ -981,7 +980,7 @@ visualize_plot_effectsize <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = group1, y = group2)) +
   ggplot2::geom_tile(ggplot2::aes(fill = size)) +
   ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="top") +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Technique 1") +

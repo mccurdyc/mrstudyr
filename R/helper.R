@@ -31,91 +31,6 @@ helper_bitflip_keep <- function(d, p, partition_size=1) {
   return(df)
 }
 
-# #' FUNCTION: helper_incremental
-# #'
-# #' Helper analyze incremental
-# #' @export
-#
-# helper_incremental <- function(d, partition_size=1) {
-#   dd <- data.frame()
-#
-#   # initialized to set temp_best_fit to fitness of original data
-#   current_best_fit <- evaluate_reduction_technique(d, d) %>%
-#     transform_fitness(0.5, 0.5) %>%
-#     transform_add_position(0) %>%
-#     calculate_best_fit() %>%
-#     collect_schema_data()
-#
-#   for(j in 1:30) {
-#     dk <- data.frame() # hold the keep data
-#     df <- data.frame() # hold the best_fit data
-#
-#     outside_step <- 1
-#     g <- d
-#
-#     print(paste("TRIAL: ", j))
-#     start_position <- d %>% dplyr::count() %>% select_random_start_position()
-#     print(paste("START POSITION: ", start_position))
-#
-#     g <- g %>% helper_bitflip_keep(start_position, partition_size) %>%
-#       transform_add_position(start_position) %>%
-#       as.data.frame()
-#
-#     while (TRUE) {
-#
-#       fst <- TRUE
-#       dk <- data.frame() # hold the keep data
-#       df <- data.frame() # hold the best_fit data
-#
-#       position <- start_position + partition_size
-#       print(paste("OUTSIDE STEP: ", outside_step))
-#
-#       while (TRUE) {
-#
-#         if (position == start_position && outside_step == 1) {
-#           break
-#         }
-#
-#         k <- g %>% helper_bitflip_keep(position, partition_size) %>%
-#           transform_add_position(position) %>%
-#           as.data.frame()
-#         r <- k %>% collect_keep_data() # only data that was 'kept'
-#         da <- evaluate_reduction_technique(d, r) %>%
-#           transform_fitness(0.5, 0.5) %>%
-#           transform_add_position(position) %>%
-#           as.data.frame()
-#
-#         if (position == start_position && fst != TRUE) {
-#           break
-#         } else if ((position + partition_size) > nrow(g)) {
-#           position <- (position + partition_size) - nrow(d)
-#         } else {
-#           position <- position + partition_size
-#         }
-#
-#         fst <- FALSE
-#         dk <- rbind(dk, k) # keep data
-#         df <- rbind(df, da) # best_fit data
-#       }
-#
-#       temp_best_fit <- current_best_fit %>% as.data.frame()
-#       b <- df %>% calculate_best_fit() %>% collect_best_fit_data()
-#       current_best_fit <- b[!duplicated(b$schema), ] # if ties, only keep one per schema
-#       g <- collect_best_keep_data(current_best_fit, dk)
-#       outside_step <- outside_step + 1
-#
-#       # we stop if it is equal because then we are no longer climbing, we have plateaued
-#       if ((current_best_fit$best_fit <= temp_best_fit$best_fit)) {
-#         a <- temp_best_fit %>% transform_add_start_position(start_position) %>% transform_add_trial(j)
-#         dd <- rbind(dd, a)
-#         break
-#       }
-#     }
-#   }
-#   # return(k) # the final reduced keep data telling you which mutants to keep and ignore
-#   return(dd) # just the actual best_fit values and their respective step for each schema
-# }
-
 #' FUNCTION: helper_incremental_across_schemas
 #'
 #' Helper analyze incremental across all schemas to provide a "more actionable" and generalized
@@ -208,7 +123,6 @@ helper_incremental_across_schemas <- function(d, s, corr_threshold, cost_thresho
       previous_cost_reduction_percent <- current_cost_reduction_percent
     }
     dbk <- rbind(dbk, previous_bk)
-    # dbc <- rbind(dbc, previous_best_corr) # collected correlation data
   }
   return(dbk)
 }

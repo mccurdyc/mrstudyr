@@ -171,7 +171,7 @@ visualize_wilcoxon <- function(d) {
 #' @export
 
 visualize_hill_climbing_correlation_all_dbms <- function(d) {
-  p <- d %>% visualize_plot_correlation_multiple_dbms()
+  p <- d %>% visualize_plot_hill_climbing_correlation()
   name <- "../graphics/from-data/all_dbms_correlation_hill_climbing_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
@@ -183,7 +183,7 @@ visualize_hill_climbing_correlation_all_dbms <- function(d) {
 #' @export
 
 visualize_hill_climbing_cost_reduction_all_dbms <- function(d) {
-  p <- d %>% visualize_plot_cost_reduction_multiple_dbms()
+  p <- d %>% visualize_plot_hill_climbing_cost_reduction()
   name <- "../graphics/from-data/all_dbms_cost_reduction_hill_climbing_plot.pdf"
   visualize_save_graphic(name, p, 8, 8)
   return(p)
@@ -388,32 +388,32 @@ visualize_plot_error <- function(d) {
   return(p)
 }
 
-#' FUNCTION: visualize_plot_correlation
+# #' FUNCTION: visualize_plot_correlation
+# #'
+# #' Produces a visualization of the correlation between the original and reduced mutation score across
+# #' schemas for thirty trials.
+# #' @export
+#
+# visualize_plot_correlation <- function(d) {
+#   p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = correlation, group = step_size)) +
+#   ggplot2::geom_boxplot() +
+#   # ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
+#   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+#   ggplot2::theme_bw(base_size = 10) +
+#   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+#   ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
+#   ggplot2::ylab("Kendall")
+#   return(p)
+# }
+
+#' FUNCTION: visualize_plot_hill_climbing_correlation
 #'
 #' Produces a visualization of the correlation between the original and reduced mutation score across
 #' schemas for thirty trials.
 #' @export
 
-visualize_plot_correlation <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = correlation, group = step_size)) +
-  ggplot2::geom_boxplot() +
-  # ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Percentage of Mutants Flipped Per Neighbor") +
-  ggplot2::ylab("Kendall")
-  return(p)
-}
-
-#' FUNCTION: visualize_plot_correlation_mulitple_dbms
-#'
-#' Produces a visualization of the correlation between the original and reduced mutation score across
-#' schemas for thirty trials.
-#' @export
-
-visualize_plot_correlation_multiple_dbms <- function(d) {
+visualize_plot_hill_climbing_correlation <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = correlation, group = interaction(dbms, step_size))) +
   ggplot2::geom_boxplot(ggplot2::aes(colour = dbms)) +
   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
@@ -426,12 +426,12 @@ visualize_plot_correlation_multiple_dbms <- function(d) {
   return(p)
 }
 
-#' FUNCTION: visualize_plot_cost_reduction_mulitple_dbms
+#' FUNCTION: visualize_plot_hill_climbing_cost_reduction
 #'
 #' Produces a visualization of the cost reduction values of the operator model applied to multiple DBMSs.
 #' @export
 
-visualize_plot_cost_reduction_multiple_dbms <- function(d) {
+visualize_plot_hill_climbing_cost_reduction <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = step_size, y = cost_reduction, group = interaction(dbms, step_size))) +
   ggplot2::geom_boxplot(ggplot2::aes(colour = dbms)) +
   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
@@ -741,15 +741,15 @@ visualize_plot_original_mutation_score_per_dbms_pres <- function(d) {
 #' @export
 
 visualize_plot_correlation_all_reduction_techniques_box <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation)) +
-  ggplot2::geom_boxplot() +
-  ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Mutant Reduction Technique") +
-  ggplot2::ylab("Kendall Correlation Coefficient")
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = technique, y = correlation, group = interaction(dbms,technique))) +
+    ggplot2::geom_boxplot(position="dodge", ggplot2::aes(fill=dbms)) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+    ggplot2::theme_bw(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::xlab("Mutant Reduction Technique") +
+    ggplot2::ylab("Kendall Correlation Coefficient")
   return(p)
 }
 
@@ -781,7 +781,7 @@ visualize_plot_correlation_all_reduction_techniques_box_pres <- function(d) {
 
 visualize_plot_correlation_all_groups <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = technique_group, y = correlation, group = technique_group)) +
-  ggplot2::geom_boxplot() +
+  ggplot2::geom_boxplot(position="dodge", ggplot2::aes(fill=dbms)) +
   ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
   ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
   ggplot2::theme_bw(base_size = 10) +

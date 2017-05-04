@@ -1,0 +1,52 @@
+---
+title: mrstudyr
+author: Colton J. McCurdy <mccurdyc@allegheny.edu>
+output:
+  pdf_document
+---
+
+## Installing mrstudyr Package from GitHub
+
+This code will install the mrstudyr package from GitHub using the `install_github` function.
+
+```
+devtools::install_github("mccurdyc/mrstudyr")
+```
+
+## Initialize the System
+
+First, load in the libraries that are used in addition to those with the mrstudyr package (i.e., load all
+of the packages not used by mrstudyr but still used in this RMarkdown file). Note that right now the
+mrstudyr package will automatically load all of the packages that it needs to performs its various
+analyses. Now, we are ready to call the functions from the mrstudyr package and produce the appropriate
+summary tables and graphs.
+
+```
+suppressPackageStartupMessages(library(mrstudyr))
+suppressPackageStartupMessages(library(knitr))
+```
+
+## Comparing Mutant Reduction Techniques
+
+### Show the schemas used in this study
+
+```
+sqlite <- read_sqlite_data() %>% collect_normal_data()
+schemas <- sqlite %>% select_all_schemas()
+knitr::kable(schemas, format="latex", booktabs=TRUE)
+```
+
+### Visualize summary graphs of data before performing reduction
+
+The summary graphs before performing reduction include
+
++ fractional operator costs (per dbms)
++ fractional operator costs (per dbms, per schema)
++ fractional operator frequencies (per dbms) (e.g., this operator accounts for 20% of total mutants)
++ fractional operator frequencies (per dbms, per schema)
++ original mutation score (per dbms)
++ original mutation score (per dbms, per schema)
+
+```
+create_data_overview_graphs()
+```

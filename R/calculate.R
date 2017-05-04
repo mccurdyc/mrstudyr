@@ -45,6 +45,7 @@ calculate_fractional_operator_costs <- function(d) {
 #' @export
 
 calculate_per_schema_fractional_operator_costs <- function(d) {
+  d <- d %>% collect_schema_data()
   da <- d %>% summarize_schema_operator_time()
   db <- d %>% summarize_original_time()
   dc <- join_schema_operator(da, db)
@@ -58,6 +59,7 @@ calculate_per_schema_fractional_operator_costs <- function(d) {
 #' @export
 
 calculate_fractional_operator_frequencies <- function(d) {
+  d <- d %>% collect_dbms_data()
   da <- d %>% summarize_operator_frequencies()
   db <- d %>% summarize_count()
   dc <- join_operator(da, db)
@@ -71,6 +73,7 @@ calculate_fractional_operator_frequencies <- function(d) {
 #' @export
 
 calculate_per_schema_fractional_operator_frequencies <- function(d) {
+  d <- d %>% collect_schema_data()
   da <- d %>% summarize_schema_operator_frequencies()
   db <- d %>% summarize_schema_count()
   dc <- join_schema_operator(da, db)

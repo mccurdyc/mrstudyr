@@ -20,11 +20,11 @@ visualize_mutant_counts_per_schema <- function(d) {
 #' @export
 
 visualize_original_mutation_score_per_schema <- function(d) {
-  p1 <- d %>% visualize_plot_original_mutation_score()
+  p1 <- d %>% visualize_plot_original_mutation_score_per_schema()
   name1 <- "../graphics/from-data/mutation_score_per_schema.pdf"
   visualize_save_graphic(name1, p1, 8, 8)
 
-  p2 <- d %>% visualize_plot_original_mutation_score_pres()
+  p2 <- d %>% visualize_plot_original_mutation_score_per_schema_pres()
   name2 <- "../graphics/from-data/mutation_score_per_schema_pres.pdf"
   visualize_save_graphic(name2, p2, 12, 6)
 }
@@ -237,31 +237,31 @@ visualize_hill_climbing_cost_reduction_all_dbms <- function(d) {
 #   return(p)
 # }
 
-# #' FUNCTION: visualize_random_sampling_correlation
-# #'
-# #' Visualize correlation between original and reduced mutation scores for the random sampling reduction technique
-# #' across schemas across thirty trials.
-# #' @export
-#
-# visualize_random_sampling_correlation <- function(d) {
-#   p <- d %>% visualize_plot_percentage_correlation()
-#   name <- "../graphics/from-data/all_dbms_correlation_random_plot.pdf"
-#   visualize_save_graphic(name, p, 8, 8)
-#   return(p)
-# }
+#' FUNCTION: visualize_random_sampling_correlation
+#'
+#' Visualize correlation between original and reduced mutation scores for the random sampling reduction technique
+#' across schemas across thirty trials.
+#' @export
 
-# #' FUNCTION: visualize_random_sampling_cost_reduction
-# #'
-# #' Visualize cost reduction for the random sampling reduction technique at each percentage
-# #' across schemas across thirty trials.
-# #' @export
-#
-# visualize_random_sampling_cost_reduction <- function(d) {
-#   p <- d %>% visualize_plot_percentage_cost_reduction()
-#   name <- "../graphics/from-data/cost_reduction_random_plot.pdf"
-#   visualize_save_graphic(name, p, 8, 8)
-#   return(p)
-# }
+visualize_random_sampling_correlation <- function(d) {
+  p <- d %>% visualize_plot_percentage_correlation()
+  name <- "../graphics/from-data/all_dbms_correlation_random_plot.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
+
+#' FUNCTION: visualize_random_sampling_cost_reduction
+#'
+#' Visualize cost reduction for the random sampling reduction technique at each percentage
+#' across schemas across thirty trials.
+#' @export
+
+visualize_random_sampling_cost_reduction <- function(d) {
+  p <- d %>% visualize_plot_percentage_cost_reduction()
+  name <- "../graphics/from-data/all_dbms_cost_reduction_random_plot.pdf"
+  visualize_save_graphic(name, p, 8, 8)
+  return(p)
+}
 
 # #' FUNCTION: visualize_hill_climbing_correlation
 # #'
@@ -467,9 +467,9 @@ visualize_plot_correlation_all_bar <- function(d) {
 
 visualize_plot_percentage_correlation <- function(d) {
   p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = correlation, group = interaction(dbms, percentage))) +
-  ggplot2::geom_boxplot(width=5, ggplot2::aes(colour = dbms)) +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
-  ggplot2::scale_shape(solid = FALSE) +
+  ggplot2::geom_boxplot(width=5, ggplot2::aes(fill = dbms)) +
+  # ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", ggplot2::aes(shape = dbms), size = 2, show.legend = TRUE) +
+  # ggplot2::scale_shape(solid = FALSE) +
   ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
   ggplot2::scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1)) +
   ggplot2::theme_bw(base_size = 10) +
@@ -477,6 +477,25 @@ visualize_plot_percentage_correlation <- function(d) {
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
   ggplot2::xlab("Sampling Ratio (%)") +
   ggplot2::ylab("Kendall")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_percentage_cost_reduction
+#'
+#' Produces a visualization of the amount by which a random sample percentage decreases the cost of
+#' performing mutation analysis.
+#' @export
+
+visualize_plot_percentage_cost_reduction <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = cost_reduction, group = interaction(dbms, percentage))) +
+  ggplot2::geom_boxplot(width=5, ggplot2::aes(fill = dbms)) +
+  ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
+  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
+  ggplot2::theme_bw(base_size = 10) +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+  ggplot2::xlab("Percentage of Mutants Evaluated") +
+  ggplot2::ylab("Cost Reduction")
   return(p)
 }
 
@@ -600,42 +619,6 @@ visualize_plot_percentage_cost <- function(d) {
   return(p)
 }
 
-#' FUNCTION: visualize_plot_percentage_cost_reduction
-#'
-#' Produces a visualization of the amount by which a random sample percentage decreases the cost of
-#' performing mutation analysis.
-#' @export
-
-visualize_plot_percentage_cost_reduction <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = percentage, y = cost_reduction, group = percentage)) +
-  ggplot2::geom_boxplot(width=5) +
-  ggplot2::scale_x_continuous(breaks = round(seq(0, max(d$percentage), by = 10), 1)) +
-  ggplot2::stat_summary(fun.y = mean, fill = "white", colour = "black", geom = "point", shape = 24, size = 1, show.legend = FALSE) +
-  ggplot2::theme_bw(base_size = 10) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-  ggplot2::xlab("Percentage of Mutants Evaluated") +
-  ggplot2::ylab("Cost Reduction")
-  return(p)
-}
-#' FUNCTION: visualize_plot_original_mutation_score_per_schema
-#'
-#' Produces the visualization of the original mutation scores.
-#' @export
-
-visualize_plot_original_mutation_score_per_schema <- function(d) {
-  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score, group = interaction(dbms, schema))) +
-    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
-    ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill = dbms)) +
-    ggplot2::theme_bw(base_size = 10) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
-    ggplot2::xlab("Database Schema") +
-    ggplot2::ylab("Original Mutation Score")
-  return(p)
-}
-
-
 #' FUNCTION: visualize_plot_mutant_counts_per_schema
 #'
 #' Produces a visualization for the presentation of the mutant counts, per-schema.
@@ -677,6 +660,44 @@ visualize_plot_mutant_counts_per_schema_pres <- function(d) {
   return(p)
 }
 
+#' FUNCTION: visualize_plot_original_mutation_score_per_schema
+#'
+#' Produces the visualization of the original mutation scores.
+#' @export
+
+visualize_plot_original_mutation_score_per_schema <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score, group = interaction(dbms, schema))) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black")) +
+    ggplot2::geom_bar(stat="identity", position="dodge", ggplot2::aes(fill = dbms)) +
+    ggplot2::theme_bw(base_size = 10) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 10)) +
+    ggplot2::xlab("Database Schema") +
+    ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
+#' FUNCTION: visualize_plot_original_mutation_score_per_schema_pres
+#'
+#' Produces the visualization of the original mutation scores for each schema for the presentation.
+#' @export
+
+visualize_plot_original_mutation_score_per_schema_pres <- function(d) {
+  p <- ggplot2::ggplot(d, ggplot2::aes(x = schema, y = original_mutation_score)) +
+    ggplot2::geom_bar(stat="identity", fill = "#268BD2") +
+    ggplot2::theme_bw(base_size = 8) +
+    ggplot2::theme(strip.background = element_blank(), panel.border = element_rect(colour = "black"), legend.position="none") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(angle = 45, hjust = 1, size = 15)) +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(axis.title.y = ggplot2::element_text(size = 25)) +
+    ggplot2::theme(panel.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::theme(plot.background = element_rect(fill = "transparent", colour = NA)) +
+    ggplot2::xlab("Database Schema") +
+    ggplot2::ylab("Original Mutation Score")
+  return(p)
+}
+
 #' FUNCTION: visualize_plot_original_mutation_score_per_dbms
 #'
 #' Produces the visualization of the original mutation scores per dbms.
@@ -714,7 +735,6 @@ visualize_plot_original_mutation_score_per_dbms_pres <- function(d) {
     ggplot2::ylab("Original Mutation Score")
   return(p)
 }
-
 
 #' FUNCTION: visualize_plot_correlation_all_reduction_techniques_box
 #'

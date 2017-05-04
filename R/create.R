@@ -4,13 +4,18 @@
 #' @export
 
 create_data_overview_graphs <- function() {
-  d <- read_sqlite_avmdefaults() %>% collect_normal_data()
-  dca <- d %>% calculate_fractional_operator_costs()
-  dcb <- d %>% calculate_per_schema_fractional_operator_costs()
-  dfa <- d %>% calculate_fractional_operator_frequencies()
-  dfb <- d %>% calculate_per_schema_fractional_operator_frequencies()
-  dms <- d %>% calculate_per_dbms_mutation_scores()
-  dsms <- d %>% calculate_per_schema_mutation_scores()
+  sqlite <- read_sqlite_avmdefaults() %>% collect_normal_data()
+  hypersql <- read_hypersql_avmdefaults() %>% collect_normal_data()
+  postgres <- read_postgres_avmdefaults() %>% collect_normal_data()
+  dbmss <- dplyr::bind_rows(sqlite, hypersql, postgres)
+
+  dca <- dbmss %>% calculate_fractional_operator_costs()
+  dcb <- dbmss %>% calculate_per_schema_fractional_operator_costs()
+  dfa <- dbmss %>% calculate_fractional_operator_frequencies()
+  dfb <- dbmss %>% calculate_per_schema_fractional_operator_frequencies()
+  dms <- dbmss %>% calculate_per_dbms_mutation_scores()
+  dsms <- dbmss %>% calculate_per_schema_mutation_scores()
+
   visualize_fractional_operator_mutant_costs(dca)
   visualize_fractional_operator_mutant_costs_per_schema(dcb)
   visualize_fractional_operator_mutant_frequencies(dfa)
@@ -162,15 +167,5 @@ create_pairwise_wilcoxon_rank_sum_test <- function(d) {
 
 create_effect_size_test <- function(d) {
   dt <- d %>% perform_effectsize_accurate()
-  return(dt)
-}
-
-#'
-#' Create the graphs associated with the pairwise Wilcoxon ranked-sum test.
-#' The input to this function is the combined technique data.
-#' @export
-
-create_pairwise_wilcoxon_rank_sum_test <- function(d) {
-  dt <- d %>% perform_pairwise_wilcoxon_rank_sum_test()
   return(dt)
 }

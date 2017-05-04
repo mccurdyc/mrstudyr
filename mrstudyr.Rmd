@@ -33,7 +33,7 @@ suppressPackageStartupMessages(library(knitr))
 ```{r, echo=TRUE}
 sqlite <- read_sqlite_avmdefaults() %>% collect_normal_data()
 schemas <- sqlite %>% select_all_schemas()
-knitr::kable(schemas, format="latex", booktabs=TRUE)
+knitr::kable(schemas, format="latex")
 ```
 
 ### Visualize summary graphs of data before performing reduction
@@ -82,11 +82,11 @@ Now, you can create the random sampling, hill climbing, selective and selective 
 using the data that I collected.
 
 ```{r, graphic_my_random_sampling_correlation, fig.width=5.7, fig.height=3.5, echo=TRUE}
-data %>% dplyr::filter(technique_group == 'RS') %>% visualize_plot_random_sampling_correlation()
+data %>% dplyr::filter(technique_group == 'RS') %>% visualize_plot_percentage_correlation()
 ```
 
 ```{r, graphic_my_random_sampling_cost_reduction, fig.width=5.7, fig.height=3.5, echo=TRUE}
-data %>% dplyr::filter(technique_group == 'RS') %>% visualize_plot_random_sampling_cost_reduction()
+data %>% dplyr::filter(technique_group == 'RS') %>% visualize_plot_percentage_cost_reduction()
 ```
 
 ```{r, graphic_my_hill_climbing_correlation, fig.width=5.7, fig.height=3.5, echo=TRUE}
@@ -109,8 +109,8 @@ Then, you will need to make sure you have the data for a DBMS read in. In this e
 HyperSQL DBMS because it is one of the DBMSs not used to generate the model.
 
 ```{r, echo=TRUE}
-small <- feather::read_feather("feathers/small-model.feather")
-hypersql <- read_hypersql_data() %>% collect_normal_data()
+small <- feather::read_feather("feathers/small_model.feather")
+hypersql <- read_hypersql_avmdefaults() %>% collect_normal_data()
 apply_operator_model(hypersql, small)
 ```
 
